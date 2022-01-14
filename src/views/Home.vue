@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <h1>home!</h1>
+    <router-link to="/asset/15">test</router-link>
   </div>
 </template>
 
