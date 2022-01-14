@@ -1,0 +1,29 @@
+@import "../general/index.scss";
+
+.app {
+    display: flex;
+    min-height: 100vh;
+    max-width: $page-max-width;
+	width: 100%;
+
+    .aside {
+        background-color: $gray;
+        width: 240px;
+    
+        &__nav {
+            a {
+                font-weight: bold;
+                color: $blue-med-dark;
+        
+                &.router-link-exact-active {
+                    color: $blue-light;
+                }
+            }
+        }
+    }
+    
+    .content {
+        background-color: red;
+        flex-grow: 1;
+    }
+}
