@@ -7,6 +7,7 @@ const myState: ListStore = {
   dataBySaleCount: [],
   dataBySalePrice: [],
   dataBySaleDate: [],
+  listFilter: "count",
 };
 
 const store = {
@@ -19,6 +20,9 @@ const store = {
     } else {
       this.state.dataBySaleDate = this.state.dataBySaleDate.concat(newData);
     }
+  },
+  updateFilter(filter: ListType) {
+    this.state.listFilter = filter;
   },
 };
 

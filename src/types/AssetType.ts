@@ -12,6 +12,7 @@ interface Ownership {
 }
 
 interface AssetType {
+  id: string;
   name: string | null;
   description: string | null;
   num_sales: number | null;

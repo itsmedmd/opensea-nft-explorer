@@ -5,8 +5,11 @@
         <router-link to="/">Home</router-link> |
         <router-link to="/about">About</router-link>
       </div>
-      <button @click="fetchList()">fetch</button>
-      <button @click="fetchSingle()">fetch single</button>
+      <button @click="fetchList()">fetch</button><br />
+      <button @click="fetchSingle()">fetch single</button><br />
+      <button @click="updateFilter('count')">Sort by sales count</button><br />
+      <button @click="updateFilter('date')">Sort by latest sales</button><br />
+      <button @click="updateFilter('price')">Sort by sales price</button><br />
     </div>
     <div class="content">
       <router-view />
@@ -17,6 +20,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 import AssetType from "@/types/AssetType";
+import ListType from "@/types/ListType";
 import store from "@/store/store";
 
 export default defineComponent({
@@ -67,8 +71,13 @@ export default defineComponent({
         .catch((err) => console.error(err));
     };
 
+    const updateFilter = (filter: ListType) => {
+      store.updateFilter(filter);
+    };
+
     onMounted(() => {
       const item: AssetType = {
+        id: "0x28472a58a490c5e09a238847f66a68a47cc76f0f-0",
         name: "adidas Originals: Into the Metaverse (Phase 1)",
         description:
           "Into the Metaverse is a collaborative NFT project between adidas Originals and NFT pioneers gmoney, Bored Ape Yacht Club and PUNKS Comic. An NFT co-created with the OG communities, creators and doers.",
@@ -134,6 +143,7 @@ export default defineComponent({
       list,
       fetchList,
       fetchSingle,
+      updateFilter,
     };
   },
 });
