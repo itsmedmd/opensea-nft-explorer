@@ -1,0 +1,29 @@
+@import "../general/mixins";
+@import "../general/variables";
+
+.home {
+	padding: 0 16px 64px 24px;
+
+	@include respond-to(max-width, $break-tablet-small) {
+		padding: 0 12px 64px;
+	}
+
+	&__itemlist {
+		display: grid;
+		grid-column-gap: 24px;
+		grid-row-gap: 32px;
+		grid-template-columns: repeat(4, 1fr);
+
+		@include respond-to(max-width, $break-laptop) {
+			grid-template-columns: repeat(3, 1fr);
+		}
+
+		@include respond-to(max-width, $break-tablet-big) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		@include respond-to(max-width, $break-phone-big) {
+			grid-template-columns: 1fr;
+		}
+	}
+}
