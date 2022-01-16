@@ -1,5 +1,13 @@
 <template>
-  <div class="item">{{ data.name }} //</div>
+  <router-link :to="'/asset/' + data.id" custom v-slot="{ navigate }">
+    <div role="link" @click="navigate">
+      <img :src="data.image_preview_url" :alt="data.name + ' image'" />
+      <div class="item__info">
+        <p>{{ data.collection.name }}</p>
+        <p>{{ data.name }}</p>
+      </div>
+    </div>
+  </router-link>
 </template>
 
 <script lang="ts">
@@ -13,9 +21,6 @@ export default defineComponent({
       required: true,
       type: Object as PropType<AssetType>,
     },
-  },
-  setup() {
-    //<router-link to="/asset/15">test</router-link>
   },
 });
 </script>
