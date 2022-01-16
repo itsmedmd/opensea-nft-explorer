@@ -1,17 +1,21 @@
 <template>
-  <router-link :to="'/asset/' + data.id" custom v-slot="{ navigate }">
-    <div role="link" @click="navigate">
-      <img :src="data.image_preview_url" :alt="data.name + ' image'" />
+  <router-link :to="'/asset/' + data.id">
+    <div class="item">
+      <img
+        :src="data.image_url"
+        :alt="data.name + ' image'"
+        class="item__image"
+      />
       <div class="item__info">
-        <p>{{ data.collection.name }}</p>
-        <p>{{ data.name }}</p>
+        <p class="item__collection">{{ collectionName }}</p>
+        <p class="item__name">{{ itemName }}</p>
       </div>
     </div>
   </router-link>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { computed, defineComponent, PropType } from "vue";
 import AssetType from "@/types/AssetType";
 
 export default defineComponent({
@@ -22,7 +26,27 @@ export default defineComponent({
       type: Object as PropType<AssetType>,
     },
   },
+  setup(props) {
+    const collectionName = computed(() => {
+      if (props.data.collection.name.length > 50) {
+        return props.data.collection.name.slice(0, 50) + "...";
+      }
+      return props.data.collection.name;
+    });
+
+    const itemName = computed(() => {
+      if (props.data.name.length > 70) {
+        return props.data.name.slice(0, 70) + "...";
+      }
+      return props.data.name;
+    });
+
+    return {
+      collectionName,
+      itemName,
+    };
+  },
 });
 </script>
 
-<style></style>
+<style lang="scss" scoped src="@/assets/styles/components/item.scss"></style>

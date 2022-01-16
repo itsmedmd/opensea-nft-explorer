@@ -2,7 +2,7 @@
   <div class="home">
     <h1>home!</h1>
     <p>list filter: {{ computedFilter }}</p>
-    <div class="itemlist">
+    <div class="home__itemlist">
       <Item v-for="item in computedList" :key="item.id" :data="item" />
     </div>
   </div>
@@ -21,11 +21,11 @@ export default defineComponent({
   setup() {
     const computedList = computed(() => {
       if (store.state.listFilter === "count") {
-        return store.state.dataBySaleCount;
+        return store.state.dataBySaleCount.slice(0, 16);
       } else if (store.state.listFilter === "price") {
-        return store.state.dataBySalePrice;
+        return store.state.dataBySalePrice.slice(0, 16);
       } else {
-        return store.state.dataBySaleDate;
+        return store.state.dataBySaleDate.slice(0, 16);
       }
     });
 
@@ -40,3 +40,5 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped src="@/assets/styles/components/home.scss"></style>
