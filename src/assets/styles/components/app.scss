@@ -1,6 +1,11 @@
 @import "../general/variables";
+@import "../general/typography";
 @import "../general/colors";
 @import "../general/mixins";
+
+$aside-width-default: 300px;
+$aside-width-small: 200px;
+$aside-nav-height: 60px;
 
 .app {
 	display: flex;
@@ -10,25 +15,117 @@
 }
 
 .aside {
-	background-color: $gray;
-	width: 12%;
+	background-color: rgba($gray, 0.05);
+	border-right: 1px solid rgba($gray, 0.5);
+	height: 100vh;
+	position: fixed;
+	width: $aside-width-default;
 
-	@include respond-to(max-width, $break-tablet-small) {
+	@include respond-to(max-width, $break-tablet-big) {
+		width: 200px;
+	}
+
+	@include respond-to(max-width, $break-phone-big) {
 		display: none;
 	}
 
 	&__nav {
-		a {
-			color: $blue-med-dark;
-			font-weight: bold;
+		background-color: rgba($gray, 0.2);
+		border-bottom: 1px solid rgba($gray, 0.8);
+		height: $aside-nav-height;
+		padding: 8px 0;
+	}
+
+	&__nav-list {
+		display: flex;
+		justify-content: space-evenly;
+
+		@include respond-to(max-width, $break-tablet-big) {
+			justify-content: space-between;
+			padding: 0 6px;
 		}
+	}
+
+	&__nav-item {
+		display: inline-block;
+	}
+
+	&__nav-link {
+		color: $text-default;
+		font-size: $font-28;
+		font-weight: $font-w-bold-med;
+
+		&:hover {
+			color: rgba($blue-med-dark, 0.8);
+		}
+
+		&:active {
+			color: $blue-med-dark;
+		}
+	}
+
+	&__content {
+		display: flex;
+		flex-direction: column;
+		height: calc(100vh - $aside-nav-height);
+		padding: 64px 8px 16px;
+		position: relative;
+
+		@include respond-to(max-width, $break-tablet-big) {
+			padding-top: 32px;
+		}
+
+		@include respond-to(max-height, $break-v-600) {
+			justify-content: space-between;
+		}
+	}
+
+	&__list-title {
+		color: $black;
+		font-size: $font-18;
+		font-weight: $font-w-bold-med;
+		margin-bottom: 12px;
+	}
+
+	&__list-container {
+		&:first-of-type {
+			margin-bottom: 100px;
+			
+			@include respond-to(max-height, $break-v-600) {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	&__list-item {
+		margin-bottom: 10px;
+	}
+
+	&__logo-container {
+		bottom: 16px;
+		padding: 0 8px;
+		position: absolute;
+
+		@include respond-to(max-height, $break-v-600) {
+			padding: 0;
+			position: relative;
+		}
+	}
+
+	&__logo {
+		max-width: 100%;
 	}
 }
 
 .content {
-	width: 88%;
+	margin-left: $aside-width-default;
+	width: 100%;
 
-	@include respond-to(max-width, $break-tablet-small) {
-		width: 100%;
+	@include respond-to(max-width, $break-tablet-big) {
+		margin-left: $aside-width-small;
+	}
+
+	@include respond-to(max-width, $break-phone-big) {
+		margin-left: 0;
 	}
 }

@@ -1,7 +1,11 @@
 $page-max-width: 1600px;
 
-// break points
+// --- break points
+// horizontal
 $break-laptop: 1366px;
 $break-tablet-big: 1024px;
 $break-tablet-small: 768px;
 $break-phone-big: 520px;
+
+// vertical
+$break-v-600: 630px;
