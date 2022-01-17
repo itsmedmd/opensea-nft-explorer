@@ -6,6 +6,8 @@ interface ListStore {
   dataBySalePrice: AssetType[];
   dataBySaleDate: AssetType[];
   listFilter: ListType;
+  pageNumber: number;
+  itemsPerPage: number;
 }
 
 export default ListStore;

@@ -1,0 +1,36 @@
+@import "../general/typography";
+@import "../general/colors";
+
+.pagination {
+	margin: 32px 0;
+	text-align: center;
+
+	&__navigate {
+		background-color: $white;
+		font-size: $font-22;
+		font-weight: $font-w-bold-med;
+		margin: 0 8px;
+
+		&:not([disabled]):hover {
+			color: $blue-med-dark;
+		}
+	}
+
+	&__number {
+		color: $blue-dark;
+		font-size: $font-22;
+		font-weight: $font-w-bold-med;
+		padding: 0 6px;
+	}
+
+	&__rotate-180 {
+		display: inline-block;
+		transform: rotate(180deg);
+	}
+
+	&__description {
+		color: $text-light;
+		font-size: $font-14;
+		margin-top: -6px;
+	}
+}

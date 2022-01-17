@@ -49,4 +49,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped src="@/assets/styles/components/item.scss"></style>
+<style lang="scss" src="@/assets/styles/components/item.scss"></style>

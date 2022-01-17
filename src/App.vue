@@ -24,6 +24,7 @@ import ListType from "@/types/ListType";
 import store from "@/store/store";
 
 export default defineComponent({
+  name: "App",
   setup() {
     const list = ref<AssetType[]>([]);
 
@@ -149,4 +150,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped src="@/assets/styles/components/app.scss"></style>
+<style lang="scss" src="@/assets/styles/components/app.scss"></style>
