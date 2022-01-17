@@ -18,6 +18,11 @@ body {
 	justify-content: center;
 }
 
+a,
+button {
+	cursor: pointer;
+}
+
 a {
 	color: $text-default;
 	text-decoration: none;
@@ -26,4 +31,17 @@ a {
 button {
 	border: 0;
 	font-family: $font-default;
+}
+
+// for screen reader
+.sr-only:not(:focus):not(:active) {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	left: -10000px;
+	overflow: hidden;
+	position: absolute;
+	top: auto;
+	white-space: nowrap;
+	width: 1px;
 }
