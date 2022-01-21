@@ -1,0 +1,10 @@
+@import "../general/typography";
+
+.not-found {
+	margin: 200px 16px 64px;
+	text-align: center;
+
+	&__message {
+		font-size: $font-30;
+	}
+}
