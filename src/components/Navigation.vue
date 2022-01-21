@@ -12,7 +12,7 @@
     </nav>
 
     <div class="aside__content">
-      <div class="aside__list-container">
+      <div class="aside__list-container" v-if="isHomePage">
         <p class="aside__list-title">Sort by:</p>
         <ul class="aside__list">
           <li class="aside__list-item">
@@ -45,13 +45,19 @@
         </ul>
       </div>
 
+      <div class="aside__list-container" v-else>
+        <router-link class="nav-button nav-button--back" to="/">
+          Go back
+        </router-link>
+      </div>
+
       <div class="aside__list-container">
         <p class="aside__list-title">Feeling lucky?</p>
         <ul>
           <li class="aside__list-item">
             <button class="nav-button">Show a random item</button>
           </li>
-          <li class="aside__list-item">
+          <li class="aside__list-item" v-if="isHomePage">
             <button class="nav-button">Randomise the list</button>
           </li>
         </ul>
@@ -72,12 +78,15 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
+import { useRoute } from "vue-router";
 import ListType from "@/types/ListType";
 import store from "@/store/store";
 
 export default defineComponent({
   name: "Navigation",
   setup() {
+    const route = useRoute();
+
     const updateFilter = (filter: ListType) => {
       store.updateFilter(filter);
     };
@@ -86,7 +95,10 @@ export default defineComponent({
       return store.state.listFilter;
     });
 
+    const isHomePage = computed(() => (route.path === "/" ? true : false));
+
     return {
+      isHomePage,
       currentFilter,
       updateFilter,
     };

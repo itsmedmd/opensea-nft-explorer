@@ -50,6 +50,14 @@ button {
 	padding: 4px 0;
 	width: 100%;
 
+	&--back {
+		border: 1px solid rgba($black, 0.5);
+		display: inline-block;
+		font-size: $font-18;
+		font-weight: $font-w-bold-med;
+		text-align: center;
+	}
+
 	&:hover {
 		background-color: rgba($gray, 0.3);
 	}
