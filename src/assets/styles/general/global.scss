@@ -18,19 +18,68 @@ body {
 	justify-content: center;
 }
 
+ul {
+	list-style-type: none;
+}
+
+// links and buttons
 a,
 button {
 	cursor: pointer;
 }
 
 a {
-	color: $text-default;
 	text-decoration: none;
+}
+
+.router-link-exact-active {
+	color: $blue-med-dark;
 }
 
 button {
 	border: 0;
 	font-family: $font-default;
+}
+
+.nav-button {
+	background-color: $white;
+	border: 1px solid rgba($black, 0.25);
+	border-radius: 6px;
+	color: $black;
+	font-size: $font-16;
+	padding: 4px 0;
+	width: 100%;
+
+	&--back {
+		border: 1px solid rgba($black, 0.5);
+		display: inline-block;
+		font-size: $font-18;
+		font-weight: $font-w-bold-med;
+		text-align: center;
+	}
+
+	&:hover {
+		background-color: rgba($gray, 0.3);
+	}
+
+	&:active {
+		background-color: rgba($gray, 0.5);
+	}
+}
+
+.nav-button--active {
+	background-color: rgba($blue-med-dark, 0.8);
+	border: 1px solid $blue-med-dark;
+	color: $white;
+
+	&:hover {
+		background-color: rgba($blue-med-dark, 0.65);
+		border: 1px solid rgba($black, 0.25);
+	}
+
+	&:active {
+		background-color: rgba($blue-med-dark, 0.7);
+	}
 }
 
 // for screen reader

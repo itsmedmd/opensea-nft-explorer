@@ -1,17 +1,9 @@
 <template>
   <div class="app">
-    <div class="aside">
-      <div class="aside__nav">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link>
-      </div>
+    <Navigation />
+    <div class="content">
       <button @click="fetchList()">fetch</button><br />
       <button @click="fetchSingle()">fetch single</button><br />
-      <button @click="updateFilter('count')">Sort by sales count</button><br />
-      <button @click="updateFilter('date')">Sort by latest sales</button><br />
-      <button @click="updateFilter('price')">Sort by sales price</button><br />
-    </div>
-    <div class="content">
       <router-view />
     </div>
   </div>
@@ -19,12 +11,15 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
+import Navigation from "@/components/Navigation.vue";
 import AssetType from "@/types/AssetType";
-import ListType from "@/types/ListType";
 import store from "@/store/store";
 
 export default defineComponent({
   name: "App",
+  components: {
+    Navigation,
+  },
   setup() {
     const list = ref<AssetType[]>([]);
 
@@ -70,10 +65,6 @@ export default defineComponent({
           console.log(res);
         })
         .catch((err) => console.error(err));
-    };
-
-    const updateFilter = (filter: ListType) => {
-      store.updateFilter(filter);
     };
 
     onMounted(() => {
@@ -144,7 +135,6 @@ export default defineComponent({
       list,
       fetchList,
       fetchSingle,
-      updateFilter,
     };
   },
 });

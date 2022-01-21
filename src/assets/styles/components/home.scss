@@ -2,7 +2,7 @@
 @import "../general/variables";
 
 .home {
-	padding: 0 16px 32px 24px;
+	padding: 0 16px 16px 24px;
 
 	@include respond-to(max-width, $break-tablet-small) {
 		padding: 0 12px 64px;
@@ -22,7 +22,7 @@
 			grid-template-columns: repeat(2, 1fr);
 		}
 
-		@include respond-to(max-width, $break-phone-big) {
+		@include respond-to(max-width, $break-tablet-small) {
 			grid-template-columns: 1fr;
 		}
 	}
