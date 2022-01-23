@@ -25,15 +25,15 @@ export default defineComponent({
       articles: [
         {
           title: "About the project:",
-          text: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam totam optio asperiores, beatae aperiam voluptatem voluptatum est, repellendus dicta amet quasi. Officiis similique alias obcaecati labore expedita reiciendis ducimus rem!",
+          text: "This project uses an API provided by OpenSea to fetch and display assets (NFTs) based on various properties - such as the most popular NFTs, the most recently sold assets or the highest sale price.",
         },
         {
           title: "What are NFTs?",
-          text: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam totam optio asperiores, beatae aperiam voluptatem voluptatum est, repellendus dicta amet quasi. Officiis similique alias obcaecati labore expedita reiciendis ducimus rem!",
+          text: "Non-fungible tokens (NFTs) are one of the fastest growing assets in the crypto industry. An NFT is a unique, non-interchangeable unit of data. It contains a piece of identifying information that makes it distinguishable from all other tokens. Because no two tokens are the same, they cannot be traded or exchanged at an equivalent rate or broken down into smaller units like currency.",
         },
         {
           title: "What is OpenSea?",
-          text: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam totam optio asperiores, beatae aperiam voluptatem voluptatum est, repellendus dicta amet quasi. Officiis similique alias obcaecati labore expedita reiciendis ducimus rem!",
+          text: "OpenSea is the world's first and largest NFT marketplace where people can create, discover, collect, and sell NFTs.",
         },
       ],
     };
