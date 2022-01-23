@@ -1,0 +1,34 @@
+@import "../general/mixins";
+@import "../general/variables";
+@import "../general/typography";
+
+.about {
+	padding: 0 16px 16px 80px;
+
+	@include respond-to(max-width, $break-tablet-small) {
+		padding: 0 24px 64px;
+	}
+
+	&__section {
+		margin-bottom: 48px;
+	}
+
+	&__section-title {
+		font-size: $font-28;
+		font-weight: $font-w-bold-med;
+		margin-bottom: 6px;
+	}
+
+	&__section-text {
+		max-width: 70%;
+		padding-left: 24px;
+
+		@include respond-to(max-width, $break-tablet-big) {
+			max-width: 80%;
+		}
+        
+		@include respond-to(max-width, $break-tablet-small) {
+			max-width: 95%;
+		}
+	}
+}
