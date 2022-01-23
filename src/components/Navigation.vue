@@ -64,6 +64,7 @@
       </div>
 
       <div class="aside__logo-container">
+        <p class="aside__logo-title">Powered by:</p>
         <a href="https://opensea.io" rel="noreferrer">
           <img
             src="../assets/images/opensea-logo.svg"
