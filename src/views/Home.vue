@@ -1,7 +1,5 @@
 <template>
   <div class="home">
-    <h1>home!</h1>
-    <p>list filter: {{ computedFilter }}</p>
     <Pagination :isNextDisabled="isNextDisabled" />
     <div class="home__itemlist">
       <Item v-for="item in computedList" :key="item.id" :data="item" />
@@ -29,11 +27,12 @@ export default defineComponent({
       const sliceEnd = sliceStart + store.state.itemsPerPage;
 
       if (
-        (filter === "count" &&
+        (filter === "sale_count" &&
           sliceEnd >= store.state.dataBySaleCount.length) ||
-        (filter === "price" &&
+        (filter === "sale_price" &&
           sliceEnd >= store.state.dataBySalePrice.length) ||
-        (filter === "date" && sliceEnd >= store.state.dataBySaleDate.length)
+        (filter === "sale_date" &&
+          sliceEnd >= store.state.dataBySaleDate.length)
       ) {
         return true;
       }
@@ -45,9 +44,9 @@ export default defineComponent({
       const sliceStart = store.state.pageNumber * store.state.itemsPerPage;
       const sliceEnd = sliceStart + store.state.itemsPerPage;
 
-      if (filter === "count") {
+      if (filter === "sale_count") {
         return store.state.dataBySaleCount.slice(sliceStart, sliceEnd);
-      } else if (filter === "price") {
+      } else if (filter === "sale_price") {
         return store.state.dataBySalePrice.slice(sliceStart, sliceEnd);
       } else {
         return store.state.dataBySaleDate.slice(sliceStart, sliceEnd);

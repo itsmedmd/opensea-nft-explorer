@@ -7,7 +7,7 @@ const myState: ListStore = {
   dataBySaleCount: [],
   dataBySalePrice: [],
   dataBySaleDate: [],
-  listFilter: "count",
+  listFilter: "sale_count",
   pageNumber: 0,
   itemsPerPage: 16,
 };
@@ -15,9 +15,9 @@ const myState: ListStore = {
 const store = {
   state: reactive(myState),
   appendData(newData: AssetType[], type: ListType): void {
-    if (type === "count") {
+    if (type === "sale_count") {
       this.state.dataBySaleCount = this.state.dataBySaleCount.concat(newData);
-    } else if (type === "price") {
+    } else if (type === "sale_price") {
       this.state.dataBySalePrice = this.state.dataBySalePrice.concat(newData);
     } else {
       this.state.dataBySaleDate = this.state.dataBySaleDate.concat(newData);
