@@ -1,19 +1,22 @@
 <template>
   <div class="app">
-    <Navigation />
+    <Navigation @updatedFilter="fetchList" />
     <div class="content">
-      <button @click="fetchList()">fetch</button><br />
-      <button @click="fetchSingle()">fetch single</button><br />
       <router-view />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted } from "vue";
 import Navigation from "@/components/Navigation.vue";
-import AssetType from "@/types/AssetType";
 import store from "@/store/store";
+
+import AssetType from "@/types/AssetType";
+import ListType from "@/types/ListType";
+import Trait from "@/types/Trait";
+import Creator from "@/types/Creator";
+import Collection from "@/types/Collection";
 
 export default defineComponent({
   name: "App",
@@ -21,31 +24,89 @@ export default defineComponent({
     Navigation,
   },
   setup() {
-    const list = ref<AssetType[]>([]);
+    const createAssetObject = (obj: any): AssetType => {
+      // create typed asset traits
+      const assetTraits: Trait[] = [];
+      for (const trait of obj.traits) {
+        const newTrait: Trait = {
+          trait_type: trait.trait_type,
+          value: trait.value,
+        };
+        assetTraits.push(newTrait);
+      }
 
-    const fetchList = () => {
-      const options = {
-        method: "GET",
-        headers: { Accept: "application/json" },
-      };
-      // 'https://api.opensea.io/api/v1/assets?order_by=sale_count&order_direction=desc&offset=0&limit=50'
-      // 'https://api.opensea.io/api/v1/assets?order_direction=desc&offset=0&limit=50'
-      fetch(
-        "https://api.opensea.io/api/v1/assets?order_by=sale_count&order_direction=desc&offset=0&limit=20",
-        options
-      )
-        .then((res) => {
-          if (res.status === 200) {
-            return res.json();
-          } else {
-            throw new Error(`Failed to fetch data. ${res.statusText}`);
+      // create typed asset creator
+      const assetCreator: Creator | null = obj.creator
+        ? {
+            profile_img_url: obj.creator.profile_img_url ?? null,
+            username: obj.creator.user ? obj.creator.user.username : null,
           }
-        })
-        .then((res) => {
-          console.log(res);
-          list.value = res;
-        })
-        .catch((err) => console.error(err));
+        : null;
+
+      // create typed asset collection
+      const assetCollection: Collection | null = obj.collection
+        ? {
+            name: obj.collection.name ?? null,
+            image_url: obj.collection.image_url ?? null,
+          }
+        : null;
+
+      // create typed asset
+      const asset: AssetType = {
+        id: `${obj.asset_contract.address}-${obj.token_id}`,
+        name: obj.name ?? null,
+        permalink: obj.permalink,
+        token_id: obj.token_id,
+        asset_contract: {
+          address: obj.asset_contract.address,
+        },
+        description: obj.description ?? null,
+        num_sales: obj.num_sales ?? null,
+        image_preview_url: obj.image_preview_url ?? null,
+        animation_url: obj.animation_url ?? null,
+        image_original_url: obj.image_original_url ?? null,
+        image_url: obj.image_url ?? null,
+        traits: assetTraits,
+        creator: assetCreator,
+        collection: assetCollection,
+      };
+
+      return asset;
+    };
+
+    const fetchList = (filter: ListType) => {
+      if (
+        (filter === "sale_count" && store.state.dataBySaleCount.length === 0) ||
+        (filter === "sale_price" && store.state.dataBySalePrice.length === 0) ||
+        (filter === "sale_date" && store.state.dataBySaleDate.length === 0)
+      ) {
+        console.log("fetchList:", filter);
+        const url = `https://api.opensea.io/api/v1/assets?order_by=${filter}&order_direction=desc&offset=0&limit=50`;
+
+        const options = {
+          method: "GET",
+          headers: { Accept: "application/json" },
+        };
+
+        fetch(url, options)
+          .then((res) => {
+            if (res.status === 200) {
+              return res.json();
+            } else {
+              throw new Error(`Failed to fetch data. ${res.statusText}`);
+            }
+          })
+          .then((res) => {
+            const newList: AssetType[] = [];
+            for (const rawAsset of res.assets) {
+              newList.push(createAssetObject(rawAsset));
+            }
+
+            store.appendData(newList, filter);
+            console.log("retrieved:", newList);
+          })
+          .catch((err) => console.error(err));
+      }
     };
 
     const fetchSingle = () => {
@@ -100,24 +161,6 @@ export default defineComponent({
             value: "1",
           },
         ],
-        top_ownerships: [
-          {
-            quantity: 165,
-            owner: {
-              profile_img_url:
-                "https://storage.googleapis.com/opensea-static/opensea-profile/1.png",
-              username: "q",
-            },
-          },
-          {
-            quantity: 150,
-            owner: {
-              profile_img_url:
-                "https://storage.googleapis.com/opensea-static/opensea-profile/14.png",
-              username: null,
-            },
-          },
-        ],
         asset_contract: {
           address: "0x28472a58a490c5e09a238847f66a68a47cc76f0f",
         },
@@ -125,14 +168,14 @@ export default defineComponent({
       };
 
       for (let i = 0; i < 50; i++) {
-        list.value.push(item);
+        //list.value.push(item);
       }
 
-      store.appendData(list.value, "count");
+      //console.log("App mounted, appending data");
+      //store.appendData(list.value, "sale_count");
     });
 
     return {
-      list,
       fetchList,
       fetchSingle,
     };

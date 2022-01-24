@@ -18,8 +18,8 @@
           <li class="aside__list-item">
             <button
               class="nav-button"
-              :class="{ 'nav-button--active': currentFilter === 'count' }"
-              @click="updateFilter('count')"
+              :class="{ 'nav-button--active': currentFilter === 'sale_count' }"
+              @click="updateFilter('sale_count')"
             >
               Sales count
             </button>
@@ -27,8 +27,8 @@
           <li class="aside__list-item">
             <button
               class="nav-button"
-              :class="{ 'nav-button--active': currentFilter === 'price' }"
-              @click="updateFilter('price')"
+              :class="{ 'nav-button--active': currentFilter === 'sale_price' }"
+              @click="updateFilter('sale_price')"
             >
               Sale price
             </button>
@@ -36,8 +36,8 @@
           <li class="aside__list-item">
             <button
               class="nav-button"
-              :class="{ 'nav-button--active': currentFilter === 'date' }"
-              @click="updateFilter('date')"
+              :class="{ 'nav-button--active': currentFilter === 'sale_date' }"
+              @click="updateFilter('sale_date')"
             >
               Latest sold
             </button>
@@ -85,11 +85,13 @@ import store from "@/store/store";
 
 export default defineComponent({
   name: "Navigation",
-  setup() {
+  emits: ["updatedFilter"],
+  setup(props, { emit }) {
     const route = useRoute();
 
     const updateFilter = (filter: ListType) => {
       store.updateFilter(filter);
+      emit("updatedFilter", filter);
     };
 
     const currentFilter = computed(() => {
