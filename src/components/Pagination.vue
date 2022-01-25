@@ -42,9 +42,8 @@ export default defineComponent({
     const updatePageNumber = (toAdd: number) => {
       store.addToPageNumber(toAdd);
 
-      // prefetch new data because the next page will
-      // be the last one with current data count
-      if (store.state.pageNumber + 1 === store.state.pageCount) {
+      // prefetch new data
+      if (store.state.pageNumber + 2 === store.state.pageCount) {
         fetchList(store.state.listFilter);
       }
     };
