@@ -53,13 +53,8 @@ export default defineComponent({
       }
     });
 
-    const computedFilter = computed(() => {
-      return store.state.listFilter;
-    });
-
     return {
       computedList,
-      computedFilter,
       isNextDisabled,
     };
   },
