@@ -87,8 +87,7 @@ import fetchList from "@/assets/scripts/fetchList";
 
 export default defineComponent({
   name: "Navigation",
-  emits: ["updatedFilter"],
-  setup(props, { emit }) {
+  setup() {
     const route = useRoute();
 
     const updateFilter = (filter: ListType) => {
