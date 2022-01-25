@@ -26,8 +26,10 @@
 </template>
 
 <script lang="ts">
-import store from "@/store/store";
 import { computed, defineComponent } from "vue";
+
+import store from "@/store/store";
+import fetchList from "@/assets/scripts/fetchList";
 
 export default defineComponent({
   name: "Pagination",
@@ -39,6 +41,12 @@ export default defineComponent({
 
     const updatePageNumber = (toAdd: number) => {
       store.addToPageNumber(toAdd);
+
+      // prefetch new data because the next page will
+      // be the last one with current data count
+      if (store.state.pageNumber + 1 === store.state.pageCount) {
+        fetchList(store.state.listFilter);
+      }
     };
 
     const isPrevDisabled = computed(() => {
