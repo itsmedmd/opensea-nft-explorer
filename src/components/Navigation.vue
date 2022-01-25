@@ -80,8 +80,10 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useRoute } from "vue-router";
+
 import ListType from "@/types/ListType";
 import store from "@/store/store";
+import fetchList from "@/assets/scripts/fetchList";
 
 export default defineComponent({
   name: "Navigation",
@@ -91,7 +93,11 @@ export default defineComponent({
 
     const updateFilter = (filter: ListType) => {
       store.updateFilter(filter);
-      emit("updatedFilter", filter);
+
+      // if there is no data for the new filter - fetch it
+      if (store.state.pageCount === 0) {
+        fetchList(store.state.listFilter);
+      }
     };
 
     const currentFilter = computed(() => {
