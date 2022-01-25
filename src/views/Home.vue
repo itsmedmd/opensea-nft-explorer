@@ -2,7 +2,11 @@
   <div class="home">
     <Pagination :isNextDisabled="isNextDisabled" />
     <div class="home__itemlist">
-      <Item v-for="item in computedList" :key="item.id" :data="item" />
+      <Item
+        v-for="(item, index) in computedList"
+        :key="item.id + index"
+        :data="item"
+      />
     </div>
     <Pagination :isNextDisabled="isNextDisabled" />
   </div>
