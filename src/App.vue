@@ -42,7 +42,7 @@ export default defineComponent({
     onMounted(() => {
       // if there is no data for the default filter - fetch it
       // (if the default filter has no data, it also means that
-      // no data exists in general)
+      // no data exists in general, so fetch data for all filters)
       if (store.state.pageCount === 0) {
         fetchList("sale_count");
         fetchList("sale_date");

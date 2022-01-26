@@ -6,7 +6,8 @@ import Collection from "@/types/Collection";
 
 import store from "@/store/store";
 
-// create a typed asset object that only has the required data
+// create a typed asset object from the raw object
+// retrieved from the API that only has the required data
 const createAssetObject = (obj: any): AssetType => {
   // create typed asset traits
   const assetTraits: Trait[] = [];
@@ -57,7 +58,11 @@ const createAssetObject = (obj: any): AssetType => {
   return asset;
 };
 
-const fetchList = (filter: ListType) => {
+// fetches an asset list of 50 assets ordered by 'filter'.
+// 'repeatCount' defines how many times the fetch will
+// be repeated in case of failure.
+const fetchList = (filter: ListType, repeatCount = 5) => {
+  store.setIsCurrentlyFetching(filter, true);
   const offset = store.state.currentDataCount;
   const url = `https://api.opensea.io/api/v1/assets?order_by=${filter}&order_direction=desc&offset=${offset}&limit=50`;
 
@@ -71,6 +76,7 @@ const fetchList = (filter: ListType) => {
   fetch(url, options)
     .then((res) => {
       if (res.status === 200) {
+        store.setIsCurrentlyFetching(filter, false);
         return res.json();
       } else {
         throw new Error(`Failed to fetch data. ${res.statusText}`);
@@ -84,7 +90,18 @@ const fetchList = (filter: ListType) => {
 
       store.appendData(newList, filter);
     })
-    .catch((err) => console.error(err));
+    .catch((err) => {
+      console.error(err);
+
+      if (repeatCount > 1) {
+        // try to fetch again
+        console.log("Repeating data fetch. Tries left:", repeatCount - 1);
+        fetchList(filter, repeatCount - 1);
+      } else {
+        // stop fetching
+        store.setIsCurrentlyFetching(filter, false);
+      }
+    });
 };
 
 export default fetchList;

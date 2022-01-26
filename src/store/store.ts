@@ -7,6 +7,9 @@ const myState: ListStore = {
   dataBySaleCount: [],
   dataBySalePrice: [],
   dataBySaleDate: [],
+  isCurrentlyFetchingCount: false,
+  isCurrentlyFetchingPrice: false,
+  isCurrentlyFetchingDate: false,
   listFilter: "sale_count",
   pageNumber: 0,
   itemsPerPage: 16,
@@ -50,6 +53,24 @@ const store = {
         this.state.dataBySaleDate.length / store.state.itemsPerPage
       );
       this.state.currentDataCount = this.state.dataBySaleDate.length;
+    }
+  },
+  setIsCurrentlyFetching(filter: ListType, value: boolean) {
+    if (filter === "sale_count") {
+      this.state.isCurrentlyFetchingCount = value;
+    } else if (filter === "sale_price") {
+      this.state.isCurrentlyFetchingPrice = value;
+    } else {
+      this.state.isCurrentlyFetchingDate = value;
+    }
+  },
+  getIsCurrentlyFetching(filter: ListType): boolean {
+    if (filter === "sale_count") {
+      return this.state.isCurrentlyFetchingCount;
+    } else if (filter === "sale_price") {
+      return this.state.isCurrentlyFetchingPrice;
+    } else {
+      return this.state.isCurrentlyFetchingDate;
     }
   },
 };
