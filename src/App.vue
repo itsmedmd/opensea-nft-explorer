@@ -40,11 +40,13 @@ export default defineComponent({
     // };
 
     onMounted(() => {
-      console.log("App mounted, appending data");
-
-      // if there is no data for the defai;t filter - fetch it
+      // if there is no data for the default filter - fetch it
+      // (if the default filter has no data, it also means that
+      // no data exists in general)
       if (store.state.pageCount === 0) {
-        fetchList(store.state.listFilter);
+        fetchList("sale_count");
+        fetchList("sale_date");
+        fetchList("sale_price");
       }
     });
   },

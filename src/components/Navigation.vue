@@ -19,6 +19,7 @@
             <button
               class="nav-button"
               :class="{ 'nav-button--active': currentFilter === 'sale_count' }"
+              :disabled="currentFilter === 'sale_count'"
               @click="updateFilter('sale_count')"
             >
               Sales count
@@ -28,6 +29,7 @@
             <button
               class="nav-button"
               :class="{ 'nav-button--active': currentFilter === 'sale_price' }"
+              :disabled="currentFilter === 'sale_price'"
               @click="updateFilter('sale_price')"
             >
               Sale price
@@ -37,6 +39,7 @@
             <button
               class="nav-button"
               :class="{ 'nav-button--active': currentFilter === 'sale_date' }"
+              :disabled="currentFilter === 'sale_date'"
               @click="updateFilter('sale_date')"
             >
               Latest sold
