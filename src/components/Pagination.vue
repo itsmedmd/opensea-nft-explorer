@@ -42,8 +42,13 @@ export default defineComponent({
     const updatePageNumber = (toAdd: number) => {
       store.addToPageNumber(toAdd);
 
-      // prefetch new data
-      if (store.state.pageNumber + 2 === store.state.pageCount) {
+      // prefetch new data if the user navigates to the
+      // second page before the last one and if currently
+      // there is no fetch in progress for this filter
+      if (
+        store.state.pageNumber + 2 === store.state.pageCount &&
+        !store.getIsCurrentlyFetching(store.state.listFilter)
+      ) {
         fetchList(store.state.listFilter);
       }
     };

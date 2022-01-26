@@ -96,8 +96,12 @@ export default defineComponent({
     const updateFilter = (filter: ListType) => {
       store.updateFilter(filter);
 
-      // if there is no data for the new filter - fetch it
-      if (store.state.pageCount === 0) {
+      // if there is no data for the new filter and currently
+      // there is no fetch in progress for it - fetch it
+      if (
+        store.state.pageCount === 0 &&
+        !store.getIsCurrentlyFetching(filter)
+      ) {
         fetchList(store.state.listFilter);
       }
     };
