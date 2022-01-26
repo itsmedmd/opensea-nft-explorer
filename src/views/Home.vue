@@ -13,10 +13,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, onMounted } from "vue";
 import Item from "@/components/Item.vue";
 import Pagination from "@/components/Pagination.vue";
 import store from "@/store/store";
+import fetchList from "@/assets/scripts/fetchList";
 
 export default defineComponent({
   name: "Home",
@@ -54,6 +55,17 @@ export default defineComponent({
         return store.state.dataBySalePrice.slice(sliceStart, sliceEnd);
       } else {
         return store.state.dataBySaleDate.slice(sliceStart, sliceEnd);
+      }
+    });
+
+    onMounted(() => {
+      // if there is no data for the current filter and a fetch
+      // for it is not currently in progress - fetch it
+      if (
+        store.state.pageCount === 0 &&
+        !store.getIsCurrentlyFetching(store.state.listFilter)
+      ) {
+        fetchList(store.state.listFilter);
       }
     });
 
