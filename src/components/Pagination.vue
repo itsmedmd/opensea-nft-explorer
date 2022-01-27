@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination">
+  <div class="pagination" v-if="isPaginationVisible">
     <button
       class="pagination__navigate"
       type="button"
@@ -54,15 +54,27 @@ export default defineComponent({
     };
 
     const isPrevDisabled = computed(() => {
-      if (pageNumber.value === 0) {
+      if (store.state.pageNumber === 0) {
         return true;
       }
       return false;
     });
 
+    const isPaginationVisible = computed(() => {
+      if (
+        store.state.pageNumber === 0 &&
+        store.state.pageCount === 0 &&
+        store.getIsCurrentlyFetching(store.state.listFilter)
+      ) {
+        return false;
+      }
+      return true;
+    });
+
     return {
       pageNumber,
       isPrevDisabled,
+      isPaginationVisible,
       updatePageNumber,
     };
   },

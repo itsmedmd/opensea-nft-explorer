@@ -8,7 +8,7 @@
         :data="item"
       />
     </div>
-    <div class="home__loader-container">
+    <div class="home__loader-container" v-if="showLoader">
       <div class="home__loader">
         <p class="home__loader-text">Loading</p>
       </div>
