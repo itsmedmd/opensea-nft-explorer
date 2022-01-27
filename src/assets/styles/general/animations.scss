@@ -1,0 +1,47 @@
+@import "./colors";
+
+@keyframes loading-border-before {
+	0% {
+		border-left-color: rgba($black, 0.6);
+		border-top-color: transparent;
+		height: 100%;
+		width: 0;
+	}
+
+	50% {
+		border-left-color: transparent;
+		border-top-color: rgba($black, 0.6);
+		height: 0;
+		width: 0;
+	}
+
+	100% {
+		border-left-color: transparent;
+		border-top-color: transparent;
+		height: 100%;
+		width: 100%;
+	}
+}
+
+@keyframes loading-border-after {
+	0% {
+		border-bottom-color: transparent;
+		border-right-color: rgba($black, 0.6);
+		height: 0;
+		width: 100%;
+	}
+
+	50% {
+		border-bottom-color: transparent;
+		border-right-color: transparent;
+		height: 100%;
+		width: 100%;
+	}
+
+	100% {
+		border-bottom-color: rgba($black, 0.6);
+		border-right-color: transparent;
+		height: 100%;
+		width: 0;
+	}
+}
