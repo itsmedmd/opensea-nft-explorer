@@ -1,5 +1,8 @@
 @import "../general/mixins";
 @import "../general/variables";
+@import "../general/typography";
+@import "../general/colors";
+@import "../general/animations";
 
 .home {
 	padding: 0 16px 16px 24px;
@@ -25,5 +28,46 @@
 		@include respond-to(max-width, $break-tablet-small) {
 			grid-template-columns: 1fr;
 		}
+	}
+
+	&__loader-container {
+		display: flex;
+		justify-content: center;
+		margin: 36px 0;
+		width: 100%;
+	}
+
+	&__loader {
+		padding: 8px 18px;
+		position: relative;
+	}
+
+	&__loader::before {
+		animation: loading-border-before 0.8s ease-out infinite;
+		background: transparent;
+		border: 2px solid transparent;
+		content: "";
+		height: 0;
+		left: -2px;
+		position: absolute;
+		top: -2px;
+		width: 0;
+	}
+
+	&__loader::after {
+		animation: loading-border-after 0.8s ease-out infinite;
+		background: transparent;
+		border: 2px solid transparent;
+		content: "";
+		height: 0;
+		left: -2px;
+		position: absolute;
+		top: -2px;
+		width: 0;
+	}
+
+	&__loader-text {
+		font-size: $font-24;
+		font-weight: $font-w-bold-med;
 	}
 }

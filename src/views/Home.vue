@@ -8,6 +8,11 @@
         :data="item"
       />
     </div>
+    <div class="home__loader-container">
+      <div class="home__loader">
+        <p class="home__loader-text">Loading</p>
+      </div>
+    </div>
     <Pagination :isNextDisabled="isNextDisabled" />
   </div>
 </template>
@@ -26,6 +31,8 @@ export default defineComponent({
     Pagination,
   },
   setup() {
+    // calculate whether the button to navigate
+    // to the next page should be disabled or not
     const isNextDisabled = computed(() => {
       const filter = store.state.listFilter;
       const sliceStart = store.state.pageNumber * store.state.itemsPerPage;
@@ -44,6 +51,8 @@ export default defineComponent({
       return false;
     });
 
+    // only get items from the list that should
+    // be shown in the current page
     const computedList = computed(() => {
       const filter = store.state.listFilter;
       const sliceStart = store.state.pageNumber * store.state.itemsPerPage;
@@ -56,6 +65,19 @@ export default defineComponent({
       } else {
         return store.state.dataBySaleDate.slice(sliceStart, sliceEnd);
       }
+    });
+
+    // if the user is on the last page and
+    // there is a fetch for data in progress,
+    // then show the loader
+    const showLoader = computed(() => {
+      if (
+        isNextDisabled.value &&
+        store.getIsCurrentlyFetching(store.state.listFilter)
+      ) {
+        return true;
+      }
+      return false;
     });
 
     onMounted(() => {
@@ -72,6 +94,7 @@ export default defineComponent({
     return {
       computedList,
       isNextDisabled,
+      showLoader,
     };
   },
 });
