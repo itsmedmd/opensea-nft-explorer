@@ -1,20 +1,23 @@
 <template>
   <div class="home">
-    <h1>home!</h1>
-    <p>list filter: {{ computedFilter }}</p>
     <Pagination :isNextDisabled="isNextDisabled" />
     <div class="home__itemlist">
-      <Item v-for="item in computedList" :key="item.id" :data="item" />
+      <Item
+        v-for="(item, index) in computedList"
+        :key="item.id + index"
+        :data="item"
+      />
     </div>
     <Pagination :isNextDisabled="isNextDisabled" />
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, onMounted } from "vue";
 import Item from "@/components/Item.vue";
 import Pagination from "@/components/Pagination.vue";
 import store from "@/store/store";
+import fetchList from "@/assets/scripts/fetchList";
 
 export default defineComponent({
   name: "Home",
@@ -29,11 +32,12 @@ export default defineComponent({
       const sliceEnd = sliceStart + store.state.itemsPerPage;
 
       if (
-        (filter === "count" &&
+        (filter === "sale_count" &&
           sliceEnd >= store.state.dataBySaleCount.length) ||
-        (filter === "price" &&
+        (filter === "sale_price" &&
           sliceEnd >= store.state.dataBySalePrice.length) ||
-        (filter === "date" && sliceEnd >= store.state.dataBySaleDate.length)
+        (filter === "sale_date" &&
+          sliceEnd >= store.state.dataBySaleDate.length)
       ) {
         return true;
       }
@@ -45,22 +49,28 @@ export default defineComponent({
       const sliceStart = store.state.pageNumber * store.state.itemsPerPage;
       const sliceEnd = sliceStart + store.state.itemsPerPage;
 
-      if (filter === "count") {
+      if (filter === "sale_count") {
         return store.state.dataBySaleCount.slice(sliceStart, sliceEnd);
-      } else if (filter === "price") {
+      } else if (filter === "sale_price") {
         return store.state.dataBySalePrice.slice(sliceStart, sliceEnd);
       } else {
         return store.state.dataBySaleDate.slice(sliceStart, sliceEnd);
       }
     });
 
-    const computedFilter = computed(() => {
-      return store.state.listFilter;
+    onMounted(() => {
+      // if there is no data for the current filter and a fetch
+      // for it is not currently in progress - fetch it
+      if (
+        store.state.pageCount === 0 &&
+        !store.getIsCurrentlyFetching(store.state.listFilter)
+      ) {
+        fetchList(store.state.listFilter);
+      }
     });
 
     return {
       computedList,
-      computedFilter,
       isNextDisabled,
     };
   },

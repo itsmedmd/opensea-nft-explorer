@@ -18,8 +18,9 @@
           <li class="aside__list-item">
             <button
               class="nav-button"
-              :class="{ 'nav-button--active': currentFilter === 'count' }"
-              @click="updateFilter('count')"
+              :class="{ 'nav-button--active': currentFilter === 'sale_count' }"
+              :disabled="currentFilter === 'sale_count'"
+              @click="updateFilter('sale_count')"
             >
               Sales count
             </button>
@@ -27,8 +28,9 @@
           <li class="aside__list-item">
             <button
               class="nav-button"
-              :class="{ 'nav-button--active': currentFilter === 'price' }"
-              @click="updateFilter('price')"
+              :class="{ 'nav-button--active': currentFilter === 'sale_price' }"
+              :disabled="currentFilter === 'sale_price'"
+              @click="updateFilter('sale_price')"
             >
               Sale price
             </button>
@@ -36,8 +38,9 @@
           <li class="aside__list-item">
             <button
               class="nav-button"
-              :class="{ 'nav-button--active': currentFilter === 'date' }"
-              @click="updateFilter('date')"
+              :class="{ 'nav-button--active': currentFilter === 'sale_date' }"
+              :disabled="currentFilter === 'sale_date'"
+              @click="updateFilter('sale_date')"
             >
               Latest sold
             </button>
@@ -80,8 +83,10 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useRoute } from "vue-router";
+
 import ListType from "@/types/ListType";
 import store from "@/store/store";
+import fetchList from "@/assets/scripts/fetchList";
 
 export default defineComponent({
   name: "Navigation",
@@ -90,6 +95,15 @@ export default defineComponent({
 
     const updateFilter = (filter: ListType) => {
       store.updateFilter(filter);
+
+      // if there is no data for the new filter and currently
+      // there is no fetch in progress for it - fetch it
+      if (
+        store.state.pageCount === 0 &&
+        !store.getIsCurrentlyFetching(filter)
+      ) {
+        fetchList(store.state.listFilter);
+      }
     };
 
     const currentFilter = computed(() => {

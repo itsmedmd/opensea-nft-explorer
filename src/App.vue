@@ -2,18 +2,17 @@
   <div class="app">
     <Navigation />
     <div class="content">
-      <button @click="fetchList()">fetch</button><br />
-      <button @click="fetchSingle()">fetch single</button><br />
       <router-view />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted } from "vue";
+
 import Navigation from "@/components/Navigation.vue";
-import AssetType from "@/types/AssetType";
 import store from "@/store/store";
+import fetchList from "@/assets/scripts/fetchList";
 
 export default defineComponent({
   name: "App",
@@ -21,121 +20,35 @@ export default defineComponent({
     Navigation,
   },
   setup() {
-    const list = ref<AssetType[]>([]);
-
-    const fetchList = () => {
-      const options = {
-        method: "GET",
-        headers: { Accept: "application/json" },
-      };
-      // 'https://api.opensea.io/api/v1/assets?order_by=sale_count&order_direction=desc&offset=0&limit=50'
-      // 'https://api.opensea.io/api/v1/assets?order_direction=desc&offset=0&limit=50'
-      fetch(
-        "https://api.opensea.io/api/v1/assets?order_by=sale_count&order_direction=desc&offset=0&limit=20",
-        options
-      )
-        .then((res) => {
-          if (res.status === 200) {
-            return res.json();
-          } else {
-            throw new Error(`Failed to fetch data. ${res.statusText}`);
-          }
-        })
-        .then((res) => {
-          console.log(res);
-          list.value = res;
-        })
-        .catch((err) => console.error(err));
-    };
-
-    const fetchSingle = () => {
-      const options = { method: "GET" };
-      fetch(
-        "https://api.opensea.io/api/v1/asset/0x28472a58a490c5e09a238847f66a68a47cc76f0f/0/",
-        options
-      )
-        .then((res) => {
-          if (res.status === 200) {
-            return res.json();
-          } else {
-            throw new Error(`Failed to fetch data. ${res.statusText}`);
-          }
-        })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => console.error(err));
-    };
+    // const fetchSingle = () => {
+    //   const options = { method: "GET" };
+    //   fetch(
+    //     "https://api.opensea.io/api/v1/asset/0x28472a58a490c5e09a238847f66a68a47cc76f0f/0/",
+    //     options
+    //   )
+    //     .then((res) => {
+    //       if (res.status === 200) {
+    //         return res.json();
+    //       } else {
+    //         throw new Error(`Failed to fetch data. ${res.statusText}`);
+    //       }
+    //     })
+    //     .then((res) => {
+    //       console.log(res);
+    //     })
+    //     .catch((err) => console.error(err));
+    // };
 
     onMounted(() => {
-      const item: AssetType = {
-        id: "0x28472a58a490c5e09a238847f66a68a47cc76f0f-0",
-        name: "adidas Originals: Into the Metaverse (Phase 1)",
-        description:
-          "Into the Metaverse is a collaborative NFT project between adidas Originals and NFT pioneers gmoney, Bored Ape Yacht Club and PUNKS Comic. An NFT co-created with the OG communities, creators and doers.",
-        num_sales: 20177,
-        permalink:
-          "https://opensea.io/assets/0x28472a58a490c5e09a238847f66a68a47cc76f0f/0",
-        creator: {
-          profile_img_url:
-            "https://storage.googleapis.com/opensea-static/opensea-profile/8.png",
-          username: "adidasOriginals",
-        },
-        collection: {
-          name: "adidas Originals Into the Metaverse",
-          image_url:
-            "https://lh3.googleusercontent.com/_wXtGDZ07ZelRfyfqDQkhoTX_feD_w3wdFuJ25z2ZLA1R6GFzuQ2jOGURRS8d7UEJGJd1svd61tZnGRS4zN-VXTUUVmg8Wymt-Uk=s120",
-        },
-        image_preview_url:
-          "https://lh3.googleusercontent.com/1rPdFe3vblA6-O-7Id-1D_J9nqlr5RyY1hJyFhOlKn5JbVwQcaB6IHIZlafK-VGbioeK63WonQ0n_B0R5QRPcsgU_xdOAL-d-wKo=s250",
-        animation_url:
-          "https://storage.opensea.io/files/3565db33a856b19f48396062e59e6d62.mp4",
-        image_original_url:
-          "https://ipfs.io/ipfs/Qmb4VB12RsXW6DaKranEdgnMUTzfyVBEb5eZ1v7JCEUxL1/",
-        image_url:
-          "https://lh3.googleusercontent.com/1rPdFe3vblA6-O-7Id-1D_J9nqlr5RyY1hJyFhOlKn5JbVwQcaB6IHIZlafK-VGbioeK63WonQ0n_B0R5QRPcsgU_xdOAL-d-wKo",
-        traits: [
-          {
-            trait_type: "Phase",
-            value: "1",
-          },
-        ],
-        top_ownerships: [
-          {
-            quantity: 165,
-            owner: {
-              profile_img_url:
-                "https://storage.googleapis.com/opensea-static/opensea-profile/1.png",
-              username: "q",
-            },
-          },
-          {
-            quantity: 150,
-            owner: {
-              profile_img_url:
-                "https://storage.googleapis.com/opensea-static/opensea-profile/14.png",
-              username: null,
-            },
-          },
-        ],
-        asset_contract: {
-          address: "0x28472a58a490c5e09a238847f66a68a47cc76f0f",
-        },
-        token_id: "0",
-      };
-
-      for (let i = 0; i < 50; i++) {
-        list.value.push(item);
+      // if there is no data for the default filter - fetch it
+      // (if the default filter has no data, it also means that
+      // no data exists in general, so fetch data for all filters)
+      if (store.state.pageCount === 0) {
+        fetchList("sale_count");
+        fetchList("sale_date");
+        fetchList("sale_price");
       }
-
-      store.appendData(list.value, "count");
     });
-
-    return {
-      list,
-      fetchList,
-      fetchSingle,
-    };
   },
 });
 </script>
