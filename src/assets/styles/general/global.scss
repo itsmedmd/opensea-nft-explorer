@@ -44,7 +44,7 @@ button {
 .nav-button {
 	background-color: $white;
 	border: 1px solid rgba($black, 0.25);
-	border-radius: 6px;
+	border-radius: 4px;
 	color: $black;
 	font-size: $font-16;
 	padding: 4px 0;
@@ -73,12 +73,12 @@ button {
 	color: $white;
 
 	&:hover {
-		background-color: rgba($blue-med-dark, 0.65);
+		background-color: rgba($blue-med-dark, 0.9);
 		border: 1px solid rgba($black, 0.25);
 	}
 
 	&:active {
-		background-color: rgba($blue-med-dark, 0.7);
+		background-color: rgba($blue-med-dark, 1);
 	}
 }
 
