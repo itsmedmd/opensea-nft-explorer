@@ -41,8 +41,8 @@ export default defineComponent({
       if (
         (filter === "sale_count" &&
           sliceEnd >= store.state.dataBySaleCount.length) ||
-        (filter === "sale_price" &&
-          sliceEnd >= store.state.dataBySalePrice.length) ||
+        (filter === "default" &&
+          sliceEnd >= store.state.dataByDefault.length) ||
         (filter === "sale_date" &&
           sliceEnd >= store.state.dataBySaleDate.length)
       ) {
@@ -60,8 +60,8 @@ export default defineComponent({
 
       if (filter === "sale_count") {
         return store.state.dataBySaleCount.slice(sliceStart, sliceEnd);
-      } else if (filter === "sale_price") {
-        return store.state.dataBySalePrice.slice(sliceStart, sliceEnd);
+      } else if (filter === "default") {
+        return store.state.dataByDefault.slice(sliceStart, sliceEnd);
       } else {
         return store.state.dataBySaleDate.slice(sliceStart, sliceEnd);
       }

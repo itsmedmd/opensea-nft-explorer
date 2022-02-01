@@ -44,9 +44,9 @@ export default defineComponent({
       // (if the default filter has no data, it also means that
       // no data exists in general, so fetch data for all filters)
       if (store.state.pageCount === 0) {
+        fetchList("default");
         fetchList("sale_count");
         fetchList("sale_date");
-        fetchList("sale_price");
       }
     });
   },

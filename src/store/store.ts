@@ -5,16 +5,15 @@ import ListStore from "@/types/ListStore";
 
 const myState: ListStore = {
   dataBySaleCount: [],
-  dataBySalePrice: [],
+  dataByDefault: [],
   dataBySaleDate: [],
   isCurrentlyFetchingCount: false,
-  isCurrentlyFetchingPrice: false,
+  isCurrentlyFetchingDefault: false,
   isCurrentlyFetchingDate: false,
-  listFilter: "sale_count",
+  listFilter: "default",
   pageNumber: 0,
   itemsPerPage: 16,
   pageCount: 0,
-  currentDataCount: 0,
 };
 
 const store = {
@@ -22,8 +21,8 @@ const store = {
   appendData(newData: AssetType[], filter: ListType): void {
     if (filter === "sale_count") {
       this.state.dataBySaleCount = this.state.dataBySaleCount.concat(newData);
-    } else if (filter === "sale_price") {
-      this.state.dataBySalePrice = this.state.dataBySalePrice.concat(newData);
+    } else if (filter === "default") {
+      this.state.dataByDefault = this.state.dataByDefault.concat(newData);
     } else {
       this.state.dataBySaleDate = this.state.dataBySaleDate.concat(newData);
     }
@@ -42,24 +41,21 @@ const store = {
       this.state.pageCount = Math.floor(
         this.state.dataBySaleCount.length / store.state.itemsPerPage
       );
-      this.state.currentDataCount = this.state.dataBySaleCount.length;
-    } else if (filter === "sale_price") {
+    } else if (filter === "default") {
       this.state.pageCount = Math.floor(
-        this.state.dataBySalePrice.length / store.state.itemsPerPage
+        this.state.dataByDefault.length / store.state.itemsPerPage
       );
-      this.state.currentDataCount = this.state.dataBySalePrice.length;
     } else {
       this.state.pageCount = Math.floor(
         this.state.dataBySaleDate.length / store.state.itemsPerPage
       );
-      this.state.currentDataCount = this.state.dataBySaleDate.length;
     }
   },
   setIsCurrentlyFetching(filter: ListType, value: boolean) {
     if (filter === "sale_count") {
       this.state.isCurrentlyFetchingCount = value;
-    } else if (filter === "sale_price") {
-      this.state.isCurrentlyFetchingPrice = value;
+    } else if (filter === "default") {
+      this.state.isCurrentlyFetchingDefault = value;
     } else {
       this.state.isCurrentlyFetchingDate = value;
     }
@@ -67,8 +63,8 @@ const store = {
   getIsCurrentlyFetching(filter: ListType): boolean {
     if (filter === "sale_count") {
       return this.state.isCurrentlyFetchingCount;
-    } else if (filter === "sale_price") {
-      return this.state.isCurrentlyFetchingPrice;
+    } else if (filter === "default") {
+      return this.state.isCurrentlyFetchingDefault;
     } else {
       return this.state.isCurrentlyFetchingDate;
     }
