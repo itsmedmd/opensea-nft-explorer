@@ -8,7 +8,27 @@ import store from "@/store/store";
 
 // create a typed asset object from the raw object
 // retrieved from the API that only has the required data
-const createAssetObject = (obj: any): AssetType => {
+const createAssetObject = (obj: any): AssetType | null => {
+  // If there are no graphics to display the NFT -
+  // don't add it to the list (return null).
+  // Otherwise, the priority is as follows:
+  // 1. image_preview_url
+  // 2. image_url
+  // 3. image_original_url
+  let priority_image_url = "";
+  if (obj.image_preview_url) {
+    priority_image_url = obj.image_preview_url;
+  } else if (obj.image_url) {
+    priority_image_url = obj.image_url;
+  } else if (obj.image_original_url) {
+    priority_image_url = obj.image_original_url;
+  } else {
+    return null;
+  }
+
+  const hd_image_url: string | null =
+    obj.image_url ?? obj.image_original_url ?? null;
+
   // create typed asset traits
   const assetTraits: Trait[] = [];
   for (const trait of obj.traits) {
@@ -46,10 +66,9 @@ const createAssetObject = (obj: any): AssetType => {
     },
     description: obj.description ?? null,
     num_sales: obj.num_sales ?? null,
-    image_preview_url: obj.image_preview_url ?? null,
+    hd_image_url,
+    priority_image_url,
     animation_url: obj.animation_url ?? null,
-    image_original_url: obj.image_original_url ?? null,
-    image_url: obj.image_url ?? null,
     traits: assetTraits,
     creator: assetCreator,
     collection: assetCollection,
@@ -95,15 +114,8 @@ const fetchList = (filter: ListType, repeatCount = 5) => {
     .then((res) => {
       const newList: AssetType[] = [];
       for (const rawAsset of res.assets) {
-        const newAsset = createAssetObject(rawAsset);
-        // If there are no graphics (images, videos, gifs)
-        // to display the NFT - don't add it to the list
-        if (
-          newAsset.animation_url ||
-          newAsset.image_original_url ||
-          newAsset.image_preview_url ||
-          newAsset.image_url
-        ) {
+        const newAsset: AssetType | null = createAssetObject(rawAsset);
+        if (newAsset) {
           newList.push(newAsset);
         }
       }
