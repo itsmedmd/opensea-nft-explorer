@@ -63,15 +63,25 @@ const createAssetObject = (obj: any): AssetType => {
 // be repeated in case of failure.
 const fetchList = (filter: ListType, repeatCount = 5) => {
   store.setIsCurrentlyFetching(filter, true);
-  const offset = store.state.currentDataCount;
-  const url = `https://api.opensea.io/api/v1/assets?order_by=${filter}&order_direction=desc&offset=${offset}&limit=50`;
+  let offset = 0;
+  if (filter === "sale_count") {
+    offset = store.state.dataBySaleCount.length;
+  } else if (filter === "default") {
+    offset = store.state.dataByDefault.length;
+  } else {
+    offset = store.state.dataBySaleDate.length;
+  }
 
-  console.log("fetchList:", filter, url);
-
+  const url = "https://iwtqvh6zbi.execute-api.eu-central-1.amazonaws.com/beta";
   const options = {
-    method: "GET",
-    headers: { Accept: "application/json" },
+    method: "POST",
+    body: JSON.stringify({
+      filter,
+      offset,
+    }),
   };
+
+  console.log("fetchList:", filter, offset);
 
   fetch(url, options)
     .then((res) => {
@@ -79,13 +89,23 @@ const fetchList = (filter: ListType, repeatCount = 5) => {
         store.setIsCurrentlyFetching(filter, false);
         return res.json();
       } else {
-        throw new Error(`Failed to fetch data. ${res.statusText}`);
+        throw new Error(`Failed fetching data.`);
       }
     })
     .then((res) => {
       const newList: AssetType[] = [];
       for (const rawAsset of res.assets) {
-        newList.push(createAssetObject(rawAsset));
+        const newAsset = createAssetObject(rawAsset);
+        // If there are no graphics (images, videos, gifs)
+        // to display the NFT - don't add it to the list
+        if (
+          newAsset.animation_url ||
+          newAsset.image_original_url ||
+          newAsset.image_preview_url ||
+          newAsset.image_url
+        ) {
+          newList.push(newAsset);
+        }
       }
 
       store.appendData(newList, filter);
@@ -95,7 +115,13 @@ const fetchList = (filter: ListType, repeatCount = 5) => {
 
       if (repeatCount > 1) {
         // try to fetch again
-        console.log("Repeating data fetch. Tries left:", repeatCount - 1);
+        console.log(
+          "Repeating data fetch for",
+          filter,
+          offset,
+          ". Tries left:",
+          repeatCount - 1
+        );
         fetchList(filter, repeatCount - 1);
       } else {
         // stop fetching
