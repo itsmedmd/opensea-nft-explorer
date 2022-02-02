@@ -35,9 +35,13 @@ export default defineComponent({
   name: "Pagination",
   props: ["isNextDisabled"],
   setup() {
-    const pageNumber = computed(() => {
-      return store.state.pageNumber;
-    });
+    const pageNumber = computed(() => store.state.pageNumber);
+    const isPrevDisabled = computed(() =>
+      store.state.pageNumber === 0 ? true : false
+    );
+    const isPaginationVisible = computed(() =>
+      store.state.pageCount === 0 ? false : true
+    );
 
     const updatePageNumber = (toAdd: number) => {
       store.addToPageNumber(toAdd);
@@ -52,24 +56,6 @@ export default defineComponent({
         fetchList(store.state.listFilter);
       }
     };
-
-    const isPrevDisabled = computed(() => {
-      if (store.state.pageNumber === 0) {
-        return true;
-      }
-      return false;
-    });
-
-    const isPaginationVisible = computed(() => {
-      if (
-        store.state.pageNumber === 0 &&
-        store.state.pageCount === 0 &&
-        store.getIsCurrentlyFetching(store.state.listFilter)
-      ) {
-        return false;
-      }
-      return true;
-    });
 
     return {
       pageNumber,

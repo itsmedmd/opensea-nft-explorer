@@ -124,15 +124,17 @@ const fetchList = (filter: ListType, repeatCount = 5) => {
       if (repeatCount > 1) {
         // try to fetch again
         console.error(
-          `${err}. Repeating data fetch for ${filter}:${offset}. Tries left: ${
-            repeatCount - 1
-          }`
+          `${err}. Repeating data fetch for ${filter}:[${offset}; ${
+            offset + 50
+          }]. Tries left: ${repeatCount - 1}`
         );
         fetchList(filter, repeatCount - 1);
       } else {
         // stop fetching
         console.error(
-          `Failed fetching data for ${filter}:${offset}. Stopping retry.`
+          `Failed fetching data for ${filter}:[${offset}; ${
+            offset + 50
+          }]. Stopping retry.`
         );
         store.setIsCurrentlyFetching(filter, false);
       }

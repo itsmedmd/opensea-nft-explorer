@@ -92,6 +92,8 @@ export default defineComponent({
   name: "Navigation",
   setup() {
     const route = useRoute();
+    const currentFilter = computed(() => store.state.listFilter);
+    const isHomePage = computed(() => (route.path === "/" ? true : false));
 
     const updateFilter = (filter: ListType) => {
       store.updateFilter(filter);
@@ -105,12 +107,6 @@ export default defineComponent({
         fetchList(store.state.listFilter);
       }
     };
-
-    const currentFilter = computed(() => {
-      return store.state.listFilter;
-    });
-
-    const isHomePage = computed(() => (route.path === "/" ? true : false));
 
     return {
       isHomePage,
