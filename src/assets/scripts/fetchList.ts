@@ -100,15 +100,13 @@ const fetchList = (filter: ListType, repeatCount = 5) => {
     }),
   };
 
-  console.log("fetchList:", filter, offset);
-
   fetch(url, options)
     .then((res) => {
       if (res.status === 200) {
         store.setIsCurrentlyFetching(filter, false);
         return res.json();
       } else {
-        throw new Error(`Failed fetching data.`);
+        throw new Error("Failed fetching data");
       }
     })
     .then((res) => {
@@ -123,20 +121,19 @@ const fetchList = (filter: ListType, repeatCount = 5) => {
       store.appendData(newList, filter);
     })
     .catch((err) => {
-      console.error(err);
-
       if (repeatCount > 1) {
         // try to fetch again
-        console.log(
-          "Repeating data fetch for",
-          filter,
-          offset,
-          ". Tries left:",
-          repeatCount - 1
+        console.error(
+          `${err}. Repeating data fetch for ${filter}:${offset}. Tries left: ${
+            repeatCount - 1
+          }`
         );
         fetchList(filter, repeatCount - 1);
       } else {
         // stop fetching
+        console.error(
+          `Failed fetching data for ${filter}:${offset}. Stopping retry.`
+        );
         store.setIsCurrentlyFetching(filter, false);
       }
     });
