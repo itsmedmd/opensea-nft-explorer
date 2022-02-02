@@ -36,12 +36,10 @@ export default defineComponent({
   props: ["isNextDisabled"],
   setup() {
     const pageNumber = computed(() => store.state.pageNumber);
-    const isPrevDisabled = computed(() =>
-      store.state.pageNumber === 0 ? true : false
-    );
-    const isPaginationVisible = computed(() =>
-      store.state.pageCount === 0 ? false : true
-    );
+
+    const isPrevDisabled = computed(() => store.state.pageNumber === 0);
+
+    const isPaginationVisible = computed(() => store.state.pageCount !== 0);
 
     const updatePageNumber = (toAdd: number) => {
       store.addToPageNumber(toAdd);
