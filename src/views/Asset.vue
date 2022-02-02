@@ -12,7 +12,28 @@
     >
       individualData: {{ individualData.asset.name }}
     </div>
-    <div class="asset_loader" v-else>Loading</div>
+    <div class="asset_loader" v-else>
+      <div
+        class="home__loader-container home__loader-container--centered"
+        v-if="loaderText"
+      >
+        <div class="home__loader">
+          <p class="home__loader-text">{{ loaderText }}</p>
+        </div>
+      </div>
+      <div
+        class="home__loader-container home__loader-container--centered"
+        v-else-if="refetchButtonText"
+      >
+        <button
+          class="home__loader-text home__loader-button"
+          type="button"
+          @click="manuallyRefetch"
+        >
+          {{ refetchButtonText }}
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -106,6 +127,43 @@ export default defineComponent({
       return true;
     });
 
+    const manuallyRefetch = () => {
+      fetchAsset(address, id);
+    };
+
+    // if the user is on the last page and
+    // there is a fetch for data in progress,
+    // the loader should be visible.
+    // if the loader is visible - compute the loader text.
+    const loaderText = computed(() => {
+      if (individualData.value?.isCurrentlyFetching) {
+        const errorMessage = individualData.value.error;
+        if (errorMessage) {
+          // 1. If there is an error, then show the loader with the error message.
+          return errorMessage;
+        } else {
+          // 2. If there is no error, then show the default loader message.
+          return "Loading";
+        }
+      }
+      // 3. Don't show the loader.
+      return null;
+    });
+
+    // if the user is on the last page and
+    // there is no longer a fetch for data in progress
+    // and there is an error - show a button
+    // for manual refetch.
+    const refetchButtonText = computed(() => {
+      const errorMessage = individualData.value?.error;
+      if (!individualData.value?.isCurrentlyFetching && errorMessage) {
+        // 1. Show the manual refetch button.
+        return errorMessage;
+      }
+      // 2. Don't show the button.
+      return null;
+    });
+
     onMounted(() => {
       // fetch asset data if there is no individualData
       if (isIndividualDataEmpty.value) {
@@ -117,9 +175,12 @@ export default defineComponent({
       individualData,
       priorityData,
       showPriority,
+      loaderText,
+      refetchButtonText,
+      manuallyRefetch,
     };
   },
 });
 </script>
 
-<style lang="scss" src="@/assets/styles/components/asset.scss"></style>
+<style lang="scss" src="@/assets/styles/components/home.scss"></style>
