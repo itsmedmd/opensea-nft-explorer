@@ -8,6 +8,9 @@ interface ListStore {
   isCurrentlyFetchingCount: boolean;
   isCurrentlyFetchingDefault: boolean;
   isCurrentlyFetchingDate: boolean;
+  errorForSaleCount: string | null;
+  errorForDefault: string | null;
+  errorForSaleDate: string | null;
   listFilter: ListType;
   pageNumber: number;
   itemsPerPage: number;

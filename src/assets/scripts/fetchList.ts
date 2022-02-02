@@ -78,10 +78,26 @@ const createAssetObject = (obj: any): AssetType | null => {
 };
 
 // fetches an asset list of 50 assets ordered by 'filter'.
-// 'repeatCount' defines how many times the fetch will
+// 'maxRepeatCount' defines how many times the fetch will
 // be repeated in case of failure.
-const fetchList = (filter: ListType, repeatCount = 5) => {
+// 'iterationNumber' defines the current execution number
+// (1 by default and higher if repeating the fetch)
+const fetchList = (
+  filter: ListType,
+  maxRepeatCount = 10,
+  iterationNumber = 1
+) => {
   store.setIsCurrentlyFetching(filter, true);
+
+  if (iterationNumber === 1) {
+    store.setErrorMessage(filter, null);
+  } else {
+    store.setErrorMessage(
+      filter,
+      `Retrying ${iterationNumber - 1}/${maxRepeatCount}`
+    );
+  }
+
   let offset = 0;
   if (filter === "sale_count") {
     offset = store.state.dataBySaleCount.length;
@@ -104,12 +120,14 @@ const fetchList = (filter: ListType, repeatCount = 5) => {
     .then((res) => {
       if (res.status === 200) {
         store.setIsCurrentlyFetching(filter, false);
+        store.setErrorMessage(filter, null);
         return res.json();
       } else {
         throw new Error("Failed fetching data");
       }
     })
     .then((res) => {
+      // create a list of typed AssetType objects from data
       const newList: AssetType[] = [];
       for (const rawAsset of res.assets) {
         const newAsset: AssetType | null = createAssetObject(rawAsset);
@@ -121,14 +139,15 @@ const fetchList = (filter: ListType, repeatCount = 5) => {
       store.appendData(newList, filter);
     })
     .catch((err) => {
-      if (repeatCount > 1) {
+      if (iterationNumber <= maxRepeatCount) {
         // try to fetch again
         console.error(
           `${err}. Repeating data fetch for ${filter}:[${offset}; ${
             offset + 50
-          }]. Tries left: ${repeatCount - 1}`
+          }]. Tries left: ${maxRepeatCount - iterationNumber}`
         );
-        fetchList(filter, repeatCount - 1);
+
+        fetchList(filter, maxRepeatCount, iterationNumber + 1);
       } else {
         // stop fetching
         console.error(
@@ -136,7 +155,9 @@ const fetchList = (filter: ListType, repeatCount = 5) => {
             offset + 50
           }]. Stopping retry.`
         );
+
         store.setIsCurrentlyFetching(filter, false);
+        store.setErrorMessage(filter, "Try Loading Again");
       }
     });
 };

@@ -10,6 +10,9 @@ const myState: ListStore = {
   isCurrentlyFetchingCount: false,
   isCurrentlyFetchingDefault: false,
   isCurrentlyFetchingDate: false,
+  errorForSaleCount: null,
+  errorForDefault: null,
+  errorForSaleDate: null,
   listFilter: "default",
   pageNumber: 0,
   itemsPerPage: 16,
@@ -67,6 +70,24 @@ const store = {
       return this.state.isCurrentlyFetchingDefault;
     } else {
       return this.state.isCurrentlyFetchingDate;
+    }
+  },
+  setErrorMessage(filter: ListType, error: string | null): void {
+    if (filter === "sale_count") {
+      this.state.errorForSaleCount = error;
+    } else if (filter === "default") {
+      this.state.errorForDefault = error;
+    } else {
+      this.state.errorForSaleDate = error;
+    }
+  },
+  getErrorMessage(filter: ListType): string | null {
+    if (filter === "sale_count") {
+      return this.state.errorForSaleCount;
+    } else if (filter === "default") {
+      return this.state.errorForDefault;
+    } else {
+      return this.state.errorForSaleDate;
     }
   },
 };

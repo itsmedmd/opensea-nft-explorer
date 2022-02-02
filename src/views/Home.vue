@@ -8,10 +8,19 @@
         :data="item"
       />
     </div>
-    <div class="home__loader-container" v-if="showLoader">
+    <div class="home__loader-container" v-if="loaderText">
       <div class="home__loader">
-        <p class="home__loader-text">Loading</p>
+        <p class="home__loader-text">{{ loaderText }}</p>
       </div>
+    </div>
+    <div class="home__loader-container" v-else-if="refetchButtonText">
+      <button
+        class="home__loader-text home__loader-button"
+        type="button"
+        @click="manuallyRefetch"
+      >
+        {{ refetchButtonText }}
+      </button>
     </div>
     <Pagination :isNextDisabled="isNextDisabled" />
   </div>
@@ -69,16 +78,50 @@ export default defineComponent({
 
     // if the user is on the last page and
     // there is a fetch for data in progress,
-    // then show the loader
-    const showLoader = computed(() => {
+    // the loader should be visible.
+    // if the loader is visible - compute the loader text.
+    const loaderText = computed(() => {
       if (
         isNextDisabled.value &&
         store.getIsCurrentlyFetching(store.state.listFilter)
       ) {
-        return true;
+        const errorMessage = store.getErrorMessage(store.state.listFilter);
+        if (errorMessage) {
+          // 1. If there is an error, then show the loader with the error message.
+          return errorMessage;
+        } else {
+          // 2. If there is no error, then show the default loader message.
+          return "Loading";
+        }
       }
-      return false;
+      // 3. Don't show the loader.
+      return null;
     });
+
+    // if the user is on the last page and
+    // there is no longer a fetch for data in progress
+    // and there is an error - show a button
+    // for manual refetch.
+    const refetchButtonText = computed(() => {
+      const errorMessage = store.getErrorMessage(store.state.listFilter);
+      if (
+        isNextDisabled.value &&
+        !store.getIsCurrentlyFetching(store.state.listFilter) &&
+        errorMessage
+      ) {
+        // 1. Show the manual refetch button.
+        return errorMessage;
+      }
+      // 2. Don't show the button.
+      return null;
+    });
+
+    const manuallyRefetch = () => {
+      // make sure that currently there is no fetch for this filter
+      if (!store.getIsCurrentlyFetching(store.state.listFilter)) {
+        fetchList(store.state.listFilter);
+      }
+    };
 
     onMounted(() => {
       // if there is no data for the current filter and a fetch
@@ -94,7 +137,9 @@ export default defineComponent({
     return {
       computedList,
       isNextDisabled,
-      showLoader,
+      loaderText,
+      refetchButtonText,
+      manuallyRefetch,
     };
   },
 });

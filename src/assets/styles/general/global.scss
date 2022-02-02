@@ -1,6 +1,7 @@
 @import "./typography";
 @import "./colors";
 
+// highest level
 * {
 	box-sizing: border-box;
 	margin: 0;
@@ -59,11 +60,11 @@ button {
 	}
 
 	&:hover {
-		background-color: rgba($gray, 0.3);
+		background-color: $button-general-hover-color;
 	}
 
 	&:active {
-		background-color: rgba($gray, 0.5);
+		background-color: $button-general-active-color;
 	}
 }
 
