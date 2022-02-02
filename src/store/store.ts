@@ -1,6 +1,7 @@
 import { reactive } from "vue";
 import ListType from "@/types/ListType";
 import AssetType from "@/types/AssetType";
+import AssetObjectEntry from "@/types/AssetObjectEntry";
 import ListStore from "@/types/ListStore";
 
 const myState: ListStore = {
@@ -17,6 +18,7 @@ const myState: ListStore = {
   pageNumber: 0,
   itemsPerPage: 16,
   pageCount: 0,
+  assets: {},
 };
 
 const store = {
@@ -89,6 +91,28 @@ const store = {
     } else {
       return this.state.errorForSaleDate;
     }
+  },
+  generateDefaultAsset(address: string, id: string) {
+    const defaultAsset: AssetObjectEntry = {
+      asset: null,
+      error: null,
+      isCurrentlyFetching: false,
+    };
+
+    this.state.assets[`${address}-${id}`] = defaultAsset;
+    console.log("just set asset. State:", this.state);
+  },
+  setAssetData(address: string, id: string, data: AssetType | null) {
+    this.state.assets[`${address}-${id}`].asset = data;
+  },
+  setAssetErrorMessage(address: string, id: string, message: string | null) {
+    this.state.assets[`${address}-${id}`].error = message;
+  },
+  setAssetIsCurrentlyFetching(address: string, id: string, value: boolean) {
+    this.state.assets[`${address}-${id}`].isCurrentlyFetching = value;
+  },
+  getAssetData(address: string, id: string): AssetObjectEntry | null {
+    return this.state.assets[`${address}-${id}`] ?? null;
   },
 };
 

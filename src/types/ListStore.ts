@@ -1,4 +1,5 @@
 import AssetType from "./AssetType";
+import AssetObjectEntry from "./AssetObjectEntry";
 import ListType from "./ListType";
 
 interface ListStore {
@@ -15,6 +16,7 @@ interface ListStore {
   pageNumber: number;
   itemsPerPage: number;
   pageCount: number;
+  assets: { [key: string]: AssetObjectEntry };
 }
 
 export default ListStore;
