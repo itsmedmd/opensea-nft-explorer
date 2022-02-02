@@ -1,6 +1,7 @@
 import Trait from "./Trait";
 import Creator from "./Creator";
 import Collection from "./Collection";
+import Ownership from "./Ownership";
 
 interface AssetType {
   id: string;
@@ -18,6 +19,7 @@ interface AssetType {
   creator: Creator | null;
   collection: Collection | null;
   traits: Trait[] | null;
+  ownerships: Ownership[] | null;
 }
 
 export default AssetType;
