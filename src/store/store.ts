@@ -92,7 +92,7 @@ const store = {
       return this.state.errorForSaleDate;
     }
   },
-  generateDefaultAsset(address: string, id: string) {
+  generateDefaultAssetData(address: string, id: string) {
     const defaultAsset: AssetObjectEntry = {
       asset: null,
       error: null,

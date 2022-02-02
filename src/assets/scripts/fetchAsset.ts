@@ -16,9 +16,19 @@ const fetchAsset = (
   // if this is the first time seeing this individual asset,
   // generate default data for it
   if (!store.getAssetData(asset_address, asset_id)) {
-    store.generateDefaultAsset(asset_address, asset_id);
+    store.generateDefaultAssetData(asset_address, asset_id);
   }
   store.setAssetIsCurrentlyFetching(asset_address, asset_id, true);
+
+  if (iterationNumber === 1) {
+    store.setAssetErrorMessage(asset_address, asset_id, null);
+  } else {
+    store.setAssetErrorMessage(
+      asset_address,
+      asset_id,
+      `Retrying ${iterationNumber - 1}/${maxRepeatCount}`
+    );
+  }
 
   const url =
     "https://iwtqvh6zbi.execute-api.eu-central-1.amazonaws.com/beta/fetchasset";
