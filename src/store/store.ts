@@ -100,7 +100,6 @@ const store = {
     };
 
     this.state.assets[`${address}-${id}`] = defaultAsset;
-    console.log("just set asset. State:", this.state);
   },
   setAssetData(address: string, id: string, data: AssetType | null) {
     this.state.assets[`${address}-${id}`].asset = data;
