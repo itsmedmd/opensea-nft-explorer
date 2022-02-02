@@ -8,12 +8,20 @@
         :data="item"
       />
     </div>
-    <div class="home__loader-container" v-if="loaderText">
+    <div
+      class="home__loader-container"
+      :class="{ 'home__loader-container--centered': noDataAvailable }"
+      v-if="loaderText"
+    >
       <div class="home__loader">
         <p class="home__loader-text">{{ loaderText }}</p>
       </div>
     </div>
-    <div class="home__loader-container" v-else-if="refetchButtonText">
+    <div
+      class="home__loader-container"
+      :class="{ 'home__loader-container--centered': noDataAvailable }"
+      v-else-if="refetchButtonText"
+    >
       <button
         class="home__loader-text home__loader-button"
         type="button"
@@ -116,6 +124,8 @@ export default defineComponent({
       return null;
     });
 
+    const noDataAvailable = computed(() => store.state.pageCount === 0);
+
     const manuallyRefetch = () => {
       // make sure that currently there is no fetch for this filter
       if (!store.getIsCurrentlyFetching(store.state.listFilter)) {
@@ -139,6 +149,7 @@ export default defineComponent({
       isNextDisabled,
       loaderText,
       refetchButtonText,
+      noDataAvailable,
       manuallyRefetch,
     };
   },

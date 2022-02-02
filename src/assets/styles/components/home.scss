@@ -37,6 +37,12 @@
 		width: 100%;
 	}
 
+	&__loader-container--centered {
+		align-items: center;
+		height: 100vh;
+		margin: 0;
+	}
+
 	&__loader,
 	&__loader-button {
 		padding: 8px 18px;
