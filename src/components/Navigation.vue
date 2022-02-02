@@ -15,6 +15,16 @@
       <div class="aside__list-container" v-if="isHomePage">
         <p class="aside__list-title">Sort by:</p>
         <ul class="aside__list">
+          <li class="aside__list-item" v-if="isHomePage">
+            <button
+              class="nav-button"
+              :class="{ 'nav-button--active': currentFilter === 'default' }"
+              :disabled="currentFilter === 'default'"
+              @click="updateFilter('default')"
+            >
+              Default
+            </button>
+          </li>
           <li class="aside__list-item">
             <button
               class="nav-button"
@@ -23,16 +33,6 @@
               @click="updateFilter('sale_count')"
             >
               Sales count
-            </button>
-          </li>
-          <li class="aside__list-item">
-            <button
-              class="nav-button"
-              :class="{ 'nav-button--active': currentFilter === 'sale_price' }"
-              :disabled="currentFilter === 'sale_price'"
-              @click="updateFilter('sale_price')"
-            >
-              Sale price
             </button>
           </li>
           <li class="aside__list-item">
@@ -92,6 +92,8 @@ export default defineComponent({
   name: "Navigation",
   setup() {
     const route = useRoute();
+    const currentFilter = computed(() => store.state.listFilter);
+    const isHomePage = computed(() => (route.path === "/" ? true : false));
 
     const updateFilter = (filter: ListType) => {
       store.updateFilter(filter);
@@ -105,12 +107,6 @@ export default defineComponent({
         fetchList(store.state.listFilter);
       }
     };
-
-    const currentFilter = computed(() => {
-      return store.state.listFilter;
-    });
-
-    const isHomePage = computed(() => (route.path === "/" ? true : false));
 
     return {
       isHomePage,

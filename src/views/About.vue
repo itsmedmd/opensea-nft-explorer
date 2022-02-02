@@ -25,7 +25,7 @@ export default defineComponent({
       articles: [
         {
           title: "About the project:",
-          text: "This project uses an API provided by OpenSea to fetch and display assets (NFTs) based on various properties - such as the most popular NFTs, the most recently sold assets or the highest sale price.",
+          text: "This project uses an API provided by OpenSea to fetch and display assets (NFTs) based on various properties - such as the most popular NFTs, the most recently sold assets or for the adventurous - a randomised list of them.",
         },
         {
           title: "What are NFTs?",

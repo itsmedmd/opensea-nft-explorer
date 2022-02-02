@@ -1,6 +1,7 @@
 @import "./typography";
 @import "./colors";
 
+// highest level
 * {
 	box-sizing: border-box;
 	margin: 0;
@@ -44,7 +45,7 @@ button {
 .nav-button {
 	background-color: $white;
 	border: 1px solid rgba($black, 0.25);
-	border-radius: 6px;
+	border-radius: 4px;
 	color: $black;
 	font-size: $font-16;
 	padding: 4px 0;
@@ -59,11 +60,11 @@ button {
 	}
 
 	&:hover {
-		background-color: rgba($gray, 0.3);
+		background-color: $button-general-hover-color;
 	}
 
 	&:active {
-		background-color: rgba($gray, 0.5);
+		background-color: $button-general-active-color;
 	}
 }
 
@@ -73,12 +74,12 @@ button {
 	color: $white;
 
 	&:hover {
-		background-color: rgba($blue-med-dark, 0.65);
+		background-color: rgba($blue-med-dark, 0.9);
 		border: 1px solid rgba($black, 0.25);
 	}
 
 	&:active {
-		background-color: rgba($blue-med-dark, 0.7);
+		background-color: rgba($blue-med-dark, 1);
 	}
 }
 

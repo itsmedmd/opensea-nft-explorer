@@ -1,3 +1,3 @@
-type ListType = "sale_count" | "sale_price" | "sale_date";
+type ListType = "sale_count" | "default" | "sale_date";
 
 export default ListType;

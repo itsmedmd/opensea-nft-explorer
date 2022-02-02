@@ -2,7 +2,7 @@
   <router-link :to="'/asset/' + data.id">
     <div class="item">
       <img
-        :src="data.image_url"
+        :src="data.priority_image_url"
         :alt="data.name + ' image'"
         class="item__image"
       />

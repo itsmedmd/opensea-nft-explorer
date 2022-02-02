@@ -8,7 +8,27 @@ import store from "@/store/store";
 
 // create a typed asset object from the raw object
 // retrieved from the API that only has the required data
-const createAssetObject = (obj: any): AssetType => {
+const createAssetObject = (obj: any): AssetType | null => {
+  // If there are no graphics to display the NFT -
+  // don't add it to the list (return null).
+  // Otherwise, the priority is as follows:
+  // 1. image_preview_url
+  // 2. image_url
+  // 3. image_original_url
+  let priority_image_url = "";
+  if (obj.image_preview_url) {
+    priority_image_url = obj.image_preview_url;
+  } else if (obj.image_url) {
+    priority_image_url = obj.image_url;
+  } else if (obj.image_original_url) {
+    priority_image_url = obj.image_original_url;
+  } else {
+    return null;
+  }
+
+  const hd_image_url: string | null =
+    obj.image_url ?? obj.image_original_url ?? null;
+
   // create typed asset traits
   const assetTraits: Trait[] = [];
   for (const trait of obj.traits) {
@@ -46,10 +66,9 @@ const createAssetObject = (obj: any): AssetType => {
     },
     description: obj.description ?? null,
     num_sales: obj.num_sales ?? null,
-    image_preview_url: obj.image_preview_url ?? null,
+    hd_image_url,
+    priority_image_url,
     animation_url: obj.animation_url ?? null,
-    image_original_url: obj.image_original_url ?? null,
-    image_url: obj.image_url ?? null,
     traits: assetTraits,
     creator: assetCreator,
     collection: assetCollection,
@@ -59,47 +78,86 @@ const createAssetObject = (obj: any): AssetType => {
 };
 
 // fetches an asset list of 50 assets ordered by 'filter'.
-// 'repeatCount' defines how many times the fetch will
+// 'maxRepeatCount' defines how many times the fetch will
 // be repeated in case of failure.
-const fetchList = (filter: ListType, repeatCount = 5) => {
+// 'iterationNumber' defines the current execution number
+// (1 by default and higher if repeating the fetch)
+const fetchList = (
+  filter: ListType,
+  maxRepeatCount = 10,
+  iterationNumber = 1
+) => {
   store.setIsCurrentlyFetching(filter, true);
-  const offset = store.state.currentDataCount;
-  const url = `https://api.opensea.io/api/v1/assets?order_by=${filter}&order_direction=desc&offset=${offset}&limit=50`;
 
-  console.log("fetchList:", filter, url);
+  if (iterationNumber === 1) {
+    store.setErrorMessage(filter, null);
+  } else {
+    store.setErrorMessage(
+      filter,
+      `Retrying ${iterationNumber - 1}/${maxRepeatCount}`
+    );
+  }
 
+  let offset = 0;
+  if (filter === "sale_count") {
+    offset = store.state.dataBySaleCount.length;
+  } else if (filter === "default") {
+    offset = store.state.dataByDefault.length;
+  } else {
+    offset = store.state.dataBySaleDate.length;
+  }
+
+  const url = "https://iwtqvh6zbi.execute-api.eu-central-1.amazonaws.com/beta";
   const options = {
-    method: "GET",
-    headers: { Accept: "application/json" },
+    method: "POST",
+    body: JSON.stringify({
+      filter,
+      offset,
+    }),
   };
 
   fetch(url, options)
     .then((res) => {
       if (res.status === 200) {
         store.setIsCurrentlyFetching(filter, false);
+        store.setErrorMessage(filter, null);
         return res.json();
       } else {
-        throw new Error(`Failed to fetch data. ${res.statusText}`);
+        throw new Error("Failed fetching data");
       }
     })
     .then((res) => {
+      // create a list of typed AssetType objects from data
       const newList: AssetType[] = [];
       for (const rawAsset of res.assets) {
-        newList.push(createAssetObject(rawAsset));
+        const newAsset: AssetType | null = createAssetObject(rawAsset);
+        if (newAsset) {
+          newList.push(newAsset);
+        }
       }
 
       store.appendData(newList, filter);
     })
     .catch((err) => {
-      console.error(err);
-
-      if (repeatCount > 1) {
+      if (iterationNumber <= maxRepeatCount) {
         // try to fetch again
-        console.log("Repeating data fetch. Tries left:", repeatCount - 1);
-        fetchList(filter, repeatCount - 1);
+        console.error(
+          `${err}. Repeating data fetch for ${filter}:[${offset}; ${
+            offset + 50
+          }]. Tries left: ${maxRepeatCount - iterationNumber}`
+        );
+
+        fetchList(filter, maxRepeatCount, iterationNumber + 1);
       } else {
         // stop fetching
+        console.error(
+          `Failed fetching data for ${filter}:[${offset}; ${
+            offset + 50
+          }]. Stopping retry.`
+        );
+
         store.setIsCurrentlyFetching(filter, false);
+        store.setErrorMessage(filter, "Try Loading Again");
       }
     });
 };
