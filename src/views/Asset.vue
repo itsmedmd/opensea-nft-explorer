@@ -1,11 +1,15 @@
 <template>
   <div class="asset">
-    <div class="asset_content" v-if="priorityData">
+    <div class="asset_content" v-if="priorityData && showPriority">
       priorityData: {{ priorityData.name }}
       <br />
-      priorityData: {{ individualData?.asset ? individualData.asset.name : "" }}
+      individualData from priorityData:
+      {{ individualData?.asset ? individualData.asset.name : "" }}
     </div>
-    <div class="asset_content" v-else-if="individualData?.asset">
+    <div
+      class="asset_content"
+      v-else-if="individualData?.asset && !showPriority"
+    >
       individualData: {{ individualData.asset.name }}
     </div>
     <div class="asset_loader" v-else>Loading</div>
@@ -69,15 +73,42 @@ export default defineComponent({
     // 'priorityData' does not exist
     const individualData = computed(() => store.getAssetData(address, id));
 
-    onMounted(() => {
-      // fetch asset data if:
-      // 1. There is no data (not even default)
-      // 2. There is default data but no fetch is in progress
-      if (
+    // individualData is considered empty when:
+    // 1. There is no data (not even default)
+    // 2. There is default data but no fetch is in progress
+    const isIndividualDataEmpty = computed(
+      () =>
         !individualData.value ||
         (!individualData.value.asset &&
           !individualData.value.isCurrentlyFetching)
+    );
+
+    // compute whether to prioritise displaying
+    // priorityData or individualData.
+    // This is needed in case the asset is entered directly
+    // through an URL, so that there is no unnecessary re-render.
+    const showPriority = computed(() => {
+      if (priorityData.value && isIndividualDataEmpty.value) {
+        // if there is priorityData and there is no individualData,
+        // show priorityData
+        return true;
+      } else if (
+        (!priorityData.value && !isIndividualDataEmpty.value) ||
+        (!priorityData.value && isIndividualDataEmpty.value)
       ) {
+        // if there is individualData and there is no priorityData
+        // OR if there is no data at all,
+        // show individualData
+        return false;
+      }
+      // by default (if both priorityData and individualData exist),
+      // show priorityData
+      return true;
+    });
+
+    onMounted(() => {
+      // fetch asset data if there is no individualData
+      if (isIndividualDataEmpty.value) {
         fetchAsset(address, id);
       }
     });
@@ -85,6 +116,7 @@ export default defineComponent({
     return {
       individualData,
       priorityData,
+      showPriority,
     };
   },
 });
