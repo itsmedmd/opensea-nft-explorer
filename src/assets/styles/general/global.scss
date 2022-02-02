@@ -1,5 +1,6 @@
-@import "./typography";
-@import "./colors";
+@import "../general/typography";
+@import "../general/colors";
+@import "../general/animations";
 
 // highest level
 * {
@@ -81,6 +82,68 @@ button {
 	&:active {
 		background-color: rgba($blue-med-dark, 1);
 	}
+}
+
+// loader
+.loader-container {
+	display: flex;
+	justify-content: center;
+	margin: 36px 0;
+	width: 100%;
+}
+
+.loader-container--centered {
+	align-items: center;
+	height: 100vh;
+	margin: 0;
+}
+
+.loader,
+.loader-button {
+	padding: 8px 18px;
+	position: relative;
+}
+
+.loader::before {
+	animation: loading-border-before 0.8s ease-out infinite;
+	background: transparent;
+	border: 2px solid transparent;
+	content: "";
+	height: 0;
+	left: -2px;
+	position: absolute;
+	top: -2px;
+	width: 0;
+}
+
+.loader::after {
+	animation: loading-border-after 0.8s ease-out infinite;
+	background: transparent;
+	border: 2px solid transparent;
+	content: "";
+	height: 0;
+	left: -2px;
+	position: absolute;
+	top: -2px;
+	width: 0;
+}
+
+.loader-text {
+	font-size: $font-24;
+	font-weight: $font-w-bold-med;
+}
+
+.loader-button {
+	background-color: $white;
+	border: 2px solid $loader-border-color;
+}
+
+.loader-button:hover {
+	background-color: $button-general-hover-color;
+}
+
+.loader-button:active {
+	background-color: $button-general-active-color;
 }
 
 // for screen reader

@@ -14,19 +14,19 @@
     </div>
     <div class="asset_loader" v-else>
       <div
-        class="home__loader-container home__loader-container--centered"
+        class="loader-container loader-container--centered"
         v-if="loaderText"
       >
-        <div class="home__loader">
-          <p class="home__loader-text">{{ loaderText }}</p>
+        <div class="loader">
+          <p class="loader-text">{{ loaderText }}</p>
         </div>
       </div>
       <div
-        class="home__loader-container home__loader-container--centered"
+        class="loader-container loader-container--centered"
         v-else-if="refetchButtonText"
       >
         <button
-          class="home__loader-text home__loader-button"
+          class="loader-text loader-button"
           type="button"
           @click="manuallyRefetch"
         >
@@ -183,4 +183,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" src="@/assets/styles/components/home.scss"></style>
+<style lang="scss" src="@/assets/styles/components/asset.scss"></style>
