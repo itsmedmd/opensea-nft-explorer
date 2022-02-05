@@ -46,8 +46,6 @@ const fetchList = (
   fetch(url, options)
     .then((res) => {
       if (res.status === 200) {
-        store.setIsCurrentlyFetching(filter, false);
-        store.setErrorMessage(filter, null);
         return res.json();
       } else {
         throw new Error("Failed fetching data");
@@ -64,6 +62,8 @@ const fetchList = (
       }
 
       store.appendData(newList, filter);
+      store.setIsCurrentlyFetching(filter, false);
+      store.setErrorMessage(filter, null);
     })
     .catch((err) => {
       if (iterationNumber <= maxRepeatCount) {

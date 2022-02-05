@@ -12,7 +12,7 @@
     >
       individualData: {{ individualData.asset.name }}
     </div>
-    <div class="asset_loader" v-else>
+    <div class="asset_loader" v-else-if="!showNotFound">
       <div
         class="loader-container loader-container--centered"
         v-if="loaderText"
@@ -34,11 +34,15 @@
         </button>
       </div>
     </div>
+    <div v-else>
+      <NotFound />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, onMounted } from "vue";
+import NotFound from "@/views/NotFound.vue";
 import fetchAsset from "@/assets/scripts/fetchAsset";
 import store from "@/store/store";
 
@@ -47,6 +51,9 @@ import AssetType from "@/types/AssetType";
 export default defineComponent({
   name: "Asset",
   props: ["id"],
+  components: {
+    NotFound,
+  },
   setup(props) {
     const splitUrl = props.id.split("-");
     const address = splitUrl[0];
@@ -95,8 +102,8 @@ export default defineComponent({
     const individualData = computed(() => store.getAssetData(address, id));
 
     // individualData is considered empty when:
-    // 1. There is no data (not even default)
-    // 2. There is default data but no fetch is in progress
+    // 1. There is no data (not even placeholder(empty))
+    // 2. There is placeholder(empty) data but no fetch is in progress
     const isIndividualDataEmpty = computed(
       () =>
         !individualData.value ||
@@ -125,6 +132,17 @@ export default defineComponent({
       // by default (if both priorityData and individualData exist),
       // show priorityData
       return true;
+    });
+
+    const showNotFound = computed(() => {
+      if (
+        !priorityData.value &&
+        isIndividualDataEmpty.value &&
+        !store.isStoreEmpty()
+      ) {
+        return true;
+      }
+      return false;
     });
 
     const manuallyRefetch = () => {
@@ -175,6 +193,7 @@ export default defineComponent({
       individualData,
       priorityData,
       showPriority,
+      showNotFound,
       loaderText,
       refetchButtonText,
       manuallyRefetch,

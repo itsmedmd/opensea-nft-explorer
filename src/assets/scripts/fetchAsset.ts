@@ -43,8 +43,6 @@ const fetchAsset = (
   fetch(url, options)
     .then((res) => {
       if (res.status === 200) {
-        store.setAssetIsCurrentlyFetching(asset_address, asset_id, false);
-        store.setAssetErrorMessage(asset_address, asset_id, null);
         return res.json();
       } else {
         throw new Error("Failed fetching asset");
@@ -53,6 +51,8 @@ const fetchAsset = (
     .then((res) => {
       const newAsset: AssetType | null = createAssetObject(res);
       store.setAssetData(asset_address, asset_id, newAsset);
+      store.setAssetIsCurrentlyFetching(asset_address, asset_id, false);
+      store.setAssetErrorMessage(asset_address, asset_id, null);
     })
     .catch((err) => {
       if (iterationNumber <= maxRepeatCount) {

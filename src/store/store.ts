@@ -113,6 +113,19 @@ const store = {
   getAssetData(address: string, id: string): AssetObjectEntry | null {
     return this.state.assets[`${address}-${id}`] ?? null;
   },
+  isStoreEmpty(): boolean {
+    if (
+      !this.state.isCurrentlyFetchingCount &&
+      !this.state.dataBySaleCount.length &&
+      !this.state.isCurrentlyFetchingDefault &&
+      !this.state.dataByDefault.length &&
+      !this.state.isCurrentlyFetchingDate &&
+      !this.state.dataBySaleDate.length
+    ) {
+      return true;
+    }
+    return false;
+  },
 };
 
 export default store;
