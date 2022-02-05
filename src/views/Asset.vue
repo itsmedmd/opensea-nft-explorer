@@ -1,16 +1,18 @@
 <template>
   <div class="asset">
     <div class="asset_content" v-if="priorityData && showPriority">
-      priorityData: {{ priorityData.name }}
-      <br />
-      individualData from priorityData:
-      {{ individualData?.asset ? individualData.asset.name : "" }}
+      <p>PRIORITY!</p>
+      <AssetInformation
+        :data="priorityData"
+        :extraData="individualData?.asset ? individualData.asset : null"
+      />
     </div>
     <div
       class="asset_content"
       v-else-if="individualData?.asset && !showPriority"
     >
-      individualData: {{ individualData.asset.name }}
+      <p>INDIVIDUAL!</p>
+      <AssetInformation :data="individualData.asset" />
     </div>
     <div class="asset_loader" v-else-if="!showNotFound">
       <div
@@ -43,9 +45,10 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted } from "vue";
 import NotFound from "@/views/NotFound.vue";
+import AssetInformation from "@/components/AssetInformation.vue";
+
 import fetchAsset from "@/assets/scripts/fetchAsset";
 import store from "@/store/store";
-
 import AssetType from "@/types/AssetType";
 
 export default defineComponent({
@@ -53,6 +56,7 @@ export default defineComponent({
   props: ["id"],
   components: {
     NotFound,
+    AssetInformation,
   },
   setup(props) {
     const splitUrl = props.id.split("-");
