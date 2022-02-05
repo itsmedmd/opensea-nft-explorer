@@ -1,18 +1,15 @@
 <template>
   <div class="asset">
-    <div class="asset_content" v-if="priorityData && showPriority">
-      <AssetInformation
-        :data="priorityData"
-        :extraData="individualData?.asset ? individualData.asset : null"
-      />
-    </div>
-    <div
-      class="asset_content"
+    <AssetInformation
+      v-if="priorityData && showPriority"
+      :data="priorityData"
+      :extraData="individualData?.asset ? individualData.asset : null"
+    />
+    <AssetInformation
       v-else-if="individualData?.asset && !showPriority"
-    >
-      <AssetInformation :data="individualData.asset" />
-    </div>
-    <div class="asset_loader" v-else-if="!showNotFound">
+      :data="individualData.asset"
+    />
+    <div v-else-if="!showNotFound">
       <div
         class="loader-container loader-container--centered"
         v-if="loaderText"
@@ -185,6 +182,10 @@ export default defineComponent({
     });
 
     onMounted(() => {
+      // start the page at the top
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+
       // fetch asset data if there is no individualData
       if (isIndividualDataEmpty.value) {
         fetchAsset(address, id);
