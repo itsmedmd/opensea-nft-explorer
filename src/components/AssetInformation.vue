@@ -1,13 +1,12 @@
 <template>
   <article class="asset-info">
-    <section class="asset-info__section">
-      <div
-        v-if="
-          finalData.animation_url &&
-          finalData.animation_url.includes('https://')
-        "
-      >
+    <div class="asset-info__left-column">
+      <section class="asset-info__section">
         <video
+          v-if="
+            finalData.animation_url &&
+            finalData.animation_url.includes('https://')
+          "
           controls
           autoplay
           loop
@@ -15,67 +14,78 @@
           :src="finalData.animation_url"
           class="asset-info__graphics"
         />
-      </div>
-      <div v-else>
         <img
+          v-else
           :src="finalData.hd_image_url ?? finalData.priority_image_url"
           :alt="'Preview image of asset ' + finalData.name"
           class="asset-info__graphics"
         />
-      </div>
 
-      <div class="asset-info__logo-container">
-        <img
-          src="../assets/images/opensea-badge.svg"
-          alt="OpenSea logo"
-          class="asset-info__logo-image"
-        />
-        <a
-          :href="finalData.permalink"
-          rel="noreferrer"
-          class="asset-info__logo-link"
-        >
-          View item in OpenSea
-        </a>
-      </div>
-    </section>
-    <section class="asset-info__section">
-      name and description:
-      <p>{{ finalData.name }}</p>
-      <p>{{ finalData.description }}</p>
-    </section>
-    <section class="asset-info__section">
-      sales, creator and collection:
-      <p>{{ finalData.num_sales }}</p>
-      <div v-if="finalData.creator">
-        <p>{{ finalData.creator.profile_img_url }}</p>
-        <p>{{ finalData.creator.username }}</p>
-      </div>
-      <div v-if="finalData.collection">
-        <p>{{ finalData.collection.image_url }}</p>
-        <p>{{ finalData.collection.name }}</p>
-      </div>
-    </section>
-    <section class="asset-info__section">
-      traits:
-      <div v-if="finalData.traits">
-        <p v-for="(trait, i) in finalData.traits" :key="trait.trait_type + i">
-          {{ trait.trait_type }}: {{ trait.value }}
-        </p>
-      </div>
-    </section>
-    <section class="asset-info__section">
-      ownerships:
-      <div v-if="finalData.ownerships">
-        <div v-for="(own, i) in finalData.ownerships" :key="'own' + i">
-          <div v-if="own.owner">
-            <span>{{ own.owner.profile_img_url }}</span>
-            <span>{{ own.owner.username }}</span>
-          </div>
-          <p>{{ own.quantity }}</p>
+        <div class="asset-info__logo-container">
+          <img
+            src="../assets/images/opensea-badge.svg"
+            alt="OpenSea logo"
+            class="asset-info__logo-image"
+          />
+          <a
+            :href="finalData.permalink"
+            rel="noreferrer"
+            class="asset-info__logo-link"
+          >
+            View item in OpenSea
+          </a>
         </div>
-      </div>
-    </section>
+      </section>
+      <section
+        v-if="finalData.name || finalData.description"
+        class="asset-info__section"
+      >
+        <p
+          v-if="finalData.name"
+          :class="{ 'asset-info__name--no-margin': !finalData.description }"
+          class="asset-info__name"
+        >
+          {{ finalData.name }}
+        </p>
+        <p v-if="finalData.description" class="asset-info__description">
+          {{ finalData.description }}
+        </p>
+      </section>
+    </div>
+    <div class="asset-info__right-column">
+      <section class="asset-info__section">
+        sales, creator and collection:
+        <p>{{ finalData.num_sales }}</p>
+        <div v-if="finalData.creator">
+          <p>{{ finalData.creator.profile_img_url }}</p>
+          <p>{{ finalData.creator.username }}</p>
+        </div>
+        <div v-if="finalData.collection">
+          <p>{{ finalData.collection.image_url }}</p>
+          <p>{{ finalData.collection.name }}</p>
+        </div>
+      </section>
+      <section class="asset-info__section">
+        traits:
+        <div v-if="finalData.traits">
+          <p v-for="(trait, i) in finalData.traits" :key="trait.trait_type + i">
+            {{ trait.trait_type }}: {{ trait.value }}
+          </p>
+        </div>
+      </section>
+      <section class="asset-info__section">
+        ownerships:
+        <div v-if="finalData.ownerships">
+          <div v-for="(own, i) in finalData.ownerships" :key="'own' + i">
+            <div v-if="own.owner">
+              <span>{{ own.owner.profile_img_url }}</span>
+              <span>{{ own.owner.username }}</span>
+            </div>
+            <p>{{ own.quantity }}</p>
+          </div>
+        </div>
+      </section>
+    </div>
   </article>
 </template>
 

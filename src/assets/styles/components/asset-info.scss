@@ -3,21 +3,58 @@
 @import "../general/variables";
 
 .asset-info {
+	display: grid;
+	grid-template-columns: 2fr 3fr;
 	min-height: 100vh;
 
 	&__section {
-		border: 1px solid $black;
-		margin: 50px 0;
-		padding: 16px;
+		border: 1px solid rgba($black, 0.15);
+		border-radius: 8px;
+		margin-bottom: 36px;
+		overflow: hidden;
+		padding: 12px;
+		word-break: break-word;
 	}
 
+	// left column
+	//&__left-column {
+	//}
+
+	&__left-column &__section:nth-of-type(1) {
+		border: 1px solid rgba($black, 0.35);
+		margin-bottom: 24px;
+		padding: 0;
+	}
+	/*
+	&__left-column &__section:nth-of-type(2) {
+	}
+*/
+	// right column
+	&__right-column {
+		margin-left: 20px;
+	}
+	/*
+	&__right-column &__section:nth-of-type(1) {
+	}
+
+	&__right-column &__section:nth-of-type(2) {
+	}
+
+	&__right-column &__section:nth-of-type(3) {
+	}
+*/
+	// section 1
+	// video/image and link to OpenSea
 	&__graphics {
-		width: 40%;
+		border-bottom: 1px solid rgba($black, 0.15);
+		width: 100%;
 	}
 
 	&__logo-container {
 		align-items: center;
 		display: flex;
+		justify-content: center;
+		margin: 12px 0 16px;
 	}
 
 	&__logo-image {
@@ -31,7 +68,7 @@
 		border: 1px solid $blue-dark;
 		border-left: 0;
 		border-radius: 8px;
-		color: $text-default;
+		color: $black;
 		display: inline-block;
 		font-size: $font-18;
 		font-weight: $font-w-bold-med;
@@ -47,5 +84,22 @@
 
 	&__logo-link:active {
 		background-color: rgba($gray, 0.55);
+	}
+
+	// section 2
+	// name and description
+	&__name {
+		font-size: $font-24;
+		font-weight: $font-w-bold-med;
+		margin-bottom: 10px;
+	}
+
+	&__name--no-margin {
+		margin-bottom: 0;
+	}
+
+	&__description {
+		font-size: $font-17;
+		padding-left: 16px;
 	}
 }
