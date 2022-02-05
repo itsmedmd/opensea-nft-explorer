@@ -1,9 +1,43 @@
 <template>
   <article class="asset-info">
     <section class="asset-info__section">
-      animation and link:
-      <p>animation url: {{ finalData.animation_url }}</p>
-      <p>[logo] {{ finalData.permalink }}</p>
+      <div
+        v-if="
+          finalData.animation_url &&
+          finalData.animation_url.includes('https://')
+        "
+      >
+        <video
+          controls
+          autoplay
+          loop
+          muted
+          :src="finalData.animation_url"
+          class="asset-info__graphics"
+        />
+      </div>
+      <div v-else>
+        <img
+          :src="finalData.hd_image_url ?? finalData.priority_image_url"
+          :alt="'Preview image of asset ' + finalData.name"
+          class="asset-info__graphics"
+        />
+      </div>
+
+      <div class="asset-info__logo-container">
+        <img
+          src="../assets/images/opensea-badge.svg"
+          alt="OpenSea logo"
+          class="asset-info__logo-image"
+        />
+        <a
+          :href="finalData.permalink"
+          rel="noreferrer"
+          class="asset-info__logo-link"
+        >
+          View item in OpenSea
+        </a>
+      </div>
     </section>
     <section class="asset-info__section">
       name and description:

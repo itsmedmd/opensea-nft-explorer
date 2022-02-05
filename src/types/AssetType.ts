@@ -8,6 +8,7 @@ interface AssetType {
   permalink: string;
   token_id: string;
   priority_image_url: string;
+  preview_image_url: string;
   asset_contract: {
     address: string;
   };

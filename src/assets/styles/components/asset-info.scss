@@ -1,7 +1,51 @@
+@import "../general/typography";
+@import "../general/colors";
+@import "../general/variables";
+
 .asset-info {
 	min-height: 100vh;
 
 	&__section {
+		border: 1px solid $black;
 		margin: 50px 0;
+		padding: 16px;
+	}
+
+	&__graphics {
+		width: 40%;
+	}
+
+	&__logo-container {
+		align-items: center;
+		display: flex;
+	}
+
+	&__logo-image {
+		height: 54px;
+		margin-right: -20px;
+		width: 54px;
+		z-index: $z-index-overlay;
+	}
+
+	&__logo-link {
+		border: 1px solid $blue-dark;
+		border-left: 0;
+		border-radius: 8px;
+		color: $text-default;
+		display: inline-block;
+		font-size: $font-18;
+		font-weight: $font-w-bold-med;
+		height: 54px;
+		line-height: 50px;
+		padding: 2px 6px 2px 26px;
+		transition: background-color 0.1s;
+	}
+
+	&__logo-link:hover {
+		background-color: rgba($gray, 0.35);
+	}
+
+	&__logo-link:active {
+		background-color: rgba($gray, 0.55);
 	}
 }

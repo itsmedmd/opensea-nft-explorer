@@ -7,9 +7,14 @@ import Ownership from "@/types/Ownership";
 // create a typed asset object from the raw object
 // retrieved from the API that only has the required data
 const createAssetObject = (obj: any): AssetType | null => {
-  // If there are no graphics to display the NFT -
-  // don't add it to the list (return null).
-  // Otherwise, the priority is as follows:
+  // If there is no image_preview_url -
+  // don't add this asset to the list (return null).
+  if (!obj.image_preview_url) {
+    return null;
+  }
+
+  // Create image link by priority.
+  // The priority is as follows:
   // 1. image_preview_url
   // 2. image_url
   // 3. image_original_url
@@ -24,6 +29,7 @@ const createAssetObject = (obj: any): AssetType | null => {
     return null;
   }
 
+  // Create an image link for a HD image
   const hd_image_url: string | null =
     obj.image_url ?? obj.image_original_url ?? null;
 
@@ -61,7 +67,7 @@ const createAssetObject = (obj: any): AssetType | null => {
     }
   }
 
-  // create typed asset creator
+  // create typed asset creator (the user who created the asset)
   const assetCreator: Creator | null = obj.creator
     ? {
         profile_img_url: obj.creator.profile_img_url ?? null,
@@ -88,9 +94,10 @@ const createAssetObject = (obj: any): AssetType | null => {
     },
     description: obj.description ?? null,
     num_sales: obj.num_sales ?? null,
+    preview_image_url: obj.image_preview_url,
     hd_image_url,
     priority_image_url,
-    animation_url: obj.animation_url ?? null,
+    animation_url: obj.animation_url ?? obj.animation_original_url ?? null,
     traits: assetTraits,
     creator: assetCreator,
     collection: assetCollection,

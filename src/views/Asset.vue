@@ -1,7 +1,6 @@
 <template>
   <div class="asset">
     <div class="asset_content" v-if="priorityData && showPriority">
-      <p>PRIORITY!</p>
       <AssetInformation
         :data="priorityData"
         :extraData="individualData?.asset ? individualData.asset : null"
@@ -11,7 +10,6 @@
       class="asset_content"
       v-else-if="individualData?.asset && !showPriority"
     >
-      <p>INDIVIDUAL!</p>
       <AssetInformation :data="individualData.asset" />
     </div>
     <div class="asset_loader" v-else-if="!showNotFound">
