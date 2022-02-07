@@ -1,0 +1,19 @@
+.user-data {
+	align-items: center;
+	display: flex;
+
+	&__image {
+		height: 40px;
+		width: 40px;
+	}
+
+	&__image--big {
+		height: 60px;
+		margin-left: 12px;
+		width: 60px;
+	}
+
+	&__name {
+		margin-left: 12px;
+	}
+}
