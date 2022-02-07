@@ -1,11 +1,16 @@
 @import "../general/typography";
 @import "../general/colors";
 @import "../general/variables";
+@import "../general/mixins";
 
 .asset-info {
 	display: grid;
 	grid-template-columns: 2fr 3fr;
 	min-height: 100vh;
+
+	@include respond-to(max-width, $break-tablet-medium) {
+		grid-template-columns: 1fr;
+	}
 
 	&__section {
 		border: 1px solid rgba($black, 0.15);
@@ -32,6 +37,10 @@
 	// right column
 	&__right-column {
 		margin-left: 20px;
+
+		@include respond-to(max-width, $break-tablet-medium) {
+			margin-left: 0;
+		}
 	}
 	/*
 	&__right-column &__section:nth-of-type(1) {
@@ -101,5 +110,42 @@
 	&__description {
 		font-size: $font-17;
 		padding-left: 16px;
+	}
+
+	// section 3
+	// total sales, creator and collection
+	&__sales-text {
+		border-bottom: 1px solid $gray;
+		font-size: $font-18;
+		font-weight: $font-w-bold-med;
+		margin-bottom: 12px;
+	}
+
+	&__section-title {
+		font-size: $font-17;
+		font-weight: $font-w-bold-med;
+		margin-bottom: 6px;
+	}
+
+	&__sub-section {
+		border-bottom: 1px solid $gray;
+		margin-bottom: 16px;
+		padding-bottom: 16px;
+	}
+
+	&__ownership {
+		align-items: center;
+		display: flex;
+		margin: 4px 0;
+	}
+
+	&__ownership-quantity {
+		border-right: 1px solid rgba($black, 0.4);
+		font-weight: $font-w-bold-med;
+		line-height: 40px;
+		margin-right: 10px;
+		min-width: 85px;
+		padding-right: 10px;
+		text-align: right;
 	}
 }

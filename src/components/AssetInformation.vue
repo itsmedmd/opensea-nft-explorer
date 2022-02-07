@@ -3,10 +3,7 @@
     <div class="asset-info__left-column">
       <section class="asset-info__section">
         <video
-          v-if="
-            finalData.animation_url &&
-            finalData.animation_url.includes('https://')
-          "
+          v-if="finalData.animation_url"
           controls
           autoplay
           loop
@@ -54,36 +51,62 @@
     </div>
     <div class="asset-info__right-column">
       <section class="asset-info__section">
-        sales, creator and collection:
-        <p>{{ finalData.num_sales }}</p>
-        <div v-if="finalData.creator">
-          <p>{{ finalData.creator.profile_img_url }}</p>
-          <p>{{ finalData.creator.username }}</p>
+        <p class="asset-info__sales-text">
+          Total sales: {{ finalData.num_sales ?? 0 }}
+        </p>
+        <div
+          v-if="finalData.creator"
+          :class="{ 'asset-info__sub-section': finalData.collection }"
+        >
+          <p class="asset-info__section-title">Creator:</p>
+          <UserData
+            :imgSource="finalData.creator.profile_img_url ?? ''"
+            :username="finalData.creator.username ?? ''"
+            dataType="user"
+            :isBig="true"
+          />
         </div>
         <div v-if="finalData.collection">
-          <p>{{ finalData.collection.image_url }}</p>
-          <p>{{ finalData.collection.name }}</p>
+          <p class="asset-info__section-title">Collection:</p>
+          <UserData
+            :imgSource="finalData.collection.image_url ?? ''"
+            :username="finalData.collection.name ?? ''"
+            dataType="collection"
+            :isBig="true"
+          />
         </div>
       </section>
       <section class="asset-info__section">
-        traits:
-        <div v-if="finalData.traits">
+        <p class="asset-info__section-title">Asset Traits:</p>
+        <div v-if="finalData.traits?.length">
           <p v-for="(trait, i) in finalData.traits" :key="trait.trait_type + i">
             {{ trait.trait_type }}: {{ trait.value }}
           </p>
         </div>
+        <p v-else>This asset has no traits</p>
       </section>
       <section class="asset-info__section">
-        ownerships:
-        <div v-if="finalData.ownerships">
-          <div v-for="(own, i) in finalData.ownerships" :key="'own' + i">
+        <p class="asset-info__section-title">Top Ownerships:</p>
+        <div v-if="finalData.ownerships?.length">
+          <div
+            v-for="(own, i) in finalData.ownerships"
+            :key="'own' + i"
+            class="asset-info__ownership"
+          >
+            <p class="asset-info__ownership-quantity">
+              {{ own.quantity }}
+            </p>
             <div v-if="own.owner">
-              <span>{{ own.owner.profile_img_url }}</span>
-              <span>{{ own.owner.username }}</span>
+              <UserData
+                :imgSource="own.owner.profile_img_url ?? ''"
+                :username="own.owner.username ?? ''"
+                dataType="user"
+              />
             </div>
-            <p>{{ own.quantity }}</p>
+            <p v-else class="bold">Anonymous User</p>
           </div>
         </div>
+        <p v-else>Currently there are no public owners of this asset</p>
       </section>
     </div>
   </article>
@@ -92,9 +115,13 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
 import AssetType from "@/types/AssetType";
+import UserData from "@/components/UserData.vue";
 
 export default defineComponent({
   name: "AssetInformation",
+  components: {
+    UserData,
+  },
   props: {
     data: {
       required: true,

@@ -146,6 +146,11 @@ button {
 	background-color: $button-general-active-color;
 }
 
+// text
+.bold {
+	font-weight: $font-w-bold;
+}
+
 // for screen reader
 .sr-only:not(:focus):not(:active) {
 	clip: rect(0 0 0 0);
