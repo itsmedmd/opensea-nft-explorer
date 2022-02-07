@@ -51,26 +51,29 @@
     </div>
     <div class="asset-info__right-column">
       <section class="asset-info__section">
-        <p class="asset-info__sales-text">
+        <p
+          class="asset-info__sales-text"
+          :class="{
+            'asset-info__sales-text--no-border':
+              !finalData.creator && !finalData.collection,
+          }"
+        >
           Total sales: {{ finalData.num_sales ?? 0 }}
         </p>
-        <div
-          v-if="finalData.creator"
-          :class="{ 'asset-info__sub-section': finalData.collection }"
-        >
-          <p class="asset-info__section-title">Creator:</p>
+        <div :class="{ 'asset-info__sub-section': finalData.collection }">
+          <p class="asset-info__sub-section-title">Creator:</p>
           <UserData
-            :imgSource="finalData.creator.profile_img_url ?? ''"
-            :username="finalData.creator.username ?? ''"
+            :imgSource="finalData?.creator?.profile_img_url ?? ''"
+            :username="finalData?.creator?.username ?? ''"
             dataType="user"
             :isBig="true"
           />
         </div>
-        <div v-if="finalData.collection">
-          <p class="asset-info__section-title">Collection:</p>
+        <div>
+          <p class="asset-info__sub-section-title">Collection:</p>
           <UserData
-            :imgSource="finalData.collection.image_url ?? ''"
-            :username="finalData.collection.name ?? ''"
+            :imgSource="finalData?.collection?.image_url ?? ''"
+            :username="finalData?.collection?.name ?? ''"
             dataType="collection"
             :isBig="true"
           />
@@ -79,10 +82,14 @@
       <section class="asset-info__section">
         <p class="asset-info__section-title">Asset Traits:</p>
         <div v-if="finalData.traits?.length">
-          <p v-for="(trait, i) in finalData.traits" :key="trait.trait_type + i">
-            <span>{{ trait.trait_type }}:</span>
-            <span>{{ trait.value }}</span>
-          </p>
+          <div
+            v-for="(trait, i) in finalData.traits"
+            :key="trait.trait_type + i"
+            class="asset-info__trait"
+          >
+            <p class="asset-info__tait-type">{{ trait.trait_type }}:</p>
+            <p class="asset-info__tait-value">{{ trait.value }}</p>
+          </div>
         </div>
         <p v-else>This asset has no traits</p>
       </section>

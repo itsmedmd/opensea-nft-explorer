@@ -21,19 +21,12 @@
 		word-break: break-word;
 	}
 
-	// left column
-	//&__left-column {
-	//}
-
 	&__left-column &__section:nth-of-type(1) {
 		border: 1px solid rgba($black, 0.35);
 		margin-bottom: 24px;
 		padding: 0;
 	}
-	/*
-	&__left-column &__section:nth-of-type(2) {
-	}
-*/
+
 	// right column
 	&__right-column {
 		margin-left: 20px;
@@ -42,16 +35,7 @@
 			margin-left: 0;
 		}
 	}
-	/*
-	&__right-column &__section:nth-of-type(1) {
-	}
 
-	&__right-column &__section:nth-of-type(2) {
-	}
-
-	&__right-column &__section:nth-of-type(3) {
-	}
-*/
 	// section 1
 	// video/image and link to OpenSea
 	&__graphics {
@@ -114,16 +98,25 @@
 
 	// section 3
 	// total sales, creator and collection
-	&__sales-text {
-		border-bottom: 1px solid $gray;
+	&__sales-text,
+	&__section-title,
+	&__sub-section-title {
 		font-size: $font-18;
 		font-weight: $font-w-bold-med;
-		margin-bottom: 12px;
 	}
 
+	&__sales-text,
 	&__section-title {
-		font-size: $font-17;
-		font-weight: $font-w-bold-med;
+		border-bottom: 1px solid $gray;
+		margin-bottom: 16px;
+		padding-bottom: 4px;
+	}
+
+	&__sales-text--no-border {
+		border-bottom: 0;
+	}
+
+	&__sub-section-title {
 		margin-bottom: 6px;
 	}
 
@@ -135,7 +128,23 @@
 
 	// section 4
 	// traits
+	&__trait {
+		border-bottom: 1px solid $gray;
+	}
 
+	&__trait:not(:last-of-type) {
+		margin-bottom: 4px;
+	}
+
+	&__tait-type {
+		font-size: $font-17;
+		font-weight: $font-w-bold-med;
+		margin-left: 10px;
+	}
+
+	&__tait-value {
+		margin: 0 0 4px 30px;
+	}
 
 	// section 5
 	// top ownerships

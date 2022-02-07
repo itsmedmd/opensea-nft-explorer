@@ -1,3 +1,5 @@
+@import "../general/typography";
+
 .user-data {
 	align-items: center;
 	display: flex;
@@ -14,6 +16,7 @@
 	}
 
 	&__name {
+		font-size: $font-17;
 		margin-left: 12px;
 	}
 }
