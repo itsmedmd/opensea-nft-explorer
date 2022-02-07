@@ -80,7 +80,8 @@
         <p class="asset-info__section-title">Asset Traits:</p>
         <div v-if="finalData.traits?.length">
           <p v-for="(trait, i) in finalData.traits" :key="trait.trait_type + i">
-            {{ trait.trait_type }}: {{ trait.value }}
+            <span>{{ trait.trait_type }}:</span>
+            <span>{{ trait.value }}</span>
           </p>
         </div>
         <p v-else>This asset has no traits</p>
@@ -106,6 +107,7 @@
             <p v-else class="bold">Anonymous User</p>
           </div>
         </div>
+        <div v-else-if="isFetchingOwnerships" class="spinner"></div>
         <p v-else>Currently there are no public owners of this asset</p>
       </section>
     </div>
@@ -130,6 +132,10 @@ export default defineComponent({
     extraData: {
       required: false,
       type: Object as PropType<AssetType | null>,
+    },
+    isFetchingOwnerships: {
+      required: true,
+      type: Boolean,
     },
   },
   setup(props) {

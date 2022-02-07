@@ -146,6 +146,17 @@ button {
 	background-color: $button-general-active-color;
 }
 
+.spinner {
+	animation: spinner 0.9s linear infinite;
+	border: 3px solid rgba($black, 0.4);
+	border-bottom: 0;
+	border-radius: 50%;
+	border-right: 0;
+	height: 40px;
+	margin: 16px auto;
+	width: 40px;
+}
+
 // text
 .bold {
 	font-weight: $font-w-bold;

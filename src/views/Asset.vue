@@ -3,11 +3,15 @@
     <AssetInformation
       v-if="priorityData && showPriority"
       :data="priorityData"
+      :isFetchingOwnerships="
+        individualData ? individualData.isCurrentlyFetching : true
+      "
       :extraData="individualData?.asset ? individualData.asset : null"
     />
     <AssetInformation
       v-else-if="individualData?.asset && !showPriority"
       :data="individualData.asset"
+      :isFetchingOwnerships="individualData.isCurrentlyFetching"
     />
     <div v-else-if="!showNotFound">
       <div
