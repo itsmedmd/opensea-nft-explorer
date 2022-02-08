@@ -128,11 +128,8 @@
 
 	// section 4
 	// traits
-	&__trait {
-		border-bottom: 1px solid $gray;
-	}
-
 	&__trait:not(:last-of-type) {
+		border-bottom: 1px solid $gray;
 		margin-bottom: 4px;
 	}
 
