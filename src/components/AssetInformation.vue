@@ -19,17 +19,17 @@
         />
 
         <div class="asset-info__logo-container">
-          <img
-            src="../assets/images/opensea-badge.svg"
-            alt="OpenSea logo"
-            class="asset-info__logo-image"
-          />
           <a
             :href="finalData.permalink"
             rel="noreferrer"
             class="asset-info__logo-link"
           >
-            View item in OpenSea
+            <img
+              src="../assets/images/opensea-badge.svg"
+              alt="OpenSea logo"
+              class="asset-info__logo-image"
+            />
+            View asset in OpenSea
           </a>
         </div>
       </section>
