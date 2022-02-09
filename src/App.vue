@@ -1,14 +1,14 @@
 <template>
   <div class="app">
-    <Navigation />
-    <div class="content">
+    <Navigation @mobileToggle="toggleNavigation" />
+    <div class="content" :class="{ 'content--mobile': showMobileNav }">
       <router-view />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 
 import Navigation from "@/components/Navigation.vue";
 import store from "@/store/store";
@@ -20,6 +20,12 @@ export default defineComponent({
     Navigation,
   },
   setup() {
+    const showMobileNav = ref<boolean>(false);
+
+    const toggleNavigation = (val: boolean) => {
+      showMobileNav.value = val;
+    };
+
     // const fetchSingle = () => {
     //   const options = { method: "GET" };
     //   fetch(
@@ -49,6 +55,11 @@ export default defineComponent({
         fetchList("sale_date");
       }
     });
+
+    return {
+      showMobileNav,
+      toggleNavigation,
+    };
   },
 });
 </script>

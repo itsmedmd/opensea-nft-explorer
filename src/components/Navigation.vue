@@ -10,6 +10,7 @@
         </li>
         <li class="aside__nav-item-mobile">
           <button
+            @click="toggleNavigation"
             type="button"
             class="button cta-button aside__nav-mobile-button"
           >
@@ -19,7 +20,10 @@
       </ul>
     </nav>
 
-    <div class="aside__content">
+    <div
+      class="aside__content"
+      :class="{ 'aside__content--mobile': showMobileNav }"
+    >
       <div class="aside__list-container" v-if="isHomePage">
         <p class="aside__list-title">Sort by:</p>
         <ul class="aside__list">
@@ -89,7 +93,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
 import ListType from "@/types/ListType";
@@ -98,10 +102,11 @@ import fetchList from "@/assets/scripts/fetchList";
 
 export default defineComponent({
   name: "Navigation",
-  setup() {
+  setup(props, { emit }) {
     const route = useRoute();
     const currentFilter = computed(() => store.state.listFilter);
     const isHomePage = computed(() => (route.path === "/" ? true : false));
+    const showMobileNav = ref<boolean>(false);
 
     const updateFilter = (filter: ListType) => {
       store.updateFilter(filter);
@@ -116,10 +121,17 @@ export default defineComponent({
       }
     };
 
+    const toggleNavigation = () => {
+      showMobileNav.value = !showMobileNav.value;
+      emit("mobileToggle", showMobileNav.value);
+    };
+
     return {
       isHomePage,
       currentFilter,
+      showMobileNav,
       updateFilter,
+      toggleNavigation,
     };
   },
 });
