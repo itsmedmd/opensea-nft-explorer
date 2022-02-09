@@ -8,6 +8,10 @@
 	max-width: $page-max-width;
 	min-height: 100vh;
 	width: 100%;
+
+	@include respond-to(max-width, $break-navigation-mobile) {
+		flex-direction: column;
+	}
 }
 
 .content {
@@ -21,5 +25,6 @@
 
 	@include respond-to(max-width, $break-navigation-mobile) {
 		margin-left: 0;
+		padding-top: 0;
 	}
 }

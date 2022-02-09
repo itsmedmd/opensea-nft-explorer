@@ -59,28 +59,14 @@
 	}
 
 	&__logo-link {
-		background-color: $blue-med-dark;
-		border: 1px solid $blue-dark;
 		border-bottom-left-radius: 60px;
 		border-left: 0;
 		border-top-left-radius: 60px;
-		color: $white;
 		font-size: $font-18;
-		font-weight: $font-w-bold-med;
 		height: 54px;
 		line-height: 52px;
 		padding: 0 6px 0 60px;
 		position: relative;
-		transition: all 0.2s;
-	}
-
-	&__logo-link:hover {
-		background-color: $white;
-		color: $black;
-	}
-
-	&__logo-link:active {
-		background-color: rgba($gray, 0.55);
 	}
 
 	// section 2

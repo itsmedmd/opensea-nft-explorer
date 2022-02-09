@@ -4,7 +4,7 @@
 .asset {
 	padding: 0 16px 16px;
 
-	@include respond-to(max-width, $break-tablet-small) {
-		padding: 0 12px 48px;
+	@include respond-to(max-width, $break-navigation-mobile) {
+		padding: 48px 12px;
 	}
 }

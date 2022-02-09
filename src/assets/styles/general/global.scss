@@ -84,6 +84,24 @@ button {
 	}
 }
 
+// call to action button
+.cta-button {
+	background-color: $blue-med-dark;
+	border: 1px solid $blue-dark;
+	color: $white;
+	font-weight: $font-w-bold-med;
+	transition: all 0.2s;
+}
+
+.cta-button:hover {
+	background-color: $white;
+	color: $black;
+}
+
+.cta-button:active {
+	background-color: rgba($gray, 0.55);
+}
+
 // loader
 .loader-container {
 	display: flex;

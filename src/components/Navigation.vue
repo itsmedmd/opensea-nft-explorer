@@ -8,6 +8,14 @@
         <li class="aside__nav-item">
           <router-link class="aside__nav-link" to="/about"> About </router-link>
         </li>
+        <li class="aside__nav-item-mobile">
+          <button
+            type="button"
+            class="button cta-button aside__nav-mobile-button"
+          >
+            Menu
+          </button>
+        </li>
       </ul>
     </nav>
 

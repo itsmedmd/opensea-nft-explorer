@@ -7,8 +7,8 @@
 .home {
 	padding: 0 16px 16px 24px;
 
-	@include respond-to(max-width, $break-tablet-small) {
-		padding: 0 12px 64px;
+	@include respond-to(max-width, $break-navigation-mobile) {
+		padding: 0 12px 36px;
 	}
 
 	&__itemlist {
@@ -22,14 +22,6 @@
 		}
 
 		@include respond-to(max-width, $break-tablet-big) {
-			grid-template-columns: repeat(2, 1fr);
-		}
-
-		@include respond-to(max-width, $break-tablet-small) {
-			grid-template-columns: 1fr;
-		}
-
-		@include respond-to(max-width, $break-navigation-mobile) {
 			grid-template-columns: repeat(2, 1fr);
 		}
 

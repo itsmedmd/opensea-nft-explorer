@@ -22,7 +22,7 @@
           <a
             :href="finalData.permalink"
             rel="noreferrer"
-            class="asset-info__logo-link"
+            class="cta-button asset-info__logo-link"
           >
             <img
               src="../assets/images/opensea-badge.svg"
