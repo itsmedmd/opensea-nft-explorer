@@ -12,6 +12,7 @@
 
 .content {
 	margin-left: $aside-width-default;
+	padding-top: $aside-nav-height;
 	width: 100%;
 
 	@include respond-to(max-width, $break-tablet-big) {

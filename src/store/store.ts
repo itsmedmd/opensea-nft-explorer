@@ -1,6 +1,7 @@
 import { reactive } from "vue";
 import ListType from "@/types/ListType";
 import AssetType from "@/types/AssetType";
+import AssetObjectEntry from "@/types/AssetObjectEntry";
 import ListStore from "@/types/ListStore";
 
 const myState: ListStore = {
@@ -17,6 +18,7 @@ const myState: ListStore = {
   pageNumber: 0,
   itemsPerPage: 16,
   pageCount: 0,
+  assets: {},
 };
 
 const store = {
@@ -89,6 +91,40 @@ const store = {
     } else {
       return this.state.errorForSaleDate;
     }
+  },
+  generateDefaultAssetData(address: string, id: string) {
+    const defaultAsset: AssetObjectEntry = {
+      asset: null,
+      error: null,
+      isCurrentlyFetching: false,
+    };
+
+    this.state.assets[`${address}-${id}`] = defaultAsset;
+  },
+  setAssetData(address: string, id: string, data: AssetType | null) {
+    this.state.assets[`${address}-${id}`].asset = data;
+  },
+  setAssetErrorMessage(address: string, id: string, message: string | null) {
+    this.state.assets[`${address}-${id}`].error = message;
+  },
+  setAssetIsCurrentlyFetching(address: string, id: string, value: boolean) {
+    this.state.assets[`${address}-${id}`].isCurrentlyFetching = value;
+  },
+  getAssetData(address: string, id: string): AssetObjectEntry | null {
+    return this.state.assets[`${address}-${id}`] ?? null;
+  },
+  isStoreEmpty(): boolean {
+    if (
+      !this.state.isCurrentlyFetchingCount &&
+      !this.state.dataBySaleCount.length &&
+      !this.state.isCurrentlyFetchingDefault &&
+      !this.state.dataByDefault.length &&
+      !this.state.isCurrentlyFetchingDate &&
+      !this.state.dataBySaleDate.length
+    ) {
+      return true;
+    }
+    return false;
   },
 };
 

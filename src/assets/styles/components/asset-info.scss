@@ -1,0 +1,167 @@
+@import "../general/typography";
+@import "../general/colors";
+@import "../general/variables";
+@import "../general/mixins";
+
+.asset-info {
+	display: grid;
+	grid-template-columns: 2fr 3fr;
+	min-height: 100vh;
+
+	@include respond-to(max-width, $break-tablet-medium) {
+		grid-template-columns: 1fr;
+	}
+
+	&__section {
+		border: 1px solid rgba($black, 0.15);
+		border-radius: 8px;
+		margin-bottom: 36px;
+		overflow: hidden;
+		padding: 12px;
+		word-break: break-word;
+	}
+
+	&__left-column &__section:nth-of-type(1) {
+		border: 1px solid rgba($black, 0.35);
+		margin-bottom: 24px;
+		padding: 0;
+	}
+
+	// right column
+	&__right-column {
+		margin-left: 20px;
+
+		@include respond-to(max-width, $break-tablet-medium) {
+			margin-left: 0;
+		}
+	}
+
+	// section 1
+	// video/image and link to OpenSea
+	&__graphics {
+		border-bottom: 1px solid rgba($black, 0.15);
+		min-height: 200px;
+		width: 100%;
+	}
+
+	&__logo-container {
+		align-items: center;
+		display: flex;
+		justify-content: center;
+		margin: 12px 0 16px;
+	}
+
+	&__logo-image {
+		height: 53px;
+		left: -1px;
+		position: absolute;
+		width: 54px;
+	}
+
+	&__logo-link {
+		background-color: $blue-med-dark;
+		border: 1px solid $blue-dark;
+		border-bottom-left-radius: 60px;
+		border-left: 0;
+		border-top-left-radius: 60px;
+		color: $white;
+		font-size: $font-18;
+		font-weight: $font-w-bold-med;
+		height: 54px;
+		line-height: 52px;
+		padding: 0 6px 0 60px;
+		position: relative;
+		transition: all 0.2s;
+	}
+
+	&__logo-link:hover {
+		background-color: $white;
+		color: $black;
+	}
+
+	&__logo-link:active {
+		background-color: rgba($gray, 0.55);
+	}
+
+	// section 2
+	// name and description
+	&__name {
+		font-size: $font-24;
+		font-weight: $font-w-bold-med;
+		margin-bottom: 10px;
+	}
+
+	&__name--no-margin {
+		margin-bottom: 0;
+	}
+
+	&__description {
+		font-size: $font-17;
+		padding-left: 16px;
+	}
+
+	// section 3
+	// total sales, creator and collection
+	&__sales-text,
+	&__section-title,
+	&__sub-section-title {
+		font-size: $font-18;
+		font-weight: $font-w-bold-med;
+	}
+
+	&__sales-text,
+	&__section-title {
+		border-bottom: 1px solid $gray;
+		margin-bottom: 16px;
+		padding-bottom: 4px;
+	}
+
+	&__sales-text--no-border {
+		border-bottom: 0;
+	}
+
+	&__sub-section-title {
+		margin-bottom: 6px;
+	}
+
+	&__sub-section {
+		border-bottom: 1px solid $gray;
+		margin-bottom: 16px;
+		padding-bottom: 16px;
+	}
+
+	// section 4
+	// traits
+	&__trait:not(:last-of-type) {
+		border-bottom: 1px solid $gray;
+		margin-bottom: 4px;
+	}
+
+	&__tait-type {
+		font-size: $font-17;
+		font-weight: $font-w-bold-med;
+		margin-left: 10px;
+	}
+
+	&__tait-value {
+		margin: 0 0 4px 30px;
+	}
+
+	// section 5
+	// top ownerships
+	&__ownership {
+		align-items: center;
+		display: flex;
+		margin: 4px 0;
+	}
+
+	&__ownership-quantity {
+		border-right: 1px solid rgba($black, 0.4);
+		font-weight: $font-w-bold-med;
+		line-height: 40px;
+		margin-right: 10px;
+		min-width: 85px;
+		padding-right: 10px;
+		text-align: right;
+	}
+}

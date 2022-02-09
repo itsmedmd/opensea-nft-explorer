@@ -42,6 +42,10 @@ export default defineComponent({
     const isPaginationVisible = computed(() => store.state.pageCount !== 0);
 
     const updatePageNumber = (toAdd: number) => {
+      // start the page at the top
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+
       store.addToPageNumber(toAdd);
 
       // prefetch new data if the user navigates to the
