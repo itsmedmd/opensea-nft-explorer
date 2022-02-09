@@ -19,7 +19,7 @@
 		margin-left: $aside-width-small;
 	}
 
-	@include respond-to(max-width, $break-phone-big) {
+	@include respond-to(max-width, $break-navigation-mobile) {
 		margin-left: 0;
 	}
 }

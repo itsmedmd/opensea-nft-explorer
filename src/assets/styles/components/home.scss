@@ -28,5 +28,13 @@
 		@include respond-to(max-width, $break-tablet-small) {
 			grid-template-columns: 1fr;
 		}
+
+		@include respond-to(max-width, $break-navigation-mobile) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		@include respond-to(max-width, $break-phone-medium) {
+			grid-template-columns: 1fr;
+		}
 	}
 }
