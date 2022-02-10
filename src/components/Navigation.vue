@@ -86,10 +86,14 @@
         <p class="aside__list-title">Feeling lucky?</p>
         <ul>
           <li class="aside__list-item">
-            <button class="nav-button">Show a random item</button>
+            <button class="nav-button" @click="scrollToTop">
+              Show a random item
+            </button>
           </li>
           <li class="aside__list-item" v-if="isHomePage">
-            <button class="nav-button">Randomise the list</button>
+            <button class="nav-button" @click="scrollToTop">
+              Randomise the list
+            </button>
           </li>
         </ul>
       </div>
@@ -136,6 +140,9 @@ export default defineComponent({
     // turn off navigation if the user is
     // navigating from mobile navigation menu
     const conditionallyToggleNavigation = () => {
+      // start the page at the top
+      scrollToTop();
+
       if (showMobileNav.value) {
         toggleNavigation();
       }
@@ -146,8 +153,7 @@ export default defineComponent({
       conditionallyToggleNavigation();
 
       // start the page at the top
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
+      scrollToTop();
 
       // if there is no data for the new filter and currently
       // there is no fetch in progress for it - fetch it
@@ -157,6 +163,12 @@ export default defineComponent({
       ) {
         fetchList(store.state.listFilter);
       }
+    };
+
+    // start the page at the top
+    const scrollToTop = () => {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
     };
 
     // Add event listener on window to listen for resize
@@ -174,6 +186,7 @@ export default defineComponent({
       updateFilter,
       toggleNavigation,
       conditionallyToggleNavigation,
+      scrollToTop,
     };
   },
 });
