@@ -145,6 +145,10 @@ export default defineComponent({
       store.updateFilter(filter);
       conditionallyToggleNavigation();
 
+      // start the page at the top
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+
       // if there is no data for the new filter and currently
       // there is no fetch in progress for it - fetch it
       if (
