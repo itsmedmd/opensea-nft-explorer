@@ -5,8 +5,8 @@
 .about {
 	padding: 0 16px 16px 80px;
 
-	@include respond-to(max-width, $break-tablet-small) {
-		padding: 0 24px 64px;
+	@include respond-to(max-width, $break-navigation-mobile) {
+		padding: 36px 24px 48px;
 	}
 
 	&__section {

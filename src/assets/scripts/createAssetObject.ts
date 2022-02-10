@@ -9,7 +9,14 @@ import Ownership from "@/types/Ownership";
 const createAssetObject = (obj: any): AssetType | null => {
   // If there is no image_preview_url -
   // don't add this asset to the list (return null).
-  if (!obj.image_preview_url) {
+  // Also exclude the collection of items named "Dead Ringers",
+  // as even their preview images' sizes are way too big and
+  // cause issues when loading.
+  if (
+    !obj.image_preview_url ||
+    obj.name?.includes("Dead Ringers") ||
+    obj.collection?.name?.includes("Dead Ringers")
+  ) {
     return null;
   }
 

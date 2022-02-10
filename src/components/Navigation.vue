@@ -3,15 +3,39 @@
     <nav class="aside__nav">
       <ul class="aside__nav-list">
         <li class="aside__nav-item">
-          <router-link class="aside__nav-link" to="/"> Home </router-link>
+          <router-link
+            class="aside__nav-link"
+            to="/"
+            @click="conditionallyToggleNavigation"
+          >
+            Home
+          </router-link>
         </li>
         <li class="aside__nav-item">
-          <router-link class="aside__nav-link" to="/about"> About </router-link>
+          <router-link
+            class="aside__nav-link"
+            to="/about"
+            @click="conditionallyToggleNavigation"
+          >
+            About
+          </router-link>
+        </li>
+        <li class="aside__nav-item-mobile">
+          <button
+            @click="toggleNavigation"
+            type="button"
+            class="button cta-button aside__nav-mobile-button"
+          >
+            Menu
+          </button>
         </li>
       </ul>
     </nav>
 
-    <div class="aside__content">
+    <div
+      class="aside__content"
+      :class="{ 'aside__content--mobile': showMobileNav }"
+    >
       <div class="aside__list-container" v-if="isHomePage">
         <p class="aside__list-title">Sort by:</p>
         <ul class="aside__list">
@@ -49,7 +73,11 @@
       </div>
 
       <div class="aside__list-container" v-else>
-        <router-link class="nav-button nav-button--back" to="/">
+        <router-link
+          class="nav-button nav-button--back"
+          to="/"
+          @click="conditionallyToggleNavigation"
+        >
           Go back
         </router-link>
       </div>
@@ -58,10 +86,14 @@
         <p class="aside__list-title">Feeling lucky?</p>
         <ul>
           <li class="aside__list-item">
-            <button class="nav-button">Show a random item</button>
+            <button class="nav-button" @click="scrollToTop">
+              Show a random item
+            </button>
           </li>
           <li class="aside__list-item" v-if="isHomePage">
-            <button class="nav-button">Randomise the list</button>
+            <button class="nav-button" @click="scrollToTop">
+              Randomise the list
+            </button>
           </li>
         </ul>
       </div>
@@ -81,22 +113,47 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 import ListType from "@/types/ListType";
 import store from "@/store/store";
 import fetchList from "@/assets/scripts/fetchList";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { debounce } from "debounce";
+
 export default defineComponent({
   name: "Navigation",
-  setup() {
+  setup(props, { emit }) {
     const route = useRoute();
     const currentFilter = computed(() => store.state.listFilter);
     const isHomePage = computed(() => (route.path === "/" ? true : false));
+    const showMobileNav = ref<boolean>(false);
+
+    const toggleNavigation = () => {
+      showMobileNav.value = !showMobileNav.value;
+      emit("mobileToggle", showMobileNav.value);
+    };
+
+    // turn off navigation if the user is
+    // navigating from mobile navigation menu
+    const conditionallyToggleNavigation = () => {
+      // start the page at the top
+      scrollToTop();
+
+      if (showMobileNav.value) {
+        toggleNavigation();
+      }
+    };
 
     const updateFilter = (filter: ListType) => {
       store.updateFilter(filter);
+      conditionallyToggleNavigation();
+
+      // start the page at the top
+      scrollToTop();
 
       // if there is no data for the new filter and currently
       // there is no fetch in progress for it - fetch it
@@ -108,10 +165,28 @@ export default defineComponent({
       }
     };
 
+    // start the page at the top
+    const scrollToTop = () => {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    };
+
+    // Add event listener on window to listen for resize
+    // to disable navigation if the navigation was enabled
+    // but the user resized the screen.
+    // * Also debounce the function execution.
+    onMounted(() => {
+      window.onresize = debounce(conditionallyToggleNavigation, 30);
+    });
+
     return {
       isHomePage,
       currentFilter,
+      showMobileNav,
       updateFilter,
+      toggleNavigation,
+      conditionallyToggleNavigation,
+      scrollToTop,
     };
   },
 });

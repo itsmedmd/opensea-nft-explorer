@@ -50,6 +50,7 @@ button {
 	color: $black;
 	font-size: $font-16;
 	padding: 4px 0;
+	transition: all 0.2s;
 	width: 100%;
 
 	&--back {
@@ -82,6 +83,24 @@ button {
 	&:active {
 		background-color: rgba($blue-med-dark, 1);
 	}
+}
+
+// call to action button
+.cta-button {
+	background-color: $blue-med-dark;
+	border: 1px solid $blue-dark;
+	color: $white;
+	font-weight: $font-w-bold-med;
+	transition: all 0.2s;
+}
+
+.cta-button:hover {
+	background-color: $white;
+	color: $black;
+}
+
+.cta-button:active {
+	background-color: rgba($gray, 0.55);
 }
 
 // loader
