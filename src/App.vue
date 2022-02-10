@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <Navigation @mobileToggle="toggleNavigation" />
-    <div class="content" :class="{ 'content--mobile': showMobileNav }">
+    <div class="content" :class="{ 'content--mobile': hideContent }">
       <router-view />
     </div>
   </div>
@@ -20,10 +20,10 @@ export default defineComponent({
     Navigation,
   },
   setup() {
-    const showMobileNav = ref<boolean>(false);
+    const hideContent = ref<boolean>(false);
 
     const toggleNavigation = (val: boolean) => {
-      showMobileNav.value = val;
+      hideContent.value = val;
     };
 
     // const fetchSingle = () => {
@@ -57,7 +57,7 @@ export default defineComponent({
     });
 
     return {
-      showMobileNav,
+      hideContent,
       toggleNavigation,
     };
   },

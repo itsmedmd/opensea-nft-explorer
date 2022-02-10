@@ -109,12 +109,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from "vue";
+import { defineComponent, computed, ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 import ListType from "@/types/ListType";
 import store from "@/store/store";
 import fetchList from "@/assets/scripts/fetchList";
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { debounce } from "debounce";
 
 export default defineComponent({
   name: "Navigation",
@@ -150,6 +154,14 @@ export default defineComponent({
         fetchList(store.state.listFilter);
       }
     };
+
+    // Add event listener on window to listen for resize
+    // to disable navigation if the navigation was enabled
+    // but the user resized the screen.
+    // * Also debounce the function execution.
+    onMounted(() => {
+      window.onresize = debounce(conditionallyToggleNavigation, 30);
+    });
 
     return {
       isHomePage,
