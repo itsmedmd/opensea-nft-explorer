@@ -3,10 +3,22 @@
     <nav class="aside__nav">
       <ul class="aside__nav-list">
         <li class="aside__nav-item">
-          <router-link class="aside__nav-link" to="/"> Home </router-link>
+          <router-link
+            class="aside__nav-link"
+            to="/"
+            @click="conditionallyToggleNavigation"
+          >
+            Home
+          </router-link>
         </li>
         <li class="aside__nav-item">
-          <router-link class="aside__nav-link" to="/about"> About </router-link>
+          <router-link
+            class="aside__nav-link"
+            to="/about"
+            @click="conditionallyToggleNavigation"
+          >
+            About
+          </router-link>
         </li>
         <li class="aside__nav-item-mobile">
           <button
@@ -61,7 +73,11 @@
       </div>
 
       <div class="aside__list-container" v-else>
-        <router-link class="nav-button nav-button--back" to="/">
+        <router-link
+          class="nav-button nav-button--back"
+          to="/"
+          @click="conditionallyToggleNavigation"
+        >
           Go back
         </router-link>
       </div>
@@ -108,8 +124,22 @@ export default defineComponent({
     const isHomePage = computed(() => (route.path === "/" ? true : false));
     const showMobileNav = ref<boolean>(false);
 
+    const toggleNavigation = () => {
+      showMobileNav.value = !showMobileNav.value;
+      emit("mobileToggle", showMobileNav.value);
+    };
+
+    // turn off navigation if the user is
+    // navigating from mobile navigation menu
+    const conditionallyToggleNavigation = () => {
+      if (showMobileNav.value) {
+        toggleNavigation();
+      }
+    };
+
     const updateFilter = (filter: ListType) => {
       store.updateFilter(filter);
+      conditionallyToggleNavigation();
 
       // if there is no data for the new filter and currently
       // there is no fetch in progress for it - fetch it
@@ -121,17 +151,13 @@ export default defineComponent({
       }
     };
 
-    const toggleNavigation = () => {
-      showMobileNav.value = !showMobileNav.value;
-      emit("mobileToggle", showMobileNav.value);
-    };
-
     return {
       isHomePage,
       currentFilter,
       showMobileNav,
       updateFilter,
       toggleNavigation,
+      conditionallyToggleNavigation,
     };
   },
 });

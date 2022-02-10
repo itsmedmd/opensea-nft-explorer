@@ -78,6 +78,7 @@
 		color: $text-default;
 		font-size: $font-28;
 		font-weight: $font-w-bold-med;
+		transition: all 0.2s;
 
 		@include respond-to(max-width, $break-phone-small) {
 			font-size: $font-24;
@@ -135,14 +136,16 @@
 		margin-bottom: 12px;
 	}
 
-	&__list-container {
-		&:first-of-type {
-			margin-bottom: 100px;
-			
-			@include respond-to(max-height, $break-v-600) {
-				margin-bottom: 0;
-			}
+	&__list-container:first-of-type {
+		margin-bottom: 100px;
+		
+		@include respond-to(max-height, $break-v-600) {
+			margin-bottom: 0;
 		}
+	}
+
+	&__content--mobile &__list-container:first-of-type {
+		margin-bottom: 60px;
 	}
 
 	&__content--mobile &__list-container {
@@ -165,6 +168,9 @@
 	}
 
 	&__content--mobile &__logo-container {
+		bottom: 0;
+		margin-top: 16px;
+		position: relative;
 		text-align: center;
 	}
 
@@ -178,6 +184,6 @@
 	}
 
 	&__content--mobile &__logo {
-		max-width: 70%;
+		max-width: 50%;
 	}
 }
