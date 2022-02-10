@@ -101,7 +101,7 @@
 	}
 
 	&__content {
-		background-color: rgba($blue-med-light, 0.03);
+		background-color: rgba($blue-med-light, 0.01);
 		display: flex;
 		flex-direction: column;
 		min-height: calc(100vh - $aside-nav-height);

@@ -30,16 +30,16 @@ export default defineComponent({
     const collectionName = computed(() => {
       if (
         props.data.collection?.name &&
-        props.data.collection.name.length > 50
+        props.data.collection.name.length > 30
       ) {
-        return props.data.collection.name.slice(0, 50) + "...";
+        return props.data.collection.name.slice(0, 30) + "...";
       }
       return props.data.collection?.name ? props.data.collection.name : "";
     });
 
     const itemName = computed(() => {
-      if (props.data.name && props.data.name.length > 70) {
-        return props.data.name.slice(0, 70) + "...";
+      if (props.data.name && props.data.name.length > 50) {
+        return props.data.name.slice(0, 50) + "...";
       }
       return props.data.name ? props.data.name : "";
     });

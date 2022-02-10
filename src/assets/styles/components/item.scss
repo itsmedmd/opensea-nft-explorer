@@ -2,6 +2,7 @@
 @import "../general/typography";
 
 .item {
+	background-color: rgba($gray, 0.09);
 	border: 1px solid rgba($text-light, 0.7);
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
@@ -12,6 +13,8 @@
 
 	&__image {
 		border-bottom: 1px solid rgba($text-light, 0.3);
+		height: 252px;
+		object-fit: cover;
 		width: 100%;
 	}
 
@@ -22,18 +25,22 @@
 
 	&__collection,
 	&__name {
-		word-break: break-all;
+		overflow: hidden;
+		word-break: break-word;
 	}
 
 	&__collection {
 		color: $text-light;
 		font-size: $font-13;
 		font-weight: $font-w-bold-med;
+		height: 20px;
+		margin-bottom: 4px;
 	}
 
 	&__name {
 		font-size: $font-15;
 		font-weight: $font-w-bold-med;
+		height: 46px;
 	}
 
 	&:hover {
