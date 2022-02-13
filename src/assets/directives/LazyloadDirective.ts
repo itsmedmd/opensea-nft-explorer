@@ -2,11 +2,20 @@ import IntersectionObserverOptions from "@/types/IntersectionObserverOptions";
 import { Directive } from "vue";
 
 const LazyloadDirective: Directive = {
-  mounted: (el: HTMLImageElement) => {
+  mounted: (el: HTMLElement) => {
     function loadImage() {
-      if (el.dataset.url) {
-        console.log("Setting url");
-        el.src = el.dataset.url;
+      const imageElement = Array.from(el.children).find(
+        (el) => el.nodeName === "IMG"
+      ) as HTMLImageElement;
+
+      if (imageElement) {
+        imageElement.addEventListener("load", () => {
+          el.classList.add("loaded");
+        });
+
+        if (imageElement.dataset.url) {
+          imageElement.src = imageElement.dataset.url;
+        }
       }
     }
 

@@ -11,12 +11,25 @@
 	transition: all 0.1s;
 	width: 100%;
 
-	&__image {
+	&__image-container {
 		border-bottom: 1px solid rgba($text-light, 0.3);
-		display: inline-block;
 		height: 252px;
+		position: relative;
+		width: 100%;
+	}
+
+	&__image {
+		display: inline-block;
+		height: inherit;
 		object-fit: cover;
 		width: 100%;
+	}
+
+	&__image-loader {
+		left: 50%;
+		position: absolute;
+		top: 50%;
+		transform: translate(-50%, -50%);
 	}
 
 	&__info {

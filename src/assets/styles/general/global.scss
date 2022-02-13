@@ -176,6 +176,12 @@ button {
 	width: 40px;
 }
 
+// if the spinner was used to show the loading of
+// someting (usually an image), turn it off when the image is loaded
+.loaded div {
+	display: none;
+}
+
 // text
 .bold {
 	font-weight: $font-w-bold;
