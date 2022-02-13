@@ -1,16 +1,25 @@
 @import "../general/mixins";
+@import "../general/colors";
 @import "../general/variables";
 @import "../general/typography";
 
 .about {
 	padding: 0 16px 16px 80px;
 
+	@include respond-to(max-width, $break-tablet-big) {
+		padding-left: 36px;
+	}
+
 	@include respond-to(max-width, $break-navigation-mobile) {
 		padding: 36px 24px 48px;
 	}
 
 	&__section {
-		margin-bottom: 48px;
+		background-color: rgba($gray, 0.15);
+		border-bottom: 1px solid rgba($black, 0.5);
+		border-radius: 10px;
+		margin-bottom: 64px;
+		padding: 8px 16px;
 	}
 
 	&__section-title {
@@ -21,7 +30,7 @@
 
 	&__section-text {
 		max-width: 70%;
-		padding-left: 24px;
+		padding: 0 0 6px 24px;
 
 		@include respond-to(max-width, $break-tablet-big) {
 			max-width: 80%;
