@@ -39,9 +39,21 @@
 
 	// section 1
 	// video/image and link to OpenSea
-	&__graphics {
+	&__graphics-container {
 		border-bottom: 1px solid rgba($black, 0.15);
 		min-height: 200px;
+		position: relative;
+		width: 100%;
+	}
+
+	&__graphics-loader {
+		left: 50%;
+		position: absolute;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	&__graphics {
 		width: 100%;
 	}
 

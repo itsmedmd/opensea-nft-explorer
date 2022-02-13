@@ -8,13 +8,30 @@ const LazyloadDirective: Directive = {
         (el) => el.nodeName === "IMG"
       ) as HTMLImageElement;
 
+      const videoElement = Array.from(el.children).find(
+        (el) => el.nodeName === "VIDEO"
+      ) as HTMLVideoElement;
+
+      let graphicsElement: HTMLImageElement | HTMLVideoElement | null = null;
       if (imageElement) {
+        graphicsElement = imageElement;
         imageElement.addEventListener("load", () => {
           el.classList.add("loaded");
         });
 
-        if (imageElement.dataset.url) {
-          imageElement.src = imageElement.dataset.url;
+        imageElement.addEventListener("error", () => {
+          imageElement.alt = "Preview image of asset";
+        });
+      } else if (videoElement) {
+        graphicsElement = videoElement;
+        videoElement.addEventListener("loadeddata", () => {
+          el.classList.add("loaded");
+        });
+      }
+
+      if (graphicsElement) {
+        if (graphicsElement.dataset.url) {
+          graphicsElement.src = graphicsElement.dataset.url;
         }
       }
     }

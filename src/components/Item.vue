@@ -2,11 +2,7 @@
   <router-link :to="'/asset/' + data.id">
     <div class="item">
       <figure v-lazyload class="item__image-container">
-        <img
-          :data-url="data.preview_image_url"
-          :alt="data.name + ' image'"
-          class="item__image"
-        />
+        <img :data-url="data.preview_image_url" class="item__image" />
         <div class="item__image-loader">
           <div class="spinner"></div>
         </div>
