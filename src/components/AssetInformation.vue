@@ -2,21 +2,25 @@
   <article class="asset-info">
     <div class="asset-info__left-column">
       <section class="asset-info__section">
-        <video
-          v-if="finalData.animation_url"
-          controls
-          autoplay
-          loop
-          muted
-          :src="finalData.animation_url"
-          class="asset-info__graphics"
-        />
-        <img
-          v-else
-          :src="finalData.hd_image_url ?? finalData.priority_image_url"
-          :alt="'Preview image of asset ' + finalData.name"
-          class="asset-info__graphics"
-        />
+        <figure v-lazyload class="asset-info__graphics-container">
+          <video
+            v-if="finalData.animation_url"
+            controls
+            autoplay
+            loop
+            muted
+            :data-url="finalData.animation_url"
+            class="asset-info__graphics"
+          />
+          <img
+            v-else
+            :data-url="finalData.hd_image_url ?? finalData.priority_image_url"
+            class="asset-info__graphics"
+          />
+          <div class="asset-info__graphics-loader">
+            <div class="spinner"></div>
+          </div>
+        </figure>
 
         <div class="asset-info__logo-container">
           <a
@@ -94,7 +98,7 @@
         <p v-else>This asset has no traits</p>
       </section>
       <section class="asset-info__section">
-        <p class="asset-info__section-title">Top Ownerships:</p>
+        <p class="asset-info__section-title">Top Public Owners:</p>
         <div v-if="finalData.ownerships?.length">
           <div
             v-for="(own, i) in finalData.ownerships"
@@ -125,9 +129,13 @@
 import { computed, defineComponent, PropType } from "vue";
 import AssetType from "@/types/AssetType";
 import UserData from "@/components/UserData.vue";
+import LazyloadDirective from "@/assets/directives/LazyloadDirective";
 
 export default defineComponent({
   name: "AssetInformation",
+  directives: {
+    lazyload: LazyloadDirective,
+  },
   components: {
     UserData,
   },
