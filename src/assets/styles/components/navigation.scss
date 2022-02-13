@@ -150,6 +150,10 @@
 
 	&__content--mobile &__list-container {
 		width: 40%;
+
+		@include respond-to(max-width, $break-phone-big) {
+			width: 80%;
+		}
 	}
 
 	&__list-item {
