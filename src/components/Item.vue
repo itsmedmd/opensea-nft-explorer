@@ -2,7 +2,8 @@
   <router-link :to="'/asset/' + data.id">
     <div class="item">
       <img
-        :src="data.preview_image_url"
+        v-lazyload
+        :data-url="data.preview_image_url"
         :alt="data.name + ' image'"
         class="item__image"
       />
@@ -17,9 +18,13 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
 import AssetType from "@/types/AssetType";
+import LazyloadDirective from "@/assets/directives/LazyloadDirective";
 
 export default defineComponent({
   name: "Item",
+  directives: {
+    lazyload: LazyloadDirective,
+  },
   props: {
     data: {
       required: true,
