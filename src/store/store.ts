@@ -5,15 +5,22 @@ import AssetObjectEntry from "@/types/AssetObjectEntry";
 import ListStore from "@/types/ListStore";
 
 const myState: ListStore = {
+  offsetSaleCount: 0,
+  offsetDefault: 0,
+  offsetSaleDate: 0,
+  offsetRandomAsset: 0,
   dataBySaleCount: [],
   dataByDefault: [],
   dataBySaleDate: [],
+  dataRandomAsset: [],
   isCurrentlyFetchingCount: false,
   isCurrentlyFetchingDefault: false,
   isCurrentlyFetchingDate: false,
+  isCurrentlyFetchingRandomAsset: false,
   errorForSaleCount: null,
   errorForDefault: null,
   errorForSaleDate: null,
+  errorForRandomAsset: null,
   listFilter: "default",
   pageNumber: 0,
   itemsPerPage: 16,
@@ -23,15 +30,18 @@ const myState: ListStore = {
 
 const store = {
   state: reactive(myState),
-  appendData(newData: AssetType[], filter: ListType): void {
+  appendData(newData: AssetType[], filter: ListType, offset: number): void {
     if (filter === "sale_count") {
       this.state.dataBySaleCount = this.state.dataBySaleCount.concat(newData);
     } else if (filter === "default") {
       this.state.dataByDefault = this.state.dataByDefault.concat(newData);
+    } else if (filter === "random_asset") {
+      this.state.dataRandomAsset = this.state.dataRandomAsset.concat(newData);
     } else {
       this.state.dataBySaleDate = this.state.dataBySaleDate.concat(newData);
     }
     this.setInformationByFilter(filter);
+    this.setOffset(filter, offset);
   },
   updateFilter(filter: ListType): void {
     this.state.listFilter = filter;
@@ -50,10 +60,32 @@ const store = {
       this.state.pageCount = Math.floor(
         this.state.dataByDefault.length / store.state.itemsPerPage
       );
-    } else {
+    } else if (filter === "sale_date") {
       this.state.pageCount = Math.floor(
         this.state.dataBySaleDate.length / store.state.itemsPerPage
       );
+    }
+  },
+  setOffset(filter: ListType, offset: number) {
+    if (filter === "sale_count") {
+      this.state.offsetSaleCount = offset;
+    } else if (filter === "default") {
+      this.state.offsetDefault = offset;
+    } else if (filter === "sale_date") {
+      this.state.offsetSaleDate = offset;
+    } else {
+      this.state.offsetRandomAsset = offset;
+    }
+  },
+  getOffset(filter: ListType) {
+    if (filter === "sale_count") {
+      return this.state.offsetSaleCount;
+    } else if (filter === "default") {
+      return this.state.offsetDefault;
+    } else if (filter === "sale_date") {
+      return this.state.offsetSaleDate;
+    } else {
+      return this.state.offsetRandomAsset;
     }
   },
   setIsCurrentlyFetching(filter: ListType, value: boolean) {
@@ -61,6 +93,8 @@ const store = {
       this.state.isCurrentlyFetchingCount = value;
     } else if (filter === "default") {
       this.state.isCurrentlyFetchingDefault = value;
+    } else if (filter === "random_asset") {
+      this.state.isCurrentlyFetchingRandomAsset = value;
     } else {
       this.state.isCurrentlyFetchingDate = value;
     }
@@ -70,6 +104,8 @@ const store = {
       return this.state.isCurrentlyFetchingCount;
     } else if (filter === "default") {
       return this.state.isCurrentlyFetchingDefault;
+    } else if (filter === "random_asset") {
+      return this.state.isCurrentlyFetchingRandomAsset;
     } else {
       return this.state.isCurrentlyFetchingDate;
     }
@@ -79,6 +115,8 @@ const store = {
       this.state.errorForSaleCount = error;
     } else if (filter === "default") {
       this.state.errorForDefault = error;
+    } else if (filter === "random_asset") {
+      this.state.errorForRandomAsset = error;
     } else {
       this.state.errorForSaleDate = error;
     }
@@ -88,6 +126,8 @@ const store = {
       return this.state.errorForSaleCount;
     } else if (filter === "default") {
       return this.state.errorForDefault;
+    } else if (filter === "random_asset") {
+      return this.state.errorForRandomAsset;
     } else {
       return this.state.errorForSaleDate;
     }
@@ -120,7 +160,9 @@ const store = {
       !this.state.isCurrentlyFetchingDefault &&
       !this.state.dataByDefault.length &&
       !this.state.isCurrentlyFetchingDate &&
-      !this.state.dataBySaleDate.length
+      !this.state.dataBySaleDate.length &&
+      !this.state.isCurrentlyFetchingRandomAsset &&
+      !this.state.dataRandomAsset.length
     ) {
       return true;
     }

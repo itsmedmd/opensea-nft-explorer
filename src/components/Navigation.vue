@@ -46,7 +46,7 @@
               :disabled="currentFilter === 'default'"
               @click="updateFilter('default')"
             >
-              Default
+              Random
             </button>
           </li>
           <li class="aside__list-item">
@@ -86,13 +86,8 @@
         <p class="aside__list-title">Feeling lucky?</p>
         <ul>
           <li class="aside__list-item">
-            <button class="nav-button" @click="scrollToTop">
+            <button class="nav-button" @click="showRandomAsset">
               Show a random item
-            </button>
-          </li>
-          <li class="aside__list-item" v-if="isHomePage">
-            <button class="nav-button" @click="scrollToTop">
-              Randomise the list
             </button>
           </li>
         </ul>
@@ -132,6 +127,12 @@ export default defineComponent({
     const isHomePage = computed(() => (route.path === "/" ? true : false));
     const showMobileNav = ref<boolean>(false);
 
+    // start the page at the top
+    const scrollToTop = () => {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    };
+
     const toggleNavigation = () => {
       showMobileNav.value = !showMobileNav.value;
       emit("mobileToggle", showMobileNav.value);
@@ -165,10 +166,8 @@ export default defineComponent({
       }
     };
 
-    // start the page at the top
-    const scrollToTop = () => {
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
+    const showRandomAsset = () => {
+      fetchList("random_asset", 3);
     };
 
     // Add event listener on window to listen for resize
@@ -187,6 +186,7 @@ export default defineComponent({
       toggleNavigation,
       conditionallyToggleNavigation,
       scrollToTop,
+      showRandomAsset,
     };
   },
 });

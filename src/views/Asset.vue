@@ -95,6 +95,10 @@ export default defineComponent({
         store.state.dataBySaleDate.find((el) => el.id === props.id) ?? null;
       if (data) return data;
 
+      data =
+        store.state.dataRandomAsset.find((el) => el.id === props.id) ?? null;
+      if (data) return data;
+
       return null;
     });
 
