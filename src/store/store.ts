@@ -51,6 +51,9 @@ const store = {
   addToPageNumber(number: number): void {
     this.state.pageNumber += number;
   },
+  setPageNumber(number: number): void {
+    this.state.pageNumber = number;
+  },
   setInformationByFilter(filter: ListType): void {
     if (filter === "sale_count") {
       this.state.pageCount = Math.floor(

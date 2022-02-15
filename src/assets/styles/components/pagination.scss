@@ -7,9 +7,9 @@
 
 	&__navigate {
 		background-color: $white;
-		font-size: $font-22;
+		font-size: $font-30;
 		font-weight: $font-w-bold-med;
-		margin: 0 8px;
+		margin: 0 16px;
 
 		&:not([disabled]):hover {
 			color: $blue-med-dark;
@@ -20,21 +20,27 @@
 		}
 	}
 
-	&__number {
-		color: $blue-dark;
+	&__navigate-side-page {
+		background-color: $white;
+		color: $blue-med-dark;
 		font-size: $font-22;
 		font-weight: $font-w-bold-med;
-		padding: 0 6px;
+		padding: 2px 6px;
+
+		&:hover {
+			color: $blue-med-light;
+		}
+	}
+
+	&__number {
+		color: $black;
+		font-size: $font-26;
+		font-weight: $font-w-bold-med;
+		user-select: none;
 	}
 
 	&__rotate-180 {
 		display: inline-block;
 		transform: rotate(180deg);
-	}
-
-	&__description {
-		color: $text-light;
-		font-size: $font-14;
-		margin-top: -6px;
 	}
 }
