@@ -46,7 +46,7 @@
               :disabled="currentFilter === 'default'"
               @click="updateFilter('default')"
             >
-              Default
+              Random
             </button>
           </li>
           <li class="aside__list-item">
@@ -86,13 +86,12 @@
         <p class="aside__list-title">Feeling lucky?</p>
         <ul>
           <li class="aside__list-item">
-            <button class="nav-button" @click="scrollToTop">
-              Show a random item
+            <button v-if="loaderText" class="nav-button">
+              <div class="spinner spinner--button"></div>
+              {{ loaderText }}
             </button>
-          </li>
-          <li class="aside__list-item" v-if="isHomePage">
-            <button class="nav-button" @click="scrollToTop">
-              Randomise the list
+            <button v-else class="nav-button" @click="showRandomAsset">
+              {{ refetchText ? refetchText : "Show a random item" }}
             </button>
           </li>
         </ul>
@@ -132,6 +131,12 @@ export default defineComponent({
     const isHomePage = computed(() => (route.path === "/" ? true : false));
     const showMobileNav = ref<boolean>(false);
 
+    // start the page at the top
+    const scrollToTop = () => {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    };
+
     const toggleNavigation = () => {
       showMobileNav.value = !showMobileNav.value;
       emit("mobileToggle", showMobileNav.value);
@@ -165,11 +170,45 @@ export default defineComponent({
       }
     };
 
-    // start the page at the top
-    const scrollToTop = () => {
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
+    const showRandomAsset = () => {
+      fetchList("random_asset", 2);
     };
+
+    // if there is a fetch for a random asset data,
+    // the loader should be visible.
+    // if the loader is visible - compute the loader text.
+    const loaderText = computed(() => {
+      if (store.getIsCurrentlyFetching("random_asset")) {
+        const errorMessage = store.getErrorMessage("random_asset");
+        if (errorMessage) {
+          // 1. If there is an error, then show the loader with the error message.
+          return errorMessage;
+        } else {
+          // 2. If there is no error, then show the default loader message.
+          return "Loading";
+        }
+      }
+
+      // turn off mobile navigation in case it was on
+      if (loaderText.value === "Loading") {
+        conditionallyToggleNavigation();
+      }
+
+      // 3. Stop showing the loader
+      return null;
+    });
+
+    // if there is no longer a fetch for data in progress
+    // and there is an error - show a text for manual refetch.
+    const refetchText = computed(() => {
+      const errorMessage = store.getErrorMessage("random_asset");
+      if (!store.getIsCurrentlyFetching("random_asset") && errorMessage) {
+        // 1. Show the manual refetch text.
+        return errorMessage;
+      }
+      // 2. Don't show the manual refetch text.
+      return null;
+    });
 
     // Add event listener on window to listen for resize
     // to disable navigation if the navigation was enabled
@@ -183,10 +222,13 @@ export default defineComponent({
       isHomePage,
       currentFilter,
       showMobileNav,
+      loaderText,
+      refetchText,
       updateFilter,
       toggleNavigation,
       conditionallyToggleNavigation,
       scrollToTop,
+      showRandomAsset,
     };
   },
 });

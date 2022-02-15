@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from "vue";
+import { computed, defineComponent, onMounted, watch } from "vue";
 import NotFound from "@/views/NotFound.vue";
 import AssetInformation from "@/components/AssetInformation.vue";
 
@@ -58,9 +58,11 @@ export default defineComponent({
     AssetInformation,
   },
   setup(props) {
-    const splitUrl = props.id.split("-");
-    const address = splitUrl[0];
-    const id = splitUrl[1];
+    // these values need to be computed because a random asset
+    // may be fetched from within an asset page
+    const splitUrl = computed(() => props.id.split("-"));
+    const address = computed(() => splitUrl.value[0]);
+    const id = computed(() => splitUrl.value[1]);
 
     // data that would already be present from fetching the lists
     const priorityData = computed(() => {
@@ -95,6 +97,10 @@ export default defineComponent({
         store.state.dataBySaleDate.find((el) => el.id === props.id) ?? null;
       if (data) return data;
 
+      data =
+        store.state.dataRandomAsset.find((el) => el.id === props.id) ?? null;
+      if (data) return data;
+
       return null;
     });
 
@@ -102,7 +108,9 @@ export default defineComponent({
     // only 'top_ownerships' is needed from here.
     // other data is only used as a fallback in case
     // 'priorityData' does not exist
-    const individualData = computed(() => store.getAssetData(address, id));
+    const individualData = computed(() =>
+      store.getAssetData(address.value, id.value)
+    );
 
     // individualData is considered empty when:
     // 1. There is no data (not even placeholder(empty))
@@ -149,7 +157,7 @@ export default defineComponent({
     });
 
     const manuallyRefetch = () => {
-      fetchAsset(address, id);
+      fetchAsset(address.value, id.value);
     };
 
     // if the user is on the last page and
@@ -185,6 +193,17 @@ export default defineComponent({
       return null;
     });
 
+    // if the address changed from one asset to another
+    // and it's a new asset - fetch data for it.
+    watch(
+      () => props.id,
+      () => {
+        if (isIndividualDataEmpty.value) {
+          fetchAsset(address.value, id.value);
+        }
+      }
+    );
+
     onMounted(() => {
       // start the page at the top
       document.body.scrollTop = 0;
@@ -192,7 +211,7 @@ export default defineComponent({
 
       // fetch asset data if there is no individualData
       if (isIndividualDataEmpty.value) {
-        fetchAsset(address, id);
+        fetchAsset(address.value, id.value);
       }
     });
 

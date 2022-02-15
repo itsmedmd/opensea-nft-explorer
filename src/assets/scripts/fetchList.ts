@@ -1,13 +1,16 @@
 import AssetType from "@/types/AssetType";
 import ListType from "@/types/ListType";
 import store from "@/store/store";
+import redirectToAsset from "./redirectToAsset";
 import createAssetObject from "./createAssetObject";
 
-// fetches an asset list of 50 assets ordered by 'filter'.
-// 'maxRepeatCount' defines how many times the fetch will
-// be repeated in case of failure.
-// 'iterationNumber' defines the current execution number
-// (1 by default and higher if repeating the fetch)
+// Fetches an asset list of 50 assets ordered by 'filter'.
+// * 'maxRepeatCount' defines how many times the fetch will
+//    be repeated in case of failure.
+// * 'iterationNumber' defines the current execution number
+//    (1 by default and higher if repeating the fetch)
+// * 'addOffset' defines the number that should be
+//    added to the current offset of the current filter
 const fetchList = (
   filter: ListType,
   maxRepeatCount = 10,
@@ -15,6 +18,8 @@ const fetchList = (
 ) => {
   store.setIsCurrentlyFetching(filter, true);
 
+  // set "Retrying x/n" message if there are multiple
+  // failed attempts to get data
   if (iterationNumber === 1) {
     store.setErrorMessage(filter, null);
   } else {
@@ -24,13 +29,27 @@ const fetchList = (
     );
   }
 
-  let offset = 0;
-  if (filter === "sale_count") {
-    offset = store.state.dataBySaleCount.length;
-  } else if (filter === "default") {
-    offset = store.state.dataByDefault.length;
-  } else {
-    offset = store.state.dataBySaleDate.length;
+  // set the list offset based on provided filter
+  // * if the filter is "random_asset", then:
+  //    1. Change fetch limit (object count) to 1
+  //    2. Change fetch filter to the default one
+  let offset = store.getOffset(filter);
+  let limit = 50;
+  let fetchFilter: ListType = filter;
+
+  if (filter === "random_asset") {
+    // random asset will be retrieved from the sale_date sorting
+    fetchFilter = "sale_date";
+
+    // there will be only 1 asset retrieved
+    limit = 1;
+
+    // if this is the first time fetching a random asset -
+    // create a random offset
+    if (offset === 0) {
+      offset = Math.floor(Math.random() * 1000) + 1000;
+      store.setOffset(filter, offset);
+    }
   }
 
   const url =
@@ -38,8 +57,9 @@ const fetchList = (
   const options = {
     method: "POST",
     body: JSON.stringify({
-      filter,
+      filter: fetchFilter,
       offset,
+      limit,
     }),
   };
 
@@ -61,7 +81,30 @@ const fetchList = (
         }
       }
 
-      store.appendData(newList, filter);
+      // if all entries in the list were filtered out, then start a
+      // new fetch.
+      // By default push the offset forwards by 'offset + limit'
+      // but if the filter is random_asset, make it 0 so that
+      // a new random offset will be generated for it.
+      if (!newList.length) {
+        if (filter === "random_asset") {
+          store.setOffset(filter, 0);
+        } else {
+          store.setOffset(filter, offset + limit);
+        }
+        fetchList(filter, maxRepeatCount);
+      } else if (newList.length && filter === "random_asset") {
+        // if there are item(s) in the list and the filter
+        // is "random_asset", then redirect to that asset page
+        redirectToAsset(newList[0].id);
+      }
+
+      // The reason for the third argument of 'appendData is to
+      // set the new offset to previous offset + limit of the number
+      // of items that were being fetched so that the
+      // future fetches would start from that new offset
+      store.appendData(newList, filter, offset + limit);
+
       store.setIsCurrentlyFetching(filter, false);
       store.setErrorMessage(filter, null);
     })
@@ -70,7 +113,7 @@ const fetchList = (
         // try to fetch again
         console.error(
           `${err}. Repeating data fetch for ${filter}:[${offset}; ${
-            offset + 50
+            offset + limit
           }]. Tries left: ${maxRepeatCount - iterationNumber}`
         );
 
@@ -79,9 +122,18 @@ const fetchList = (
         // stop fetching
         console.error(
           `Failed fetching data for ${filter}:[${offset}; ${
-            offset + 50
+            offset + limit
           }]. Stopping retry.`
         );
+
+        if (filter === "random_asset") {
+          // In case there is no data for the current offset of
+          // random_asset, set the future offset to 0 so
+          // that if the user fetches a random asset again,
+          // a new random offset would be generated in hopes
+          // that it would contain data
+          store.setOffset(filter, 0);
+        }
 
         store.setIsCurrentlyFetching(filter, false);
         store.setErrorMessage(filter, "Try Loading Again");

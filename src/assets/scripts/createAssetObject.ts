@@ -32,8 +32,6 @@ const createAssetObject = (obj: any): AssetType | null => {
     priority_image_url = obj.image_url;
   } else if (obj.image_original_url) {
     priority_image_url = obj.image_original_url;
-  } else {
-    return null;
   }
 
   // Create an image link for a HD image
