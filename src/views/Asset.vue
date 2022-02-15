@@ -1,5 +1,5 @@
 <template>
-  <div class="asset">
+  <article class="asset">
     <AssetInformation
       v-if="priorityData && showPriority"
       :data="priorityData"
@@ -38,17 +38,18 @@
     <div v-else>
       <NotFound />
     </div>
-  </div>
+  </article>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, watch } from "vue";
+import { computed, ref, defineComponent, onMounted, watch } from "vue";
 import NotFound from "@/views/NotFound.vue";
 import AssetInformation from "@/components/AssetInformation.vue";
 
 import fetchAsset from "@/assets/scripts/fetchAsset";
 import store from "@/store/store";
 import AssetType from "@/types/AssetType";
+import scrollToTop from "@/assets/scripts/scrollToTop";
 
 export default defineComponent({
   name: "Asset",
@@ -58,11 +59,8 @@ export default defineComponent({
     AssetInformation,
   },
   setup(props) {
-    // these values need to be computed because a random asset
-    // may be fetched from within an asset page
-    const splitUrl = computed(() => props.id.split("-"));
-    const address = computed(() => splitUrl.value[0]);
-    const id = computed(() => splitUrl.value[1]);
+    const address = ref<string>("");
+    const id = ref<string>("");
 
     // data that would already be present from fetching the lists
     const priorityData = computed(() => {
@@ -198,6 +196,10 @@ export default defineComponent({
     watch(
       () => props.id,
       () => {
+        const splitUrl = props.id.split("-");
+        address.value = splitUrl[0];
+        id.value = splitUrl[1];
+
         if (isIndividualDataEmpty.value) {
           fetchAsset(address.value, id.value);
         }
@@ -205,9 +207,7 @@ export default defineComponent({
     );
 
     onMounted(() => {
-      // start the page at the top
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
+      scrollToTop();
 
       // fetch asset data if there is no individualData
       if (isIndividualDataEmpty.value) {
