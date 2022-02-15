@@ -62,8 +62,6 @@ const fetchList = (
     }),
   };
 
-  console.log(`fetching ${filter}: ${offset}[${limit}]`);
-
   fetch(url, options)
     .then((res) => {
       if (res.status === 200) {
@@ -102,7 +100,7 @@ const fetchList = (
         // try to fetch again
         console.error(
           `${err}. Repeating data fetch for ${filter}:[${offset}; ${
-            offset + 50
+            offset + limit
           }]. Tries left: ${maxRepeatCount - iterationNumber}`
         );
 
@@ -111,7 +109,7 @@ const fetchList = (
         // stop fetching
         console.error(
           `Failed fetching data for ${filter}:[${offset}; ${
-            offset + 50
+            offset + limit
           }]. Stopping retry.`
         );
 

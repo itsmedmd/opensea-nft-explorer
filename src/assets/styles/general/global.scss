@@ -176,6 +176,14 @@ button {
 	width: 40px;
 }
 
+.spinner--button {
+	display: inline-block;
+	height: 20px;
+	margin: -2px 4px 0;
+	vertical-align: middle;
+	width: 20px;
+}
+
 // if the spinner was used to show the loading of
 // someting (usually an image), turn it off when the image is loaded
 .loaded div {

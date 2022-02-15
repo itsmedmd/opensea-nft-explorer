@@ -86,8 +86,12 @@
         <p class="aside__list-title">Feeling lucky?</p>
         <ul>
           <li class="aside__list-item">
-            <button class="nav-button" @click="showRandomAsset">
-              Show a random item
+            <button v-if="loaderText" class="nav-button">
+              <div class="spinner spinner--button"></div>
+              Loading...
+            </button>
+            <button v-else class="nav-button" @click="showRandomAsset">
+              {{ refetchText ? refetchText : "Show a random item" }}
             </button>
           </li>
         </ul>
@@ -170,6 +174,36 @@ export default defineComponent({
       fetchList("random_asset", 3);
     };
 
+    // if there is a fetch for a random asset data,
+    // the loader should be visible.
+    // if the loader is visible - compute the loader text.
+    const loaderText = computed(() => {
+      if (store.getIsCurrentlyFetching("random_asset")) {
+        const errorMessage = store.getErrorMessage("random_asset");
+        if (errorMessage) {
+          // 1. If there is an error, then show the loader with the error message.
+          return errorMessage;
+        } else {
+          // 2. If there is no error, then show the default loader message.
+          return "Loading";
+        }
+      }
+      // 3. Don't show the loader.
+      return null;
+    });
+
+    // if there is no longer a fetch for data in progress
+    // and there is an error - show a text for manual refetch.
+    const refetchText = computed(() => {
+      const errorMessage = store.getErrorMessage("random_asset");
+      if (!store.getIsCurrentlyFetching("random_asset") && errorMessage) {
+        // 1. Show the manual refetch text.
+        return errorMessage;
+      }
+      // 2. Don't show the manual refetch text.
+      return null;
+    });
+
     // Add event listener on window to listen for resize
     // to disable navigation if the navigation was enabled
     // but the user resized the screen.
@@ -182,6 +216,8 @@ export default defineComponent({
       isHomePage,
       currentFilter,
       showMobileNav,
+      loaderText,
+      refetchText,
       updateFilter,
       toggleNavigation,
       conditionallyToggleNavigation,
