@@ -1,6 +1,7 @@
 import AssetType from "@/types/AssetType";
 import ListType from "@/types/ListType";
 import store from "@/store/store";
+import redirectToAsset from "./redirectToAsset";
 import createAssetObject from "./createAssetObject";
 
 // Fetches an asset list of 50 assets ordered by 'filter'.
@@ -85,6 +86,10 @@ const fetchList = (
       if (!newList.length) {
         store.setOffset(filter, offset + limit);
         fetchList(filter, maxRepeatCount);
+      } else if (filter === "random_asset") {
+        // if there are item(s) in the list and the filter
+        // is "random_asset", then redirect to that asset page
+        redirectToAsset(newList[0].id);
       }
 
       // The reason for the third argument of 'appendData is to
