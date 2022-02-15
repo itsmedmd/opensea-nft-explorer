@@ -9,8 +9,6 @@ import createAssetObject from "./createAssetObject";
 //    be repeated in case of failure.
 // * 'iterationNumber' defines the current execution number
 //    (1 by default and higher if repeating the fetch)
-// * 'addOffset' defines the number that should be
-//    added to the current offset of the current filter
 const fetchList = (
   filter: ListType,
   maxRepeatCount = 10,
@@ -47,7 +45,7 @@ const fetchList = (
     // if this is the first time fetching a random asset -
     // create a random offset
     if (offset === 0) {
-      offset = Math.floor(Math.random() * 1000) + 1000;
+      offset = Math.floor(Math.random() * 500) + 1000;
       store.setOffset(filter, offset);
     }
   }

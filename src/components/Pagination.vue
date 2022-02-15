@@ -45,18 +45,7 @@ export default defineComponent({
       // start the page at the top
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
-
       store.addToPageNumber(toAdd);
-
-      // prefetch new data if the user navigates to the
-      // second page before the last one and if currently
-      // there is no fetch in progress for this filter
-      if (
-        store.state.pageNumber + 2 === store.state.pageCount &&
-        !store.getIsCurrentlyFetching(store.state.listFilter)
-      ) {
-        fetchList(store.state.listFilter);
-      }
     };
 
     return {

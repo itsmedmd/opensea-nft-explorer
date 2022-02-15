@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from "vue";
+import { computed, defineComponent, onMounted, watch } from "vue";
 import Item from "@/components/Item.vue";
 import Pagination from "@/components/Pagination.vue";
 import store from "@/store/store";
@@ -83,6 +83,21 @@ export default defineComponent({
         return store.state.dataBySaleDate.slice(sliceStart, sliceEnd);
       }
     });
+
+    watch(
+      () => computedList.value,
+      () => {
+        // fetch new data if the last page containing data
+        // is in the further 0-2 pages and if there is currently
+        // no fetch in progress for the currently set filter
+        if (
+          store.state.pageNumber + 2 >= store.state.pageCount &&
+          !store.getIsCurrentlyFetching(store.state.listFilter)
+        ) {
+          fetchList(store.state.listFilter);
+        }
+      }
+    );
 
     // if the user is on the last page and
     // there is a fetch for data in progress,
