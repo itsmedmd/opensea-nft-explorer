@@ -188,7 +188,13 @@ export default defineComponent({
           return "Loading";
         }
       }
-      // 3. Don't show the loader.
+
+      // turn off mobile navigation in case it was on
+      if (loaderText.value === "Loading") {
+        conditionallyToggleNavigation();
+      }
+
+      // 3. Stop showing the loader
       return null;
     });
 
