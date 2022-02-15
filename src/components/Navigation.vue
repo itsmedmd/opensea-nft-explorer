@@ -88,7 +88,7 @@
           <li class="aside__list-item">
             <button v-if="loaderText" class="nav-button">
               <div class="spinner spinner--button"></div>
-              Loading...
+              {{ loaderText }}
             </button>
             <button v-else class="nav-button" @click="showRandomAsset">
               {{ refetchText ? refetchText : "Show a random item" }}
@@ -171,7 +171,7 @@ export default defineComponent({
     };
 
     const showRandomAsset = () => {
-      fetchList("random_asset", 3);
+      fetchList("random_asset", 2);
     };
 
     // if there is a fetch for a random asset data,

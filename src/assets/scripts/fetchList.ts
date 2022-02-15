@@ -38,8 +38,8 @@ const fetchList = (
   let fetchFilter: ListType = filter;
 
   if (filter === "random_asset") {
-    // random asset will be retrieved from the default sorting
-    fetchFilter = "default";
+    // random asset will be retrieved from the sale_date sorting
+    fetchFilter = "sale_date";
 
     // there will be only 1 asset retrieved
     limit = 1;
@@ -47,7 +47,7 @@ const fetchList = (
     // if this is the first time fetching a random asset -
     // create a random offset
     if (offset === 0) {
-      offset = Math.floor(Math.random() * 2000) + 1600;
+      offset = Math.floor(Math.random() * 1000) + 1000;
       store.setOffset(filter, offset);
     }
   }
@@ -82,11 +82,18 @@ const fetchList = (
       }
 
       // if all entries in the list were filtered out, then start a
-      // new fetch with the offset pushed forwards by 'offset + limit'
+      // new fetch.
+      // By default push the offset forwards by 'offset + limit'
+      // but if the filter is random_asset, make it 0 so that
+      // a new random offset will be generated for it.
       if (!newList.length) {
-        store.setOffset(filter, offset + limit);
+        if (filter === "random_asset") {
+          store.setOffset(filter, 0);
+        } else {
+          store.setOffset(filter, offset + limit);
+        }
         fetchList(filter, maxRepeatCount);
-      } else if (filter === "random_asset") {
+      } else if (newList.length && filter === "random_asset") {
         // if there are item(s) in the list and the filter
         // is "random_asset", then redirect to that asset page
         redirectToAsset(newList[0].id);
@@ -97,6 +104,7 @@ const fetchList = (
       // of items that were being fetched so that the
       // future fetches would start from that new offset
       store.appendData(newList, filter, offset + limit);
+
       store.setIsCurrentlyFetching(filter, false);
       store.setErrorMessage(filter, null);
     })

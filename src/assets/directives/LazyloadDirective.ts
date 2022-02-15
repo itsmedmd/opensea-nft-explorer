@@ -3,6 +3,7 @@ import { Directive } from "vue";
 
 const lazyLoadFunction = (el: HTMLElement) => {
   function loadImage() {
+    el.classList.remove("loaded");
     const imageElement = Array.from(el.children).find(
       (el) => el.nodeName === "IMG"
     ) as HTMLImageElement;
@@ -29,6 +30,13 @@ const lazyLoadFunction = (el: HTMLElement) => {
     }
 
     if (graphicsElement) {
+      if (graphicsElement.src) {
+        // if the user generates a random asset from within
+        // an asset page, first remove the graphics src
+        // so that a loader could be shown and the old
+        // graphics wouldn't stay visible till new ones load.
+        graphicsElement.src = "";
+      }
       if (graphicsElement.dataset.url) {
         graphicsElement.src = graphicsElement.dataset.url;
       }
