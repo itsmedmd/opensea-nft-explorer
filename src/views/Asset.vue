@@ -13,7 +13,7 @@
       :data="individualData.asset"
       :isFetchingOwnerships="individualData.isCurrentlyFetching"
     />
-    <div v-else-if="!showNotFound">
+    <div v-else>
       <div
         class="loader-container loader-container--centered"
         v-if="loaderText"
@@ -34,9 +34,9 @@
           {{ refetchButtonText }}
         </button>
       </div>
-    </div>
-    <div v-else>
-      <NotFound />
+      <div v-else>
+        <NotFound />
+      </div>
     </div>
   </article>
 </template>
@@ -59,8 +59,9 @@ export default defineComponent({
     AssetInformation,
   },
   setup(props) {
-    const address = ref<string>("");
-    const id = ref<string>("");
+    const splitUrl = props.id.split("-");
+    const address = ref<string>(splitUrl[0]);
+    const id = ref<string>(splitUrl[1]);
 
     // data that would already be present from fetching the lists
     const priorityData = computed(() => {
@@ -143,23 +144,11 @@ export default defineComponent({
       return true;
     });
 
-    const showNotFound = computed(() => {
-      if (
-        !priorityData.value &&
-        isIndividualDataEmpty.value &&
-        !store.isStoreEmpty()
-      ) {
-        return true;
-      }
-      return false;
-    });
-
     const manuallyRefetch = () => {
       fetchAsset(address.value, id.value);
     };
 
-    // if the user is on the last page and
-    // there is a fetch for data in progress,
+    // if there is a fetch for data in progress,
     // the loader should be visible.
     // if the loader is visible - compute the loader text.
     const loaderText = computed(() => {
@@ -177,8 +166,7 @@ export default defineComponent({
       return null;
     });
 
-    // if the user is on the last page and
-    // there is no longer a fetch for data in progress
+    // if there is no longer a fetch for data in progress
     // and there is an error - show a button
     // for manual refetch.
     const refetchButtonText = computed(() => {
@@ -219,7 +207,6 @@ export default defineComponent({
       individualData,
       priorityData,
       showPriority,
-      showNotFound,
       loaderText,
       refetchButtonText,
       manuallyRefetch,
