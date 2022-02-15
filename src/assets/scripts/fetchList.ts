@@ -49,7 +49,6 @@ const fetchList = (
     if (offset === 0) {
       offset = Math.floor(Math.random() * 1000) + 1000;
       store.setOffset(filter, offset);
-      console.log(`Generated OFFSET: ${offset}`);
     }
   }
 
@@ -63,10 +62,6 @@ const fetchList = (
       limit,
     }),
   };
-
-  console.log(
-    `${filter}, offset: ${offset}, limit: ${limit}, iterCount: ${iterationNumber}`
-  );
 
   fetch(url, options)
     .then((res) => {
