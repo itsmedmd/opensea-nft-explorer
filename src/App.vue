@@ -1,9 +1,9 @@
 <template>
   <div class="app">
     <Navigation @mobileToggle="toggleNavigation" />
-    <div class="content" :class="{ 'content--mobile': hideContent }">
+    <main class="content" :class="{ 'content--mobile': hideContent }">
       <router-view />
-    </div>
+    </main>
   </div>
 </template>
 

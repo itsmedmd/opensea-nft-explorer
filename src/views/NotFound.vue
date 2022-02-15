@@ -1,7 +1,7 @@
 <template>
-  <div class="not-found">
+  <article class="not-found">
     <h1 class="not-found__message">This page does not exist.</h1>
-  </div>
+  </article>
 </template>
 
 <script lang="ts">

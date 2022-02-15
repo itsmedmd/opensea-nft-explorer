@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <article class="home">
     <Pagination :isNextDisabled="isNextDisabled" />
     <div class="home__itemlist">
       <Item
@@ -31,7 +31,7 @@
       </button>
     </div>
     <Pagination :isNextDisabled="isNextDisabled" />
-  </div>
+  </article>
 </template>
 
 <script lang="ts">

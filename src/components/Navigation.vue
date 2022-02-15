@@ -1,5 +1,5 @@
 <template>
-  <div class="aside">
+  <aside class="aside">
     <nav class="aside__nav">
       <ul class="aside__nav-list">
         <li class="aside__nav-item">
@@ -108,7 +108,7 @@
         </a>
       </div>
     </div>
-  </div>
+  </aside>
 </template>
 
 <script lang="ts">
@@ -118,6 +118,7 @@ import { useRoute } from "vue-router";
 import ListType from "@/types/ListType";
 import store from "@/store/store";
 import fetchList from "@/assets/scripts/fetchList";
+import scrollToTop from "@/assets/scripts/scrollToTop";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -130,12 +131,6 @@ export default defineComponent({
     const currentFilter = computed(() => store.state.listFilter);
     const isHomePage = computed(() => (route.path === "/" ? true : false));
     const showMobileNav = ref<boolean>(false);
-
-    // start the page at the top
-    const scrollToTop = () => {
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
-    };
 
     const toggleNavigation = () => {
       showMobileNav.value = !showMobileNav.value;
