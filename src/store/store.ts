@@ -30,7 +30,7 @@ const myState: ListStore = {
 
 const store = {
   state: reactive(myState),
-  appendData(newData: AssetType[], filter: ListType, offset: number): void {
+  appendData(newData: AssetType[], filter: ListType): void {
     if (filter === "sale_count") {
       this.state.dataBySaleCount = this.state.dataBySaleCount.concat(newData);
     } else if (filter === "default") {
@@ -41,7 +41,6 @@ const store = {
       this.state.dataBySaleDate = this.state.dataBySaleDate.concat(newData);
     }
     this.setInformationByFilter(filter);
-    this.setOffset(filter, offset);
   },
   updateFilter(filter: ListType): void {
     this.state.listFilter = filter;

@@ -9,6 +9,8 @@ import createAssetObject from "./createAssetObject";
 //    be repeated in case of failure.
 // * 'iterationNumber' defines the current execution number
 //    (1 by default and higher if repeating the fetch)
+// * 'customOffset' defines the number that the list should be
+//    offset by. It's really only used for random asset fetching
 const fetchList = (
   filter: ListType,
   maxRepeatCount = 10,
@@ -36,17 +38,18 @@ const fetchList = (
   let fetchFilter: ListType = filter;
 
   if (filter === "random_asset") {
-    // random asset will be retrieved from the sale_date sorting
-    fetchFilter = "sale_date";
+    // random asset will be retrieved from the sale_count sorting
+    fetchFilter = "sale_count";
 
     // there will be only 1 asset retrieved
     limit = 1;
 
-    // if this is the first time fetching a random asset -
+    // if this is the first time fetching this current asset -
     // create a random offset
     if (offset === 0) {
-      offset = Math.floor(Math.random() * 500) + 1000;
+      offset = Math.floor(Math.random() * 1000) + 1000;
       store.setOffset(filter, offset);
+      console.log(`Generated OFFSET: ${offset}`);
     }
   }
 
@@ -60,6 +63,10 @@ const fetchList = (
       limit,
     }),
   };
+
+  console.log(
+    `${filter}, offset: ${offset}, limit: ${limit}, iterCount: ${iterationNumber}`
+  );
 
   fetch(url, options)
     .then((res) => {
@@ -97,11 +104,14 @@ const fetchList = (
         redirectToAsset(newList[0].id);
       }
 
-      // The reason for the third argument of 'appendData is to
-      // set the new offset to previous offset + limit of the number
-      // of items that were being fetched so that the
-      // future fetches would start from that new offset
-      store.appendData(newList, filter, offset + limit);
+      store.appendData(newList, filter);
+
+      // set a new offset for future fetches
+      if (filter === "random_asset") {
+        store.setOffset(filter, 0);
+      } else {
+        store.setOffset(filter, offset + limit);
+      }
 
       store.setIsCurrentlyFetching(filter, false);
       store.setErrorMessage(filter, null);
@@ -126,10 +136,8 @@ const fetchList = (
 
         if (filter === "random_asset") {
           // In case there is no data for the current offset of
-          // random_asset, set the future offset to 0 so
-          // that if the user fetches a random asset again,
-          // a new random offset would be generated in hopes
-          // that it would contain data
+          // random_asset, set the future offset to 0 so a new
+          // random offset would be generated
           store.setOffset(filter, 0);
         }
 
