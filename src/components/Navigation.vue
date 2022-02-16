@@ -123,8 +123,6 @@ import store from "@/store/store";
 import fetchList from "@/assets/scripts/fetchList";
 import scrollToTop from "@/assets/scripts/scrollToTop";
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { debounce } from "debounce";
 
 export default defineComponent({
