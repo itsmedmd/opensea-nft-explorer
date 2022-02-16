@@ -50,7 +50,7 @@ export default defineComponent({
   },
   setup() {
     // calculate whether the button to navigate
-    // to the next page should be disabled or not
+    // to the next asset list page should be disabled or not
     const isNextDisabled = computed(() => {
       const filter = store.state.listFilter;
       const sliceStart = store.state.pageNumber * store.state.itemsPerPage;

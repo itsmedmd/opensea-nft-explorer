@@ -9,8 +9,6 @@ import createAssetObject from "./createAssetObject";
 //    be repeated in case of failure.
 // * 'iterationNumber' defines the current execution number
 //    (1 by default and higher if repeating the fetch)
-// * 'customOffset' defines the number that the list should be
-//    offset by. It's really only used for random asset fetching
 const fetchList = (
   filter: ListType,
   maxRepeatCount = 10,
@@ -30,13 +28,13 @@ const fetchList = (
   }
 
   // set the list offset based on provided filter
-  // * if the filter is "random_asset", then:
-  //    1. Change fetch limit (object count) to 1
-  //    2. Change fetch filter to the default one
   let offset = store.getOffset(filter);
   let limit = 50;
   let fetchFilter: ListType = filter;
 
+  // * if the filter is "random_asset", then:
+  //    1. Change fetch limit (object count) to 1
+  //    2. Change fetch filter to sale_count
   if (filter === "random_asset") {
     // random asset will be retrieved from the sale_count sorting
     fetchFilter = "sale_count";
@@ -44,8 +42,9 @@ const fetchList = (
     // there will be only 1 asset retrieved
     limit = 1;
 
-    // if this is the first time fetching this current asset -
-    // create a random offset
+    // If this is the first time fetching this current asset -
+    // create a random offset.
+    // * Offset is not equal to 0 only when refetching due to an error.
     if (offset === 0) {
       offset = Math.floor(Math.random() * 1000) + 1000;
       store.setOffset(filter, offset);
@@ -74,15 +73,16 @@ const fetchList = (
     .then((res) => {
       // create a list of typed AssetType objects from data
       const newList: AssetType[] = [];
-      for (const rawAsset of res.assets) {
-        const newAsset: AssetType | null = createAssetObject(rawAsset);
-        if (newAsset) {
-          newList.push(newAsset);
+      if (res.assets) {
+        for (const rawAsset of res.assets) {
+          const newAsset: AssetType | null = createAssetObject(rawAsset);
+          if (newAsset) {
+            newList.push(newAsset);
+          }
         }
       }
 
-      // if all entries in the list were filtered out, then start a
-      // new fetch.
+      // if all entries in the list were filtered out, then start a new fetch.
       // By default push the offset forwards by 'offset + limit'
       // but if the filter is random_asset, make it 0 so that
       // a new random offset will be generated for it.
@@ -94,7 +94,7 @@ const fetchList = (
         }
         fetchList(filter, maxRepeatCount);
       } else if (newList.length && filter === "random_asset") {
-        // if there are item(s) in the list and the filter
+        // if there is an item in the list and the filter
         // is "random_asset", then redirect to that asset page
         redirectToAsset(newList[0].id);
       }

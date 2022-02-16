@@ -17,6 +17,9 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "debounce": [
+        "src/types/debounce"
       ]
     },
     "lib": [
@@ -34,7 +37,12 @@
     "tests/**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/types/**"
   ],
-  "strictNullChecks": true
+  "strictNullChecks": true,
+  "typeRoots": [
+    "node_modules/@types",
+    "src/types"
+  ]
 }

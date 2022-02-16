@@ -2,11 +2,11 @@ import AssetType from "@/types/AssetType";
 import store from "@/store/store";
 import createAssetObject from "./createAssetObject";
 
-// fetches an asset based on its address and id
-// 'maxRepeatCount' defines how many times the fetch will
-// be repeated in case of failure.
-// 'iterationNumber' defines the current execution number
-// (1 by default and higher if repeating the fetch)
+// fetches an asset based on its address and id.
+// * 'maxRepeatCount' defines how many times the fetch will
+//    be repeated in case of failure.
+// * 'iterationNumber' defines the current execution number
+//    (1 by default and higher if repeating the fetch)
 const fetchAsset = (
   asset_address: string,
   asset_id: string,
@@ -20,6 +20,8 @@ const fetchAsset = (
   }
   store.setAssetIsCurrentlyFetching(asset_address, asset_id, true);
 
+  // set "Retrying x/n" message if there are multiple
+  // failed attempts to get data
   if (iterationNumber === 1) {
     store.setAssetErrorMessage(asset_address, asset_id, null);
   } else {

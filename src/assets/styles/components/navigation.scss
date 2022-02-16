@@ -19,6 +19,7 @@
 		width: 100%;
 	}
 
+	// navigation between Home/About pages
 	&__nav {
 		background-color: rgba($gray, 0.1);
 		border-bottom: 1px solid $gray;
@@ -107,6 +108,7 @@
 		outline-offset: 4px;
 	}
 
+	// Filtering
 	&__content {
 		background: linear-gradient(90deg, $white 0%, rgba($gray, 0.1) 50%, rgba($gray, 0.2) 100%);
 		display: flex;
@@ -167,6 +169,7 @@
 		margin-bottom: 10px;
 	}
 
+	// OpenSea logo
 	&__logo-container {
 		bottom: 16px;
 		padding: 0 8px;

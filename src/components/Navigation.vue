@@ -123,8 +123,6 @@ import store from "@/store/store";
 import fetchList from "@/assets/scripts/fetchList";
 import scrollToTop from "@/assets/scripts/scrollToTop";
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { debounce } from "debounce";
 
 export default defineComponent({
@@ -211,7 +209,7 @@ export default defineComponent({
     // Add event listener on window to listen for resize
     // to disable navigation if the navigation was enabled
     // but the user resized the screen.
-    // * Also debounce the function execution.
+    // * Also debounce the function execution for 30ms.
     onMounted(() => {
       window.onresize = debounce(conditionallyToggleNavigation, 30);
     });
