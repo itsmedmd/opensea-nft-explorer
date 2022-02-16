@@ -25,6 +25,8 @@
             @click="toggleNavigation"
             type="button"
             class="button cta-button aside__nav-mobile-button"
+            aria-controls="navigation-content"
+            :aria-expanded="showMobileNav"
           >
             Menu
           </button>
@@ -33,6 +35,7 @@
     </nav>
 
     <div
+      id="navigation-content"
       class="aside__content"
       :class="{ 'aside__content--mobile': showMobileNav }"
     >
@@ -99,7 +102,7 @@
 
       <div class="aside__logo-container">
         <p class="aside__logo-title">Powered by:</p>
-        <a href="https://opensea.io" rel="noreferrer">
+        <a href="https://opensea.io" rel="noreferrer" class="aside__logo-link">
           <img
             src="../assets/images/opensea-logo.svg"
             alt="OpenSea logo"

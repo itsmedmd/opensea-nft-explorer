@@ -92,12 +92,20 @@
 		&:active {
 			color: $blue-med-dark;
 		}
+
+		&:focus {
+			outline-offset: 4px;
+		}
 	}
 
 	&__nav-mobile-button {
 		border-radius: 4px;
 		font-size: $font-26;
 		padding: 2px 6px;
+	}
+
+	&__nav-mobile-button:focus {
+		outline-offset: 4px;
 	}
 
 	&__content {
@@ -185,6 +193,10 @@
 
 	&__logo {
 		max-width: 100%;
+	}
+
+	&__logo-link:focus {
+		outline-offset: 6px;
 	}
 
 	&__content--mobile &__logo {
