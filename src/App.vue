@@ -42,6 +42,12 @@ export default defineComponent({
       toggleNavigation,
     };
   },
+  watch: {
+    $route(to, from) {
+      document.title =
+        to.meta.title || "Deimantas Butėnas - OpenSea NFT Explorer";
+    },
+  },
 });
 </script>
 
