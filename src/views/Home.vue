@@ -1,5 +1,6 @@
 <template>
   <article class="home">
+    <h1 class="sr-only" aria-live="assertive">Home page</h1>
     <Pagination :isNextDisabled="isNextDisabled" />
     <div class="home__itemlist">
       <Item

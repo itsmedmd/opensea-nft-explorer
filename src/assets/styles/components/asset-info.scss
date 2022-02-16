@@ -4,6 +4,8 @@
 @import "../general/mixins";
 
 .asset-info {
+	$section-border-radius: 8px;
+
 	display: grid;
 	grid-template-columns: 2fr 3fr;
 	min-height: 100vh;
@@ -15,11 +17,15 @@
 	&__section {
 		background-color: rgba($gray, 0.09);
 		border: 1px solid rgba($black, 0.15);
-		border-radius: 8px;
+		border-radius: $section-border-radius;
 		margin-bottom: 36px;
 		overflow: hidden;
 		padding: 12px;
 		word-break: break-word;
+	}
+
+	&__section:first-of-type {
+		overflow: unset;
 	}
 
 	&__left-column &__section:nth-of-type(1) {
@@ -41,6 +47,7 @@
 	// video/image and link to OpenSea
 	&__graphics-container {
 		border-bottom: 1px solid rgba($black, 0.15);
+		border-radius: $section-border-radius;
 		min-height: 200px;
 		position: relative;
 		width: 100%;
@@ -56,6 +63,10 @@
 	&__graphics {
 		display: block;
 		width: 100%;
+	}
+
+	&__graphics:focus {
+		outline-offset: 6px;
 	}
 
 	&__logo-container {
@@ -81,6 +92,10 @@
 		line-height: 52px;
 		padding: 0 6px 0 60px;
 		position: relative;
+	}
+
+	&__logo-link:focus {
+		outline-offset: 6px;
 	}
 
 	// section 2

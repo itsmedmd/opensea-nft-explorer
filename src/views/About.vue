@@ -1,13 +1,14 @@
 <template>
   <article class="about">
+    <h1 class="sr-only" aria-live="assertive">About page</h1>
     <section
       v-for="article in articles"
       :key="article.title"
       class="about__section"
     >
-      <p class="about__section-title">
+      <h2 class="about__section-title">
         {{ article.title }}
-      </p>
+      </h2>
       <p class="about__section-text">
         {{ article.text }}
       </p>
