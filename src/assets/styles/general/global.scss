@@ -169,6 +169,7 @@ button {
 	background-color: $button-general-active-color;
 }
 
+// spinner (a different type of loader)
 .spinner {
 	animation: spinner 0.9s linear infinite;
 	border: 3px solid rgba($black, 0.4);
@@ -188,8 +189,8 @@ button {
 	width: 20px;
 }
 
-// if the spinner was used to show the loading of
-// someting (usually an image), turn it off when the image is loaded
+// if the spinner was used to show the loading of someting
+// (usually an image/video), turn it off when the object is loaded
 .loaded div {
 	display: none;
 }

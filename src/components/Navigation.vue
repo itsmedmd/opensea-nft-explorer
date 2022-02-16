@@ -211,7 +211,7 @@ export default defineComponent({
     // Add event listener on window to listen for resize
     // to disable navigation if the navigation was enabled
     // but the user resized the screen.
-    // * Also debounce the function execution.
+    // * Also debounce the function execution for 30ms.
     onMounted(() => {
       window.onresize = debounce(conditionallyToggleNavigation, 30);
     });

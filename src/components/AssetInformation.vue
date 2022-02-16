@@ -159,8 +159,8 @@ export default defineComponent({
       // if there are both data and extraData,
       // then it means that data is priorityData and
       // extraData is individualData, so add top ownerships
-      // form individualData to the combined data because
-      // priorityData doesn't have information about top ownerships.
+      // form individualData to the combined data because priorityData
+      // (by default) doesn't have information about top ownerships.
       if (props.extraData?.ownerships?.length) {
         tempData.ownerships = props.extraData.ownerships;
       }

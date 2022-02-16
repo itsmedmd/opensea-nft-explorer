@@ -73,11 +73,13 @@ export default defineComponent({
     const address = ref<string>(splitUrl[0]);
     const id = ref<string>(splitUrl[1]);
 
-    // data that would already be present from fetching the lists
+    // try to get data that would already be present from fetching the lists
+    // before the current Asset page was opened
     const priorityData = computed(() => {
       let data: AssetType | null = null;
 
       // first try to find the asset in the list by currently set filter
+      // for optimised efficiency
       if (store.state.listFilter === "sale_count") {
         data =
           store.state.dataBySaleCount.find((el) => el.id === props.id) ?? null;
@@ -92,9 +94,9 @@ export default defineComponent({
       if (data) return data;
 
       // if the asset was not found by filter, it means that no data is present yet
-      // and the individual asset page was accessed directly through the URL
+      // or the individual asset page was accessed directly through the URL
       // so try to look for data in all filters in case the asset belongs to
-      // another filter, which could already have the data
+      // another filter which could already have the data
       data = store.state.dataByDefault.find((el) => el.id === props.id) ?? null;
       if (data) return data;
 
@@ -113,17 +115,18 @@ export default defineComponent({
       return null;
     });
 
-    // data that is fetched for individual asset.
-    // only 'top_ownerships' is needed from here.
+    // data that is fetched for this individual asset.
+    // only 'top_ownerships' is needed from this data.
     // other data is only used as a fallback in case
     // 'priorityData' does not exist
     const individualData = computed(() =>
       store.getAssetData(address.value, id.value)
     );
 
-    // individualData is considered empty when:
+    // individualData is considered empty in two cases:
     // 1. There is no data (not even placeholder(empty))
     // 2. There is placeholder(empty) data but no fetch is in progress
+    //    (means there was an error)
     const isIndividualDataEmpty = computed(
       () =>
         !individualData.value ||
@@ -131,10 +134,9 @@ export default defineComponent({
           !individualData.value.isCurrentlyFetching)
     );
 
-    // compute whether to prioritise displaying
-    // priorityData or individualData.
+    // compute whether to prioritise displaying priorityData or individualData.
     // This is needed in case the asset is entered directly
-    // through an URL, so that there is no unnecessary re-render.
+    // through a URL, so that there is no unnecessary re-render.
     const showPriority = computed(() => {
       if (priorityData.value && isIndividualDataEmpty.value) {
         // if there is priorityData and there is no individualData,
@@ -154,6 +156,7 @@ export default defineComponent({
       return true;
     });
 
+    // used in case all fetch retries fail
     const manuallyRefetch = () => {
       fetchAsset(address.value, id.value);
     };
@@ -190,7 +193,7 @@ export default defineComponent({
     });
 
     // focus heading, then turn off ability to access
-    // the element with tab.
+    // the element with tab button.
     // This is used so that when Asset page is loaded,
     // screen readers would start reading text in order
     // from the start of the page.

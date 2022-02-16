@@ -1,5 +1,13 @@
 $page-max-width: 1600px;
 
+// z-index
+$z-index-mobile-nav: 2;
+
+// navigation component variables
+$aside-width-default: 240px;
+$aside-width-small: 200px;
+$aside-nav-height: 60px;
+
 // --- break points
 // horizontal
 $break-laptop: 1366px;
@@ -14,12 +22,3 @@ $break-navigation-mobile: $break-tablet-small;
 
 // vertical
 $break-v-600: 630px;
-
-// navigation component variables
-$aside-width-default: 240px;
-$aside-width-small: 200px;
-$aside-nav-height: 60px;
-
-// z-index
-$z-index-overlay: 1;
-$z-index-mobile-nav: 2;
