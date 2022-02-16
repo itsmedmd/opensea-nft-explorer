@@ -4,7 +4,6 @@
 @import "../general/mixins";
 
 .aside {
-	background-color: rgba($gray, 0.05);
 	border-right: 1px solid rgba($gray, 0.8);
 	height: 100vh;
 	position: fixed;
@@ -21,8 +20,8 @@
 	}
 
 	&__nav {
-		background-color: rgba($gray, 0.2);
-		border-bottom: 1px solid rgba($gray, 0.8);
+		background-color: rgba($gray, 0.1);
+		border-bottom: 1px solid $gray;
 		height: $aside-nav-height;
 		padding: 8px 0;
 		
@@ -109,7 +108,7 @@
 	}
 
 	&__content {
-		background-color: rgba($blue-med-light, 0.01);
+		background: linear-gradient(90deg, $white 0%, rgba($gray, 0.1) 50%, rgba($gray, 0.2) 100%);
 		display: flex;
 		flex-direction: column;
 		min-height: calc(100vh - $aside-nav-height);

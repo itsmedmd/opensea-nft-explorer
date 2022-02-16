@@ -4,6 +4,8 @@
 @import "../general/mixins";
 
 .asset-info {
+	$section-border-radius: 8px;
+
 	display: grid;
 	grid-template-columns: 2fr 3fr;
 	min-height: 100vh;
@@ -15,7 +17,7 @@
 	&__section {
 		background-color: rgba($gray, 0.09);
 		border: 1px solid rgba($black, 0.15);
-		border-radius: 8px;
+		border-radius: $section-border-radius;
 		margin-bottom: 36px;
 		overflow: hidden;
 		padding: 12px;
@@ -45,7 +47,9 @@
 	// video/image and link to OpenSea
 	&__graphics-container {
 		border-bottom: 1px solid rgba($black, 0.15);
+		border-radius: $section-border-radius;
 		min-height: 200px;
+		overflow: hidden;
 		position: relative;
 		width: 100%;
 	}
