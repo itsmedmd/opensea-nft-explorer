@@ -1,6 +1,10 @@
 <template>
-  <router-link :to="'/asset/' + data.id">
-    <div class="item">
+  <router-link
+    :to="'/asset/' + data.id"
+    :aria-label="'Open asset page for ' + itemName + 'asset'"
+    class="item"
+  >
+    <div class="item__container">
       <figure v-lazyload class="item__image-container">
         <img :data-url="data.preview_image_url" class="item__image" />
         <div class="item__image-loader">

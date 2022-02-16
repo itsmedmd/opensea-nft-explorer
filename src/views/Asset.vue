@@ -1,5 +1,13 @@
 <template>
   <article class="asset">
+    <h1
+      ref="headingRef"
+      class="sr-only"
+      aria-live="assertive"
+      :tabindex="isHeadingFocusable ? 0 : -1"
+    >
+      Asset page
+    </h1>
     <AssetInformation
       v-if="priorityData && showPriority"
       :data="priorityData"
@@ -59,6 +67,8 @@ export default defineComponent({
     AssetInformation,
   },
   setup(props) {
+    const headingRef = ref<HTMLElement | null>(null);
+    const isHeadingFocusable = ref<boolean>(true);
     const splitUrl = props.id.split("-");
     const address = ref<string>(splitUrl[0]);
     const id = ref<string>(splitUrl[1]);
@@ -179,6 +189,19 @@ export default defineComponent({
       return null;
     });
 
+    // focus heading, then turn off ability to access
+    // the element with tab.
+    // This is used so that when Asset page is loaded,
+    // screen readers would start reading text in order
+    // from the start of the page.
+    const focusHeading = () => {
+      if (headingRef.value) {
+        isHeadingFocusable.value = true;
+        headingRef.value.focus();
+        isHeadingFocusable.value = false;
+      }
+    };
+
     // if the address changed from one asset to another
     // and it's a new asset - fetch data for it.
     watch(
@@ -188,6 +211,8 @@ export default defineComponent({
         address.value = splitUrl[0];
         id.value = splitUrl[1];
 
+        focusHeading();
+
         if (isIndividualDataEmpty.value) {
           fetchAsset(address.value, id.value);
         }
@@ -196,6 +221,7 @@ export default defineComponent({
 
     onMounted(() => {
       scrollToTop();
+      focusHeading();
 
       // fetch asset data if there is no individualData
       if (isIndividualDataEmpty.value) {
@@ -204,6 +230,8 @@ export default defineComponent({
     });
 
     return {
+      headingRef,
+      isHeadingFocusable,
       individualData,
       priorityData,
       showPriority,
