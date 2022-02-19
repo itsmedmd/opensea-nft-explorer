@@ -93,7 +93,10 @@ const createAssetObject = (obj: any): AssetType | null => {
   // if not - try for a gif (replace hd_image_url with a gif)
   let animation_url = null;
   if (obj.animation_url && obj.animation_url.includes("https://")) {
-    if (obj.animation_url.includes(".mp4")) {
+    if (
+      obj.animation_url.includes(".mp4") ||
+      obj.animation_url.includes(".webm")
+    ) {
       animation_url = obj.animation_url;
     } else if (obj.animation_url.includes(".gif")) {
       hd_image_url = obj.animation_url;
@@ -102,7 +105,10 @@ const createAssetObject = (obj: any): AssetType | null => {
     obj.animation_original_url &&
     obj.animation_original_url.includes("https://")
   ) {
-    if (obj.animation_original_url.includes(".mp4")) {
+    if (
+      obj.animation_original_url.includes(".mp4") ||
+      obj.animation_original_url.includes(".webm")
+    ) {
       animation_url = obj.animation_original_url;
     } else if (obj.animation_original_url.includes(".gif")) {
       hd_image_url = obj.animation_original_url;
