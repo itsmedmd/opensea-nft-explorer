@@ -194,7 +194,7 @@ export default defineComponent({
       }
 
       // turn off mobile navigation in case it was on
-      if (loaderText.value === "Loading") {
+      if (loaderText.value) {
         conditionallyToggleNavigation();
       }
 
@@ -210,6 +210,7 @@ export default defineComponent({
         // 1. Show the manual refetch text.
         return errorMessage;
       }
+
       // 2. Don't show the manual refetch text.
       return null;
     });
