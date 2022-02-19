@@ -7,13 +7,16 @@ import Ownership from "@/types/Ownership";
 // create a typed asset object from the raw object
 // retrieved from the API that only has the required data
 const createAssetObject = (obj: any): AssetType | null => {
-  // If there is no image_preview_url -
+  // * If there is no image_preview_url -
   // don't add this asset to the list (return null).
-  // Also exclude a popular collection of items named "Dead Ringers",
+  // * Also exclude a popular collection of items named "Dead Ringers",
   // as even their preview images' sizes are way too big and
   // cause issues when loading.
+  // * Also exclude assets that contain webm for preview images because
+  // the asset preview image should always be an image
   if (
     !obj.image_preview_url ||
+    obj.image_preview_url.includes(".webm") ||
     obj.name?.includes("Dead Ringers") ||
     obj.collection?.name?.includes("Dead Ringers")
   ) {
@@ -37,6 +40,12 @@ const createAssetObject = (obj: any): AssetType | null => {
   // Create an image link for a HD image
   let hd_image_url: string | null =
     obj.image_url ?? obj.image_original_url ?? null;
+
+  // If hd_image_url is a webm - filter out this asset
+  // because hd_image_url should always be an image
+  if (hd_image_url && hd_image_url.includes(".webm")) {
+    return null;
+  }
 
   // create typed asset traits
   const assetTraits: Trait[] = [];
