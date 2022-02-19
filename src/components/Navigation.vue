@@ -149,6 +149,14 @@ export default defineComponent({
       }
     };
 
+    // disable mobile navigation if it is turned on
+    // when the screen becomes wider than 768px
+    const disableMobileNavigationOnResize = () => {
+      if (window.innerWidth > 768) {
+        conditionallyToggleNavigation();
+      }
+    };
+
     const updateFilter = (filter: ListType) => {
       store.updateFilter(filter);
       conditionallyToggleNavigation();
@@ -211,7 +219,7 @@ export default defineComponent({
     // but the user resized the screen.
     // * Also debounce the function execution for 30ms.
     onMounted(() => {
-      window.onresize = debounce(conditionallyToggleNavigation, 30);
+      window.onresize = debounce(disableMobileNavigationOnResize, 20);
     });
 
     return {
