@@ -1,7 +1,16 @@
 import IntersectionObserverOptions from "@/types/IntersectionObserverOptions";
-import { Directive } from "vue";
+import store from "@/store/store";
+import ListType from "@/types/ListType";
+import { Directive, DirectiveBinding } from "vue";
 
-const lazyLoadFunction = (el: HTMLElement) => {
+// binding is provided a value if the image is a list item
+const lazyLoadFunction = (el: HTMLElement, binding: DirectiveBinding) => {
+  function handleLoadStatus(el: HTMLElement, currentFilter: ListType) {
+    if (!el.classList.contains("loaded")) {
+      store.deleteAsset(binding.value, currentFilter);
+    }
+  }
+
   function loadImage() {
     el.classList.remove("loaded");
 
@@ -40,6 +49,13 @@ const lazyLoadFunction = (el: HTMLElement) => {
       }
       if (graphicsElement.dataset.url) {
         graphicsElement.src = graphicsElement.dataset.url;
+        if (imageElement && binding.value) {
+          // If the image is in a list, after 5 seconds check
+          // if the image is loaded. If not - remove it from the list.
+          // Also pass in the current list filter to know from which
+          // list to delete the asset.
+          setTimeout(() => handleLoadStatus(el, store.state.listFilter), 5000);
+        }
       }
     }
   }
