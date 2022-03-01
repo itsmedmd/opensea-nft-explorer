@@ -170,6 +170,22 @@ const store = {
     }
     return false;
   },
+  deleteAsset(assetID: string, currentFilter: ListType) {
+    if (currentFilter === "sale_count") {
+      this.state.dataBySaleCount = this.state.dataBySaleCount.filter(
+        (obj) => obj.id !== assetID
+      );
+    } else if (currentFilter === "default") {
+      this.state.dataByDefault = this.state.dataByDefault.filter(
+        (obj) => obj.id !== assetID
+      );
+    } else {
+      this.state.dataBySaleDate = this.state.dataBySaleDate.filter(
+        (obj) => obj.id !== assetID
+      );
+    }
+    this.setInformationByFilter(currentFilter);
+  },
 };
 
 export default store;
