@@ -92,7 +92,10 @@ const fetchList = (
         } else {
           store.setOffset(filter, offset + limit);
         }
-        fetchList(filter, maxRepeatCount);
+
+        setTimeout(() => {
+          fetchList(filter, maxRepeatCount);
+        }, 1000);
       } else if (newList.length && filter === "random_asset") {
         // if there is an item in the list and the filter
         // is "random_asset", then redirect to that asset page
@@ -120,7 +123,9 @@ const fetchList = (
           }]. Tries left: ${maxRepeatCount - iterationNumber}`
         );
 
-        fetchList(filter, maxRepeatCount, iterationNumber + 1);
+        setTimeout(() => {
+          fetchList(filter, maxRepeatCount, iterationNumber + 1);
+        }, 1000);
       } else {
         // stop fetching
         console.error(

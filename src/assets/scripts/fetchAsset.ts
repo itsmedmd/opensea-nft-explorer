@@ -64,12 +64,14 @@ const fetchAsset = (
           Tries left: ${maxRepeatCount - iterationNumber}`
         );
 
-        fetchAsset(
-          asset_address,
-          asset_id,
-          maxRepeatCount,
-          iterationNumber + 1
-        );
+        setTimeout(() => {
+          fetchAsset(
+            asset_address,
+            asset_id,
+            maxRepeatCount,
+            iterationNumber + 1
+          );
+        }, 1000);
       } else {
         // stop fetching
         console.error(
