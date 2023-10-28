@@ -14,10 +14,6 @@ const fetchList = (
   maxRepeatCount = 10,
   iterationNumber = 1
 ) => {
-  if (1 > 0) {
-    return;
-  }
-
   store.setIsCurrentlyFetching(filter, true);
 
   // set "Retrying x/n" message if there are multiple
