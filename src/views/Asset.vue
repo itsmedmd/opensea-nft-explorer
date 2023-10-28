@@ -1,5 +1,8 @@
 <template>
-  <article class="asset">
+  <article v-if="1 > 0" class="asset">
+    <h1>Down for maintenance, please come back later!</h1>
+  </article>
+  <article v-else class="asset">
     <h1
       ref="headingRef"
       class="sr-only"

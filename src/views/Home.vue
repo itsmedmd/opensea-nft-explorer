@@ -1,5 +1,8 @@
 <template>
-  <article class="home">
+  <article v-if="1 > 0" class="home">
+    <h1>Down for maintenance, please come back later!</h1>
+  </article>
+  <article v-else class="home">
     <h1 class="sr-only" aria-live="assertive">Home page</h1>
     <Pagination :isNextDisabled="isNextDisabled" />
     <div class="home__itemlist">

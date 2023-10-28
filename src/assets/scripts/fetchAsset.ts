@@ -13,6 +13,10 @@ const fetchAsset = (
   maxRepeatCount = 10,
   iterationNumber = 1
 ) => {
+  if (1 > 0) {
+    return;
+  }
+
   // if this is the first time seeing this individual asset,
   // generate default data for it
   if (!store.getAssetData(asset_address, asset_id)) {
